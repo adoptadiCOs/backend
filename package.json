@@ -11,7 +11,7 @@
     "develop": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client\"",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
-    "lint": "eslint src"
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
