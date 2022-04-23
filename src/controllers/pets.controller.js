@@ -26,11 +26,13 @@ const GetSpecies = async(req,res) => {
 }
 
 const GetBreeds = async(req,res) => {
-    const {data,err} = await findBreeds()
+
+    const specie = req.query.specie
+
+    const {data,err} = await findBreeds(specie)
     if(err !== null) {
         return res.status(400).json({error: err})
     }
-
     
     return res.status(200).json({data: data})
 }

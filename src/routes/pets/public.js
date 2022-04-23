@@ -133,6 +133,12 @@ router.get('/species', pets.GetSpecies);
  * @swagger
  * /species:
  *      get:
+ *          parameters:
+ *              - in: query
+ *                  name: specie
+ *                  schema:
+ *                      type: string
+ *                  description: Filter the result by specie
  *          description: "Return all the breeds on the database"
  *          responses:
  *              200:

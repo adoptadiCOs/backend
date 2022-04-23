@@ -61,9 +61,16 @@ const findSpecies = async() => {
     }
 }
 
-const findBreeds = async() => {
+const findBreeds = async(specie) => {
+
+    const query = {}
+
+    if (specie !== undefined) {
+        query["specie"] = specie
+    }
+
     try {
-        const res = await Pet.aggregate( [ { $group : { _id : "$breed" } } ] )
+        const res = await Pet.aggregate( [{ "$match": query }, { $group : { _id : "$breed" } } ] )
         return {
             data: res,
             err: null
