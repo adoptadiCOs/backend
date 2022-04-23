@@ -17,6 +17,14 @@ const GetPets = async(req,res) => {
     return res.status(200).json({data: data})
 }
 
+const GetPet = async(req,res) => {
+    const id = req.query.id
+
+    if(id === undefined){
+        return res.status(400).json({error: "need a id"})
+    }
+}
+
 const GetSpecies = async(req,res) => {
     const {data,err} = await findSpecies()
     if(err !== null) {

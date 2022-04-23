@@ -28,6 +28,10 @@ const Pet = new Schema({
     }
 })
 
+Pet.pre('save', (next) => {
+    this._id = (this.id.toString() + this.date.toString())
+})
+
 
 module.exports = model('Pets', Pet)
 
