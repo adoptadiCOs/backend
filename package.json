@@ -5,6 +5,7 @@
   "main": "index.js",
   "proxy": "http://localhost:3000",
   "scripts": {
+    "test": "echo \"Warning: no test specified\" && exit 0",
     "client": "cd client && npm start",
     "develop": "concurrently --kill-others-on-fail \"npm run start\" \"npm run client\"",
     "format": "prettier --write .",
