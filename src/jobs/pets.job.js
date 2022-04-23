@@ -11,10 +11,10 @@ const URL_PROTECCION = "https://www.zaragoza.es/sede/servicio/proteccion-animal?
 
 const fetchFromUrl = async (url) => {
     const res = await axios.get(url)
-
+    
     const results = res.data.result
+    const date = new Date(new Date().setHours(0,0,0,0)).getTime()
     const pets = []
-
     for (let pet of results) {
         const rage = pet.rabia === true || pet.rabia === "S" ? true: false 
         const danger = pet.peligroso === true || pet.peligroso === "S" ? true : false
@@ -22,8 +22,11 @@ const fetchFromUrl = async (url) => {
         const description = pet.observaciones !== undefined ? pet.observaciones.replace(/(\r\n|\n|\r)/gm, " ").trim() : ""
         const specie = pet.especie !== undefined ? pet.especie.trim().toUpperCase() : ""
         const breed = pet.raza !== undefined ? pet.raza.trim().toUpperCase() : ""
+        
+        const _id = parseInt(pet.id.toString() + date.toString(), 10).toString(16)
 
         const new_pet = new Pet({
+            _id: _id,
             id: pet.id,
             name: pet.nombre || pet.title,
             specie: specie,
@@ -37,7 +40,8 @@ const fetchFromUrl = async (url) => {
             danger: danger,
             sterile: sterile,
             bornDate: pet.fechaNac || pet.fechaNacimiento,
-            adoptionDate: pet.fechaIngreso || pet.creationDate
+            adoptionDate: pet.fechaIngreso || pet.creationDate,
+            date: date
         })
         pets.push(new_pet)
     }

@@ -45,6 +45,25 @@ const findPets = async(specie, breed, starts, rows) => {
     }
 }
 
+const findPetByID = async(id) => {
+    try{
+
+        const date = new Date(new Date().setHours(0,0,0,0)).getTime()
+        const _id = parseInt(id.toString() + date.toString(), 10).toString(16)
+        
+        const res = await Pet.findById(_id)
+
+        return {
+            data: res,
+            err: null
+        }
+    }catch(err){
+        return{
+            err: err
+        }
+    }
+}
+
 const findSpecies = async() => {
     try {
         const res = await Pet.aggregate( [ { $group : { _id : "$specie" } } ] )
@@ -83,4 +102,4 @@ const findBreeds = async(specie) => {
     }
 }
 
-module.exports = { insertAll, findPets, findSpecies, findBreeds }
+module.exports = { insertAll, findPets, findSpecies, findBreeds, findPetByID }

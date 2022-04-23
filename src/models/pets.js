@@ -24,14 +24,9 @@ const Pet = new Schema({
 
     date: {
         type: Date,
-        default:  new Date(new Date().setHours(0,0,0,0)).getTime()
+        default: new Date(new Date().setHours(0,0,0,0)).getTime()
     }
 })
-
-Pet.pre('save', (next) => {
-    this._id = (this.id.toString() + this.date.toString())
-})
-
 
 module.exports = model('Pets', Pet)
 
