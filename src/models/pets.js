@@ -4,7 +4,7 @@ const Pet = new Schema({
     _id: String,
     id: Number,
     name: String,
-    species: String,
+    specie: String,
     breed: String,
     sex: {
         type: String,

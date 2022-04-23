@@ -2,8 +2,6 @@ const router = require('express').Router();
 
 const pets = require('../../controllers/pets.controller')
 
-//TODO: documentar
-
 /* GET Pets list */
 /**
  * @swagger
@@ -15,6 +13,7 @@ const pets = require('../../controllers/pets.controller')
  *                  schema:
  *                      type: integer
  *                      minimum: 0
+ *                      default: 0
  *                  description: Page starts on
  *              - in: query
  *                  name: rows
@@ -22,7 +21,19 @@ const pets = require('../../controllers/pets.controller')
  *                      type: integer
  *                      minimum: 0
  *                      maximun: 50
+ *                      default: 0
  *                  description: The numbers of items to return
+ *              - in: query
+ *                  name: specie
+ *                  schema:
+ *                      type: string
+ *                  description: Filter the result by specie
+ *              - in: query
+ *                  name: breed
+ *                  schema:
+ *                      type: string
+ *                  description: Filter the result by breed
+ * 
  *          description: "Return at most a fifty animals list"
  *          responses:
  *              200:

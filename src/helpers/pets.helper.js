@@ -16,10 +16,22 @@ const insertAll = async(pets) => {
     }
 }
 
-const findPets = async(starts, rows) => {
+const findPets = async(specie, breed, starts, rows) => {
     try {
         const date = new Date(new Date().setHours(0,0,0,0)).getTime()
-        const res = await Pet.find({date: date},{},{skip: starts, limit: rows})
+
+        const query = {}
+        query["date"] = date
+
+        if (specie !== undefined) {
+            query["specie"] = specie
+        }
+
+        if (breed !== undefined) {
+            query["breed"] = breed
+        }
+
+        const res = await Pet.find(query,{},{skip: starts, limit: rows})
 
         return {
             data: res,
@@ -35,7 +47,7 @@ const findPets = async(starts, rows) => {
 
 const findSpecies = async() => {
     try {
-        const res = await Pet.aggregate( [ { $group : { _id : "$species" } } ] )
+        const res = await Pet.aggregate( [ { $group : { _id : "$specie" } } ] )
 
         return {
             data: res,

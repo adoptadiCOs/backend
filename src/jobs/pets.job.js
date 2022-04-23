@@ -20,12 +20,14 @@ const fetchFromUrl = async (url) => {
         const danger = pet.peligroso === true || pet.peligroso === "S" ? true : false
         const sterile = pet.esterilizado === true || pet.esterilizado === "S" ? true : false
         const description = pet.observaciones !== undefined ? pet.observaciones.replace(/(\r\n|\n|\r)/gm, " ").trim() : ""
+        const specie = pet.especie !== undefined ? pet.especie.trim().toUpperCase() : ""
+        const breed = pet.raza !== undefined ? pet.raza.trim().toUpperCase() : ""
 
         const new_pet = new Pet({
             id: pet.id,
             name: pet.nombre || pet.title,
-            species: pet.especie,
-            breed: pet.raza,
+            specie: specie,
+            breed: breed,
             sex: pet.sexo,
             size: pet.tamagno,
             color: pet.color,
@@ -62,3 +64,4 @@ const fetchPets = async () => {
 const sync = new Cronjob('0 0 0 * * *', fetchPets)
 
 module.exports = sync
+//module.exports = {sync, fetchPets}
