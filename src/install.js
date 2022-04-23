@@ -1,4 +1,5 @@
 //TODO: this is for testing
+// have to change jobs/pets.jobs module exports!! uncomment the line
 
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')

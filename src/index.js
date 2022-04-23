@@ -11,12 +11,14 @@ const DB = process.env.DB || 'mongodb://localhost:27017/animaliCOs'
 
 //Import Routes
 const public_pets = require('./routes/pets/public')
+const public_statistics = require('./routes/statistics/public')
 
 //Middlewares
 app.use(cors());
 app.use(express.json())
 
 app.use('/api', public_pets)
+app.use('/api', public_statistics)
 
 //TODO: 
 //app.use('/account',public_account)
