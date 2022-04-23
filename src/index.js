@@ -1,46 +1,45 @@
-const express = require("express")
-const dotenv = require('dotenv')
-const mongoose = require("mongoose")
-const cors = require("cors")
-const app = express()
+const express = require("express");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const app = express();
 
 //Configurations
-dotenv.config()
+dotenv.config();
 const PORT = process.env.PORT || 8080;
-const DB = process.env.DB || 'mongodb://localhost:27017/animaliCOs'
+const DB = process.env.DB || "mongodb://localhost:27017/animaliCOs";
 
 //Import Routes
-const public_pets = require('./routes/pets/public')
-const public_statistics = require('./routes/statistics/public')
+const public_pets = require("./routes/pets/public");
+const public_statistics = require("./routes/statistics/public");
 
 //Middlewares
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 
-app.use('/api', public_pets)
-app.use('/api', public_statistics)
+app.use("/api", public_pets);
+app.use("/api", public_statistics);
 
-//TODO: 
+//TODO:
 //app.use('/account',public_account)
 //app.use('/chat',public_chat)
 //.....
 
 //DB Connection
-mongoose.connect(DB,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+mongoose.connect(DB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-mongoose.connection.once('open', () => {
-  console.log('DB connected')
-})
+mongoose.connection.once("open", () => {
+  console.log("DB connected");
+});
 
 //Jobs
 
-const sync = require('./jobs/pets.job')
+const sync = require("./jobs/pets.job");
 
-sync.start()
+sync.start();
 
 // Starting server
 app.listen(PORT, () => {
