@@ -30,7 +30,21 @@ const findPets = async (specie, breed, starts, rows) => {
       query["breed"] = breed;
     }
 
-    const res = await Pet.find(query, {}, { skip: starts, limit: rows });
+    const res = await Pet.find(query, {}, { skip: starts, limit: rows }).select(
+      {
+        date: 0,
+        id: 0,
+        size: 0,
+        color: 0,
+        description: 0,
+        rage: 0,
+        danger: 0,
+        sterile: 0,
+        bornDate: 0,
+        adoptionDate: 0,
+        __v: 0,
+      }
+    );
 
     return {
       data: res,
