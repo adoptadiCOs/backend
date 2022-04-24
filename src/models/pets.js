@@ -1,35 +1,34 @@
-const {model, Schema} = require('mongoose')
+const { model, Schema } = require("mongoose");
 
 const Pet = new Schema({
-    _id: String,
-    id: Number,
-    name: String,
-    specie: String,
-    breed: String,
-    sex: {
-        type: String,
-        enum: ["Macho","Hembra"]
-    },
-    size: String,
-    color: String,
-    photo: String,
-    description: String,
+  _id: String,
+  id: Number,
+  name: String,
+  specie: String,
+  breed: String,
+  sex: {
+    type: String,
+    enum: ["Macho", "Hembra"],
+  },
+  size: String,
+  color: String,
+  photo: String,
+  description: String,
 
-    rage: Boolean,
-    danger: Boolean,
-    sterile: Boolean,
+  rage: Boolean,
+  danger: Boolean,
+  sterile: Boolean,
 
-    bornDate: Date,
-    adoptionDate: Date,
+  bornDate: Date,
+  adoptionDate: Date,
 
-    date: {
-        type: Date,
-        default: new Date(new Date().setHours(0,0,0,0)).getTime()
-    }
-})
+  date: {
+    type: Date,
+    default: new Date(new Date().setHours(0, 0, 0, 0)).getTime(),
+  },
+});
 
-module.exports = model('Pets', Pet)
-
+module.exports = model("Pets", Pet);
 
 /* {
     "id": 4709,

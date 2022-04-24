@@ -1,6 +1,6 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const pets = require('../../controllers/pets.controller')
+const pets = require("../../controllers/pets.controller");
 
 /* GET Pets list */
 /**
@@ -33,7 +33,7 @@ const pets = require('../../controllers/pets.controller')
  *                  schema:
  *                      type: string
  *                  description: Filter the result by breed
- * 
+ *
  *          description: "Return at most a fifty animals list"
  *          responses:
  *              200:
@@ -100,10 +100,10 @@ const pets = require('../../controllers/pets.controller')
  *                          adoptionDate:
  *                              type: date
  *                              description: pet adoption starting day
- *              400: 
+ *              400:
  *                  description: something went wrong return error msg
  */
-router.get('/pets', pets.GetPets);
+router.get("/pets", pets.GetPets);
 
 /* GET Pet by id */
 /**
@@ -180,10 +180,10 @@ router.get('/pets', pets.GetPets);
  *                        adoptionDate:
  *                            type: date
  *                            description: pet adoption starting day
- *                  400: 
+ *                  400:
  *                  description: something went wrong return error msg
  */
-router.get('/pet', pets.GetPet)
+router.get("/pet", pets.GetPet);
 
 /* GET Pets species */
 /**
@@ -202,11 +202,11 @@ router.get('/pet', pets.GetPet)
  *                              type: string
  *                              description: Specie type
  *                              example: Canina
- *                          
- *              400: 
+ *
+ *              400:
  *                  description: something went wrong return error msg
  */
-router.get('/species', pets.GetSpecies);
+router.get("/species", pets.GetSpecies);
 
 /* GET Pets breeds */
 /**
@@ -231,10 +231,10 @@ router.get('/species', pets.GetSpecies);
  *                              type: string
  *                              description: Breed type
  *                              example: TERRIER
- *                          
- *              400: 
+ *
+ *              400:
  *                  description: something went wrong return error msg
  */
-router.get('/breeds', pets.GetBreeds);
+router.get("/breeds", pets.GetBreeds);
 
-module.exports = router
+module.exports = router;
