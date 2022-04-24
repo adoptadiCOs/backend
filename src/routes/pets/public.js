@@ -56,7 +56,7 @@ const pets = require('../../controllers/pets.controller')
  *                              type: string
  *                              description: Pet name
  *                              example: Lina
- *                          species:
+ *                          specie:
  *                              type: string
  *                              description: Pet specie
  *                              example: Canina
@@ -136,7 +136,7 @@ router.get('/pets', pets.GetPets);
  *                            type: string
  *                            description: Pet name
  *                            example: Lina
- *                        species:
+ *                        specie:
  *                            type: string
  *                            description: Pet specie
  *                            example: Canina
