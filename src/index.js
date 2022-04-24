@@ -1,32 +1,47 @@
 const express = require("express");
-// const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
 const cors = require("cors");
-
 const app = express();
-app.use(cors());
 
-//import your models
-require("./models/test");
-
-// mongoose
-//   .connect(`mongodb://127.0.0.1:27017/test`, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("MongoDB has been connected"))
-//   .catch((err) => console.log(err));
-
-//middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-//import routes
-require("./routes/testRoute.js")(app);
-
+//Configurations
+dotenv.config();
 const PORT = process.env.PORT || 8080;
+const DB = process.env.DB || "mongodb://localhost:27017/animaliCOs";
 
+//Import Routes
+const public_pets = require("./routes/pets/public");
+const public_statistics = require("./routes/statistics/public");
+
+//Middlewares
+app.use(cors());
+app.use(express.json());
+
+app.use("/api", public_pets);
+app.use("/api", public_statistics);
+
+//TODO:
+//app.use('/account',public_account)
+//app.use('/chat',public_chat)
+//.....
+
+//DB Connection
+mongoose.connect(DB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+mongoose.connection.once("open", () => {
+  console.log("DB connected");
+});
+
+//Jobs
+
+const sync = require("./jobs/pets.job");
+
+sync.start();
+
+// Starting server
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });
