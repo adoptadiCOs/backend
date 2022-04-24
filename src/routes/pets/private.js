@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const pets = require("../../controllers/pets.controller")
+const pets = require("../../controllers/pets.controller");
 
 /* GET Pet by id */
 /**
@@ -80,6 +80,6 @@ const pets = require("../../controllers/pets.controller")
  *                  400:
  *                  description: something went wrong return error msg
  */
-router.get("/pet", pets.GetPet)
+router.get("/pet", pets.GetPet);
 
-module.exports = router
+module.exports = router;
