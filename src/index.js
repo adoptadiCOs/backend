@@ -2,12 +2,19 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+
+const swaggerSpec = require("./utils/swagger");
+
 const app = express();
 
 //Configurations
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 const DB = process.env.DB || "mongodb://localhost:27017/animaliCOs";
+
+// Swagger UI
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //Import Routes
 const public_pets = require("./routes/pets/public");
