@@ -5,14 +5,14 @@ const pets = require("../../controllers/pets.controller");
 /* GET Pet by id */
 /**
  * @swagger
- * /pets:
+ * /pet:
  *      get:
  *          parameters:
  *              - in: query
- *                  name: id
- *                  schema:
- *                      type: integer
- *                  description: Pet id
+ *                name: id
+ *                schema:
+ *                    type: integer
+ *                description: Pet id
  *          description: "Return information of pet $id"
  *          responses:
  *              200:
@@ -78,7 +78,7 @@ const pets = require("../../controllers/pets.controller");
  *                            type: date
  *                            description: pet adoption starting day
  *                  400:
- *                  description: something went wrong return error msg
+ *      description: something went wrong return error msg
  */
 router.get("/pet", pets.GetPet);
 
