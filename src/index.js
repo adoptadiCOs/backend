@@ -2,12 +2,17 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const morgan = require("morgan");
+
 const app = express();
 
 //Configurations
 dotenv.config();
 const PORT = process.env.PORT || 8080;
 const DB = process.env.DB || "mongodb://localhost:27017/animaliCOs";
+
+// Logging
+app.use(morgan("dev"));
 
 //Import Routes
 const public_pets = require("./routes/pets/public");
