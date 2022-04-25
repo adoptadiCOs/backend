@@ -18,6 +18,7 @@ app.use(morgan("dev"));
 const public_pets = require("./routes/pets/public");
 const private_pets = require("./routes/pets/private");
 const public_statistics = require("./routes/statistics/public");
+const auth = require("./routes/users");
 
 //Import Middlewares
 
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use("/api", public_pets);
 app.use("/api", AuthMiddleware, private_pets);
 app.use("/api", public_statistics);
+app.use("/api/users", auth);
 
 //app.use('/account',public_account)
 //app.use('/chat',public_chat)
