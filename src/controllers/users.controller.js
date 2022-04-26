@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userHelper = require("../helpers/users.helpers");
 
@@ -14,16 +15,12 @@ const signup = async (req, res) => {
 
     const user = await userHelper.createUser(username, email, hash);
 
-    // TODO: Generar jwt
-    const accessToken = "aunnolohehechoimpacientes";
-
     res.status(200).json({
       id: user._id,
       username: user.username,
       email: user.email,
       role: user.role,
       createdAt: user.createdAt,
-      accessToken: accessToken,
     });
   } catch (error) {
     return res.status(500).send(error);
@@ -46,7 +43,15 @@ const login = async (req, res) => {
     }
 
     // TODO: Generar jwt
-    const accessToken = "aunnolohehechoimpacientes";
+    const accessToken = jwt.sign(
+      {
+        username: user.username,
+        id: user._id,
+      },
+      "ESTOESUNSECRETO" // TODO: Leer de entorno
+    );
+
+    console.log(accessToken);
 
     res.status(200).json({
       id: user._id,

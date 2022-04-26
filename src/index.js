@@ -27,8 +27,6 @@ const public_statistics = require("./routes/statistics/public");
 
 //Import Middlewares
 
-const { AuthMiddleware } = require("./middlewares/auth.middleware");
-
 //Middlewares
 app.use(cors());
 app.use(express.json());
@@ -36,7 +34,7 @@ app.use(express.json());
 //TODO: private routes must have AuthMiddleware before the router
 app.use("/api", routes);
 app.use("/api", public_pets);
-app.use("/api", AuthMiddleware, private_pets);
+app.use("/api", private_pets);
 app.use("/api", public_statistics);
 
 //app.use('/account',public_account)

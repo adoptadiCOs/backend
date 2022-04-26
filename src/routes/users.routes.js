@@ -1,6 +1,7 @@
 const Router = require("express");
 
 const UserController = require("../controllers/users.controller");
+const { verifyToken } = require("../middlewares/auth.middleware");
 
 const router = Router();
 
@@ -102,7 +103,7 @@ router.get("/login", UserController.login);
  *      200:
  *        description: Suscessful operation
  */
-router.get("/logout", UserController.logout);
+router.get("/logout", verifyToken, UserController.logout);
 
 /* Update user */
 /**
@@ -135,7 +136,7 @@ router.get("/logout", UserController.logout);
  *      200:
  *        description: Suscessful operation
  */
-router.put("/", UserController.updateUser);
+router.put("/", verifyToken, UserController.updateUser);
 
 /* Delete user */
 /**
@@ -155,6 +156,6 @@ router.put("/", UserController.updateUser);
  *      200:
  *        description: Suscessful operation
  */
-router.delete("/", UserController.deleteUser);
+router.delete("/", verifyToken, UserController.deleteUser);
 
 module.exports = router;
