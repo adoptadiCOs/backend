@@ -35,6 +35,21 @@ const router = Router();
  *    responses:
  *      201:
  *        description: Suscessful operation
+ *        schema:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: string
+ *            username:
+ *              type: string
+ *            email:
+ *              type: string
+ *            rol:
+ *              type: string
+ *            createdAt:
+ *              type: date
+ *            accessToken:
+ *              type: string
  */
 router.post("/", UserController.signup);
 
