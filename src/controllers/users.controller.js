@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 const userHelper = require("../helpers/users.helpers");
 
 /* Create user */
@@ -5,10 +7,13 @@ const signup = async (req, res) => {
   // TODO: Validación de parámetros
 
   try {
-    const { username, email, password, repeatedPassword } = req.body;
-    console.log(username, email, password, repeatedPassword);
+    const { username, email, password } = req.body;
 
-    const user = await userHelper.createUser(username, email, password);
+    // Cifra la contraseña
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    const user = await userHelper.createUser(username, email, hash);
 
     // TODO: Generar jwt
     let accessToken = "aunnolohehechoimpacientes";
