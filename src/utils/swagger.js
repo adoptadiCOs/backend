@@ -15,6 +15,16 @@ const swaggerDefinition = {
     },
     version: "1.0.0",
   },
+  servers: [
+    {
+      url: "http://localhost:8080",
+      description: "Development server",
+    },
+    {
+      url: "https://adoptadicos.herokuapp.com/",
+      description: "Production server",
+    },
+  ],
 };
 
 /**
@@ -24,10 +34,7 @@ var options = {
   // import swaggerDefinitions
   swaggerDefinition: swaggerDefinition,
   // path to the API docs
-  apis: [
-    path.join(__dirname, "../routes/**/*.js"),
-    path.join(__dirname, "../models/**/*.js"),
-  ],
+  apis: [path.join(__dirname, "../routes/**/*.js")],
 };
 
 /**

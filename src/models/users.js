@@ -1,37 +1,5 @@
 const { model, Schema } = require("mongoose");
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       required:
- *         - email
- *         - username
- *         - password
- *         - role
- *       properties:
- *         email:
- *           type: string
- *         username:
- *           type: string
- *         password:
- *           type: string
- *         role:
- *           type: string
- *           enum: [User, Admin]
- *         bio:
- *           type: string
- *         avatar:
- *           type: string
- *         createdAt:
- *           type: string
- *           format: date
- *         updatedAt:
- *           type: string
- *           format: date
- */
 const UserSchema = new Schema(
   {
     email: {
