@@ -10,4 +10,8 @@ const createUser = async (username, email, password) => {
   return await user.save();
 };
 
-module.exports = { createUser };
+const findUserByEmail = async (email) => {
+  return await User.findOne({ email: email });
+};
+
+module.exports = { createUser, findUserByEmail };
