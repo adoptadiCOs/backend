@@ -34,23 +34,8 @@ const router = Router();
  *            repeatedPassword:
  *              type: string
  *    responses:
- *      201:
+ *      200:
  *        description: Suscessful operation
- *        schema:
- *          type: object
- *          properties:
- *            id:
- *              type: string
- *            username:
- *              type: string
- *            email:
- *              type: string
- *            rol:
- *              type: string
- *            createdAt:
- *              type: date
- *            accessToken:
- *              type: string
  */
 router.post("/", UserController.signup);
 
@@ -81,6 +66,21 @@ router.post("/", UserController.signup);
  *    responses:
  *      200:
  *        description: Suscessful operation
+ *        schema:
+ *          type: object
+ *          properties:
+ *            id:
+ *              type: string
+ *            username:
+ *              type: string
+ *            email:
+ *              type: string
+ *            rol:
+ *              type: string
+ *            createdAt:
+ *              type: date
+ *            accessToken:
+ *              type: string
  *
  */
 router.get("/login", UserController.login);
@@ -99,6 +99,9 @@ router.get("/login", UserController.login);
  *    produces:
  *    - application/json
  *    parameters:
+ *      - name: access-token
+ *        in: header
+ *        required: true
  *    responses:
  *      200:
  *        description: Suscessful operation

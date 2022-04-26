@@ -15,7 +15,6 @@ const signup = async (req, res) => {
 
     await userHelper.createUser(username, email, hash);
 
-
     res.status(200).json({});
   } catch (error) {
     return res.status(500).send(error);
@@ -63,17 +62,17 @@ const login = async (req, res) => {
 
 /* Logs out the current user  */
 const logout = async (_, res) => {
-  res.send("Logout route");
+  res.status(200).json({});
 };
 
 /* Update user */
 const updateUser = async (_, res) => {
-  res.send("Update user route");
+  res.status(200).json({});
 };
 
 /* Delete user */
 const deleteUser = async (_, res) => {
-  res.send("Delete user route");
+  res.status(200).json({});
 };
 
 module.exports = {

@@ -17,12 +17,26 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "http://localhost:8080",
+      url: "http://localhost:8080/api/",
       description: "Development server",
     },
     {
-      url: "https://adoptadicos.herokuapp.com/",
+      url: "https://adoptadicos.herokuapp.com/api/",
       description: "Production server",
+    },
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  security: [
+    {
+      bearerAuth: [],
     },
   ],
 };

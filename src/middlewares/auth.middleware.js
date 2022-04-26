@@ -2,17 +2,20 @@ const jwt = require("jsonwebtoken");
 
 // Middleware para validar el token (rutas protegidas)
 const verifyToken = (req, res, next) => {
-  const accessToken = req.headers["access-token"];
+  const bearerHeader = req.headers.authorization;
+  console.log(req.headers);
 
-  if (!accessToken) {
+  if (typeof bearerHeader === "undefined") {
     return res.status(403).send({ message: "No token provided!" });
   }
 
+  console.log("Verificando");
+
+  // Extrae el token
+  let accessToken = req.headers.authorization.split(" ")[1];
   try {
     const decoded = jwt.verify(accessToken, "ESTOESUNSECRETO"); // TODO: Leer de entorno
     req.username = decoded.username;
-
-    console.log(decoded.username);
 
     next();
   } catch (error) {
