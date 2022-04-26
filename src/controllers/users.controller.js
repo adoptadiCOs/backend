@@ -13,15 +13,10 @@ const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    const user = await userHelper.createUser(username, email, hash);
+    await userHelper.createUser(username, email, hash);
 
-    res.status(200).json({
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      createdAt: user.createdAt,
-    });
+
+    res.status(200).json({});
   } catch (error) {
     return res.status(500).send(error);
   }
