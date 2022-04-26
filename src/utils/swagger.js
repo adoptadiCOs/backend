@@ -24,7 +24,10 @@ var options = {
   // import swaggerDefinitions
   swaggerDefinition: swaggerDefinition,
   // path to the API docs
-  apis: [path.join(__dirname, "../routes/**/*.js")],
+  apis: [
+    path.join(__dirname, "../routes/**/*.js"),
+    path.join(__dirname, "../models/**/*.js"),
+  ],
 };
 
 /**
