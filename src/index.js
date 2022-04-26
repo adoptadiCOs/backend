@@ -23,7 +23,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 const public_pets = require("./routes/pets/public");
 const private_pets = require("./routes/pets/private");
 const public_statistics = require("./routes/statistics/public");
-const auth = require("./routes/users");
+const auth = require("./routes/users.route");
 
 //Import Middlewares
 
