@@ -3,6 +3,9 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
+const swaggerUi = require("swagger-ui-express");
+
+const swaggerSpec = require("./utils/swagger");
 
 const app = express();
 
@@ -13,6 +16,8 @@ const DB = process.env.DB || "mongodb://localhost:27017/animaliCOs";
 
 // Logging
 app.use(morgan("dev"));
+// Swagger UI
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //Import Routes
 const public_pets = require("./routes/pets/public");

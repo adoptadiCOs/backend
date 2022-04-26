@@ -9,30 +9,30 @@ const pets = require("../../controllers/pets.controller");
  *      get:
  *          parameters:
  *              - in: query
- *                  name: starts
- *                  schema:
- *                      type: integer
- *                      minimum: 0
- *                      default: 0
- *                  description: Page starts on
+ *                name: starts
+ *                schema:
+ *                    type: integer
+ *                    minimum: 0
+ *                    default: 0
+ *                description: Page starts on
  *              - in: query
- *                  name: rows
- *                  schema:
- *                      type: integer
- *                      minimum: 0
- *                      maximun: 50
- *                      default: 0
- *                  description: The numbers of items to return
+ *                name: rows
+ *                schema:
+ *                    type: integer
+ *                    minimum: 0
+ *                    maximun: 50
+ *                    default: 0
+ *                description: The numbers of items to return
  *              - in: query
- *                  name: specie
- *                  schema:
- *                      type: string
- *                  description: Filter the result by specie
+ *                name: specie
+ *                schema:
+ *                    type: string
+ *                description: Filter the result by specie
  *              - in: query
- *                  name: breed
- *                  schema:
- *                      type: string
- *                  description: Filter the result by breed
+ *                name: breed
+ *                schema:
+ *                    type: string
+ *                description: Filter the result by breed
  *
  *          description: "Return at most a fifty animals list"
  *          responses:
@@ -131,14 +131,14 @@ router.get("/species", pets.GetSpecies);
 /* GET Pets breeds */
 /**
  * @swagger
- * /species:
+ * /breeds:
  *      get:
  *          parameters:
  *              - in: query
- *                  name: specie
- *                  schema:
- *                      type: string
- *                  description: Filter the result by specie
+ *                name: specie
+ *                schema:
+ *                    type: string
+ *                description: Filter the result by specie
  *          description: "Return all the breeds on the database"
  *          responses:
  *              200:
