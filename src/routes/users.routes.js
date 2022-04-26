@@ -1,5 +1,7 @@
 const Router = require("express");
 
+const UserController = require("../controllers/users.controller");
+
 const router = Router();
 
 /* Create user */
@@ -34,9 +36,7 @@ const router = Router();
  *      201:
  *        description: Suscessful operation
  */
-router.post("/", (_, res) => {
-  res.send("Create user route");
-});
+router.post("/", UserController.signup);
 
 /* Logs user into the system */
 /**
@@ -65,11 +65,9 @@ router.post("/", (_, res) => {
  *    responses:
  *      200:
  *        description: Suscessful operation
- * 
+ *
  */
-router.get("/login", (_, res) => {
-  res.send("Login route");
-});
+router.get("/login", UserController.login);
 
 /* Logs out the current user  */
 /**
@@ -78,8 +76,8 @@ router.get("/login", (_, res) => {
  *  get:
  *    tags:
  *      - users
- *    summary: Logs out the current user 
- *    description: 
+ *    summary: Logs out the current user
+ *    description:
  *    consumes:
  *      - "application/json"
  *    produces:
@@ -89,9 +87,7 @@ router.get("/login", (_, res) => {
  *      200:
  *        description: Suscessful operation
  */
-router.get("/logout", (_, res) => {
-  res.send("Logout route");
-});
+router.get("/logout", UserController.logout);
 
 /* Update user */
 /**
@@ -124,9 +120,7 @@ router.get("/logout", (_, res) => {
  *      200:
  *        description: Suscessful operation
  */
-router.put("/", (_, res) => {
-  res.send("Update user route");
-});
+router.put("/", UserController.updateUser);
 
 /* Delete user */
 /**
@@ -146,8 +140,6 @@ router.put("/", (_, res) => {
  *      200:
  *        description: Suscessful operation
  */
-router.get("/", (_, res) => {
-  res.send("Delete user route");
-});
+router.delete("/", UserController.deleteUser);
 
 module.exports = router;

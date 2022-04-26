@@ -20,10 +20,10 @@ app.use(morgan("dev"));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //Import Routes
+const routes = require("./routes");
 const public_pets = require("./routes/pets/public");
 const private_pets = require("./routes/pets/private");
 const public_statistics = require("./routes/statistics/public");
-const auth = require("./routes/users.route");
 
 //Import Middlewares
 
@@ -34,10 +34,10 @@ app.use(cors());
 app.use(express.json());
 
 //TODO: private routes must have AuthMiddleware before the router
+app.use("/api", routes);
 app.use("/api", public_pets);
 app.use("/api", AuthMiddleware, private_pets);
 app.use("/api", public_statistics);
-app.use("/api/users", auth);
 
 //app.use('/account',public_account)
 //app.use('/chat',public_chat)
