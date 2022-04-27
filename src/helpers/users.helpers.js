@@ -18,4 +18,13 @@ const deleteUserById = async (id) => {
   return await User.deleteOne({ _id: id });
 };
 
-module.exports = { createUser, findUserByEmail, deleteUserById };
+const findUserAndUpdate = async (id, fieldsToUpdate) => {
+  return await User.findByIdAndUpdate(id, fieldsToUpdate, { new: true });
+};
+
+module.exports = {
+  createUser,
+  findUserByEmail,
+  deleteUserById,
+  findUserAndUpdate,
+};

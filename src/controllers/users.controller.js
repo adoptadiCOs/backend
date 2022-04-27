@@ -45,13 +45,13 @@ const login = async (req, res) => {
       "ESTOESUNSECRETO" // TODO: Leer de entorno
     );
 
-    console.log(accessToken);
-
     res.status(200).json({
       id: user._id,
       username: user.username,
       email: user.email,
       role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
       createdAt: user.createdAt,
       accessToken: accessToken,
     });
@@ -67,7 +67,23 @@ const logout = async (_, res) => {
 
 /* Update user */
 const updateUser = async (req, res) => {
-  res.status(200).json({});
+  const { id, username, ...fieldsToUpdate } = req.body;
+
+  try {
+    var user = await userHelper.findUserAndUpdate(id, fieldsToUpdate);
+
+    res.status(200).json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 };
 
 /* Delete user */

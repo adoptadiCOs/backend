@@ -26,10 +26,12 @@ const UserSchema = new Schema(
     },
     bio: {
       type: String,
+      default: "",
       maxLength: 160,
     },
     avatar: {
       type: String, // TODO: Investigar como guardar fotos
+      default: "",
     },
   },
   { timestamps: true } // Adds createdAt and updatedAt properties
