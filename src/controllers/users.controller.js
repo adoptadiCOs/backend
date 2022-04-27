@@ -5,8 +5,8 @@ const userHelper = require("../helpers/users.helpers");
 
 /* Create user */
 const signup = async (req, res) => {
-  // TODO: Validación de parámetros
   const { username, email, password } = req.body;
+  // TODO: Validación de parámetros
 
   try {
     // Cifra la contraseña
@@ -66,13 +66,24 @@ const logout = async (_, res) => {
 };
 
 /* Update user */
-const updateUser = async (_, res) => {
+const updateUser = async (req, res) => {
   res.status(200).json({});
 };
 
 /* Delete user */
-const deleteUser = async (_, res) => {
-  res.status(200).json({});
+const deleteUser = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const { deletedCount } = await userHelper.deleteUserById(id);
+
+    if (deletedCount == 0) {
+      res.status(400).json({ error: "el usuario no ha podido eliminarse" });
+    }
+    res.status(200).json({});
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 };
 
 module.exports = {

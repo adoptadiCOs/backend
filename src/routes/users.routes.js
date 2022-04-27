@@ -129,8 +129,6 @@ router.get("/logout", verifyToken, UserController.logout);
  *        schema:
  *          type: object
  *          properties:
- *            username:
- *              type: string
  *            bio:
  *              type: string
  *            avatar:

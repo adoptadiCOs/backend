@@ -14,4 +14,8 @@ const findUserByEmail = async (email) => {
   return await User.findOne({ email: email });
 };
 
-module.exports = { createUser, findUserByEmail };
+const deleteUserById = async (id) => {
+  return await User.deleteOne({ _id: id });
+};
+
+module.exports = { createUser, findUserByEmail, deleteUserById };
