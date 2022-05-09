@@ -1,17 +1,17 @@
 require("./utils/env");
 require("./utils/db");
+require("./utils/jobs")
 
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
-const router = require("./routes");
 
+const router = require("./routes");
 const swaggerSpec = require("./utils/swagger");
 
 const app = express();
 
-//Configurations
 const PORT = process.env.PORT || 8080;
 
 // Logging
@@ -25,11 +25,6 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API Routes
 app.use("/api", router);
-
-//Jobs
-const sync = require("./jobs/pets.job");
-
-sync.start();
 
 // Starting server
 app.listen(PORT, () => {
