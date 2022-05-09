@@ -67,7 +67,17 @@ const logout = async (_, res) => {
 
 /* Update user */
 const updateUser = async (req, res) => {
-  const { id, username, ...fieldsToUpdate } = req.body;
+  const { id, username } = req.body;
+
+  let fieldsToUpdate = {};
+
+  if (id != undefined) {
+    fieldsToUpdate["id"] = id;
+  }
+
+  if (username != undefined) {
+    fieldsToUpdate["username"] = username;
+  }
 
   try {
     var user = await userHelper.findUserAndUpdate(id, fieldsToUpdate);
