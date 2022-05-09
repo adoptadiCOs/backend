@@ -36,7 +36,6 @@ const login = async (req, res) => {
       return res.status(400).json({ error: "contraseña no válida" });
     }
 
-    // TODO: Generar jwt
     const accessToken = jwt.sign(
       {
         username: user.username,
