@@ -36,13 +36,12 @@ const login = async (req, res) => {
       return res.status(400).json({ error: "contraseña no válida" });
     }
 
-    // TODO: Generar jwt
     const accessToken = jwt.sign(
       {
         username: user.username,
         id: user._id,
       },
-      "ESTOESUNSECRETO" // TODO: Leer de entorno
+      process.env.SECRET
     );
 
     res.status(200).json({
@@ -67,16 +66,16 @@ const logout = async (_, res) => {
 
 /* Update user */
 const updateUser = async (req, res) => {
-  const { id, username } = req.body;
+  const { id, bio, avatar } = req.body;
 
   let fieldsToUpdate = {};
 
-  if (id != undefined) {
-    fieldsToUpdate["id"] = id;
+  if (bio !== undefined) {
+    fieldsToUpdate["bio"] = bio;
   }
 
-  if (username != undefined) {
-    fieldsToUpdate["username"] = username;
+  if (avatar !== undefined) {
+    fieldsToUpdate["avatar"] = avatar;
   }
 
   try {

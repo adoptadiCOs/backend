@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 
+const userHelper = require("../helpers/users.helpers");
+
 // Middleware para validar el token (rutas protegidas)
 const verifyToken = (req, res, next) => {
   const bearerHeader = req.headers.authorization;
@@ -11,7 +13,7 @@ const verifyToken = (req, res, next) => {
   // Extrae el token
   let accessToken = req.headers.authorization.split(" ")[1];
   try {
-    const decoded = jwt.verify(accessToken, "ESTOESUNSECRETO"); // TODO: Leer de entorno
+    const decoded = jwt.verify(accessToken, process.env.SECRET);
 
     // Añade al cuerpo los valores decodificados
     req.body = { ...req.body, username: decoded.username, id: decoded.id };
@@ -22,4 +24,15 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-module.exports = { verifyToken };
+const isAdmin = async (req, res, next) => {
+  const { id } = req.body;
+
+  const user = await userHelper.findUserById(id);
+
+  if (user.role === "admin") {
+    next();
+  }
+  res.status(403).send({ error: "Require Admin Role!" });
+};
+
+module.exports = { verifyToken, isAdmin };
