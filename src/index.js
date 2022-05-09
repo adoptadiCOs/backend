@@ -1,6 +1,6 @@
 require("./utils/env");
 require("./utils/db");
-require("./utils/jobs")
+require("./utils/jobs");
 
 const express = require("express");
 const cors = require("cors");
