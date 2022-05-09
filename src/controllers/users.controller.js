@@ -42,7 +42,7 @@ const login = async (req, res) => {
         username: user.username,
         id: user._id,
       },
-      "ESTOESUNSECRETO" // TODO: Leer de entorno
+      process.env.SECRET
     );
 
     res.status(200).json({

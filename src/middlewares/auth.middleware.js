@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
   // Extrae el token
   let accessToken = req.headers.authorization.split(" ")[1];
   try {
-    const decoded = jwt.verify(accessToken, "ESTOESUNSECRETO"); // TODO: Leer de entorno
+    const decoded = jwt.verify(accessToken, process.env.SECRET); // TODO: Leer de entorno
 
     // Añade al cuerpo los valores decodificados
     req.body = { ...req.body, username: decoded.username, id: decoded.id };
