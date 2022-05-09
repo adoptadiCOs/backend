@@ -67,16 +67,16 @@ const logout = async (_, res) => {
 
 /* Update user */
 const updateUser = async (req, res) => {
-  const { id, username } = req.body;
+  const { id, bio, avatar } = req.body;
 
   let fieldsToUpdate = {};
 
-  if (id != undefined) {
-    fieldsToUpdate["id"] = id;
+  if (bio !== undefined) {
+    fieldsToUpdate["bio"] = bio;
   }
 
-  if (username != undefined) {
-    fieldsToUpdate["username"] = username;
+  if (avatar !== undefined) {
+    fieldsToUpdate["avatar"] = avatar;
   }
 
   try {
