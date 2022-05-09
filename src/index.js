@@ -1,5 +1,5 @@
 const express = require("express");
-const dotenv = require("dotenv");
+require("./utils/env");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -9,8 +9,9 @@ const swaggerSpec = require("./utils/swagger");
 
 const app = express();
 
+
 //Configurations
-dotenv.config();
+console.log(process.env.SECRET);
 const PORT = process.env.PORT || 8080;
 const DB = process.env.DB || "mongodb://localhost:27017/animaliCOs";
 
