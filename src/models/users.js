@@ -15,7 +15,6 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
       minLength: 8,
     },
     role: {
@@ -32,6 +31,9 @@ const UserSchema = new Schema(
     avatar: {
       type: String, // TODO: Investigar como guardar fotos
       default: "",
+    },
+    googleId: {
+      type: String,
     },
   },
   { timestamps: true } // Adds createdAt and updatedAt properties

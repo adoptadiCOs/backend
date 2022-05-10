@@ -1,9 +1,35 @@
 const Router = require("express");
+const passport = require("passport");
 
 const UserController = require("../controllers/users.controller");
 const { verifyToken } = require("../middlewares/auth.middleware");
 
 const router = Router();
+
+//ruta para Registrarse
+
+router.get(
+  "/login/google",
+  passport.authenticate("sign-in-google", {
+    scope: ["https://www.googleapis.com/auth/plus.login"],
+    session: false,
+  }),
+  (req, res) => {
+    res.send("Login con google");
+  }
+);
+
+//rutas para Iniciar Sesion
+router.get(
+  "/signup/google",
+  passport.authenticate("signup-google", {
+    scope: ["profile", "email"],
+    session: false,
+  }),
+  (req, res) => {
+    res.send("Signup con google");
+  }
+);
 
 /* Create user */
 /**

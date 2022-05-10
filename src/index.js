@@ -1,22 +1,24 @@
 require("./utils/env");
 require("./utils/db");
 require("./utils/jobs");
+require("./passport/google-auth");
 
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const passport = require("passport");
 const swaggerUi = require("swagger-ui-express");
 
-const router = require("./routes");
+const routes = require("./routes");
 const swaggerSpec = require("./utils/swagger");
 
 const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-// Logging
+// Middlewares
+app.use(passport.initialize());
 app.use(morgan("dev"));
-
 app.use(cors());
 app.use(express.json());
 
@@ -24,7 +26,7 @@ app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API Routes
-app.use("/api", router);
+app.use("/api", routes);
 
 // Starting server
 app.listen(PORT, () => {
