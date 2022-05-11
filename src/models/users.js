@@ -32,9 +32,6 @@ const UserSchema = new Schema(
       type: String, // TODO: Investigar como guardar fotos
       default: "",
     },
-    googleId: {
-      type: String,
-    },
   },
   { timestamps: true } // Adds createdAt and updatedAt properties
 );

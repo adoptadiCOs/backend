@@ -13,7 +13,11 @@ const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    await userHelper.createUser(username, email, hash);
+    await userHelper.createUser({
+      username: username,
+      email: email,
+      password: hash,
+    });
 
     res.status(200).json({});
   } catch (error) {
@@ -111,10 +115,59 @@ const deleteUser = async (req, res) => {
   }
 };
 
+/* Create user */
+const signup_google = async (req, res) => {
+  const user = req.user;
+
+  try {
+    await userHelper.createUser({
+      username: user.displayName,
+      email: user.emails[0].value,
+    });
+
+    res.status(200).json({});
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
+/* Logs user into the system */
+const login_google = async (req, res) => {
+  const user = req.user;
+  const email = user.emails[0].value;
+
+  try {
+    const user = await userHelper.findUserByEmail(email);
+
+    const accessToken = jwt.sign(
+      {
+        username: user.username,
+        id: user._id,
+      },
+      process.env.SECRET
+    );
+
+    res.status(200).json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+      accessToken: accessToken,
+    });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 module.exports = {
   signup,
   login,
   logout,
   updateUser,
   deleteUser,
+  login_google,
+  signup_google,
 };

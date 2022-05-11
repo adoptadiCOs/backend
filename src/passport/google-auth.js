@@ -23,27 +23,14 @@ passport.use(
       callbackURL: "http://localhost:8080/api/users/signup/google",
     },
     async (accessToken, refreshToken, profile, done) => {
-      // Comprueba si el usuario existe
-      const user = await User.findOne({ googleId: profile.id });
-      //lo creamos
-      if (user) {
-        done(null, false);
-      } else {
-        await User.create({
-          googleId: profile.id,
-          username: profile.displayName,
-          email: profile.emails[0].value,
-        });
-
-        done(null, profile);
-      }
+      done(null, profile);
     }
   )
 );
 
 // Iniciar Sesion
 passport.use(
-  "sign-in-google",
+  "login-google",
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
@@ -51,15 +38,7 @@ passport.use(
       callbackURL: "http://localhost:8080/api/users/login/google",
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
-      // si existe en la base de datos
-      const user = {};
-      //  puede iniciar sesion
-      if (user) {
-        done(null, user);
-      } else {
-        done(null, false);
-      }
+      done(null, profile);
     }
   )
 );

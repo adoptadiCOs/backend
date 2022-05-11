@@ -10,13 +10,11 @@ const router = Router();
 
 router.get(
   "/login/google",
-  passport.authenticate("sign-in-google", {
-    scope: ["https://www.googleapis.com/auth/plus.login"],
+  passport.authenticate("login-google", {
+    scope: ["profile", "email"],
     session: false,
   }),
-  (req, res) => {
-    res.send("Login con google");
-  }
+  UserController.login_google
 );
 
 //rutas para Iniciar Sesion
@@ -26,9 +24,7 @@ router.get(
     scope: ["profile", "email"],
     session: false,
   }),
-  (req, res) => {
-    res.send("Signup con google");
-  }
+  UserController.signup_google
 );
 
 /* Create user */
