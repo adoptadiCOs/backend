@@ -61,7 +61,7 @@ const login = async (req, res) => {
 
     if (!user) {
       return res
-        .status(400)
+        .status(404)
         .json({ error: "No se ha podido encontrar tú cuenta." });
     }
   } catch (error) {
@@ -99,7 +99,7 @@ const login = async (req, res) => {
 
 /* Logs out the current user  */
 const logout = async (_, res) => {
-  return res.status(200).json({ message: "Sesión cerrada correctamente" });
+  return res.status(200).json({ message: "Tú sesión ha sido finalizada" });
 };
 
 /* Update user */
@@ -118,6 +118,12 @@ const updateUser = async (req, res) => {
 
   try {
     var user = await userHelper.findUserAndUpdate(id, fieldsToUpdate);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
 
     return res.status(200).json({
       id: user._id,
@@ -143,9 +149,9 @@ const deleteUser = async (req, res) => {
     if (deletedCount == 0) {
       return res
         .status(400)
-        .json({ error: "El usuario no ha podido eliminarse" });
+        .json({ error: "No se ha podido eliminar tú cuenta" });
     }
-    return res.status(204).json({ message: "Usuario eliminado correctamente" });
+    return res.status(204).json({ message: "Tú cuenta ha sido eliminada" });
   } catch (error) {
     return res.status(500).send(error);
   }
