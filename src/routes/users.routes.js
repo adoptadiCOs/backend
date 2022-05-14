@@ -49,7 +49,7 @@ router.post("/", UserController.signup);
 /**
  * @swagger
  * /users/login:
- *  get:
+ *  post:
  *    tags:
  *      - users
  *    summary: Logs user into the system
@@ -100,7 +100,7 @@ router.post("/", UserController.signup);
  *      500:
  *        description: Error en la petición
  */
-router.get("/login", UserController.login);
+router.post("/login", UserController.login);
 
 /* Logs out the current user  */
 /**
