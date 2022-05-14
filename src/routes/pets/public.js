@@ -5,7 +5,7 @@ const pets = require("../../controllers/pets.controller");
 /* GET Pets list */
 /**
  * @swagger
- * /pets:
+ * /api/pets:
  *      get:
  *          parameters:
  *              - in: query
