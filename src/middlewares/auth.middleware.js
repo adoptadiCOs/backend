@@ -20,7 +20,7 @@ const verifyToken = (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(400).json({ error: "token no es válido" });
+    res.status(401).json({ error: "token no es válido" });
   }
 };
 
@@ -32,7 +32,7 @@ const isAdmin = async (req, res, next) => {
   if (user.role === "admin") {
     next();
   }
-  res.status(403).send({ error: "Require Admin Role!" });
+  res.status(403).send({ error: "Requiere rol de administrador" });
 };
 
 module.exports = { verifyToken, isAdmin };
