@@ -1,67 +1,105 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const validator = require("validator");
 
 const userHelper = require("../helpers/users.helpers");
 
 /* Create user */
 const signup = async (req, res) => {
-  const { username, email, password } = req.body;
-  // TODO: Validación de parámetros
+  const { username, email, password, repeatedPassword } = req.body;
 
+  // Comprueba que se le pasan todos los parametros
+  if (!username || !email || !password || !repeatedPassword) {
+    return res.status(400).json({ error: "Introduce todos los campos." });
+  }
+
+  // Comprueba si el email es válido
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ error: "Dirección de correo inválida." });
+  }
+
+  // Comprueba que las contraseñas son iguales
+  if (password !== repeatedPassword) {
+    return res
+      .status(400)
+      .json({ error: "Las contraseñas no coinciden. Inténtalo de nuevo." });
+  }
+
+  // Cifra la contraseña
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+
+  // Comprueba que no exista un usuario con el mismo nombre/email. Y crea la cuenta
   try {
-    // Cifra la contraseña
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
-
     await userHelper.createUser(username, email, hash);
 
-    res.status(200).json({});
+    return res.status(201).json({ message: "Cuenta creada correctamente" });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(409).send({
+      error: "Ese usuario/correo ya está en uso. Prueba con otro.",
+    });
   }
 };
 
 /* Logs user into the system */
 const login = async (req, res) => {
-  // TODO: Validación de parámetros
-
   const { email, password } = req.body;
 
-  try {
-    const user = await userHelper.findUserByEmail(email);
-
-    const validPassword = await bcrypt.compare(password, user.password);
-
-    if (!validPassword) {
-      return res.status(400).json({ error: "contraseña no válida" });
-    }
-
-    const accessToken = jwt.sign(
-      {
-        username: user.username,
-        id: user._id,
-      },
-      process.env.SECRET
-    );
-
-    res.status(200).json({
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      bio: user.bio,
-      avatar: user.avatar,
-      createdAt: user.createdAt,
-      accessToken: accessToken,
-    });
-  } catch (error) {
-    return res.status(500).send(error);
+  // Comprueba que se le pasan todos los parametros
+  if (!email || !password) {
+    return res.status(400).json({ error: "Introduce todos los campos." });
   }
+
+  // Comprueba si el email es válido
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ error: "Dirección de correo inválida." });
+  }
+
+  // Comprueba si existe un usuario con ese email. Y obtiene la cuenta
+  try {
+    var user = await userHelper.findUserByEmail(email);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+
+  // Comprueba que las contraseñas son iguales
+  const validPassword = await bcrypt.compare(password, user.password);
+
+  if (!validPassword) {
+    return res
+      .status(400)
+      .json({ error: "Contraseña incorrecta. Vuelve a intentarlo" });
+  }
+
+  const accessToken = jwt.sign(
+    {
+      username: user.username,
+      id: user._id,
+    },
+    process.env.SECRET
+  );
+
+  return res.status(200).json({
+    id: user._id,
+    username: user.username,
+    email: user.email,
+    role: user.role,
+    bio: user.bio,
+    avatar: user.avatar,
+    createdAt: user.createdAt,
+    accessToken: accessToken,
+  });
 };
 
 /* Logs out the current user  */
 const logout = async (_, res) => {
-  res.status(200).json({});
+  return res.status(200).json({ message: "Tú sesión ha sido finalizada" });
 };
 
 /* Update user */
@@ -81,7 +119,13 @@ const updateUser = async (req, res) => {
   try {
     var user = await userHelper.findUserAndUpdate(id, fieldsToUpdate);
 
-    res.status(200).json({
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+
+    return res.status(200).json({
       id: user._id,
       username: user.username,
       email: user.email,
@@ -91,7 +135,7 @@ const updateUser = async (req, res) => {
       createdAt: user.createdAt,
     });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).json({ error: error });
   }
 };
 
@@ -103,9 +147,11 @@ const deleteUser = async (req, res) => {
     const { deletedCount } = await userHelper.deleteUserById(id);
 
     if (deletedCount == 0) {
-      res.status(400).json({ error: "el usuario no ha podido eliminarse" });
+      return res
+        .status(400)
+        .json({ error: "No se ha podido eliminar tú cuenta" });
     }
-    res.status(200).json({});
+    return res.status(204).json({ message: "Tú cuenta ha sido eliminada" });
   } catch (error) {
     return res.status(500).send(error);
   }

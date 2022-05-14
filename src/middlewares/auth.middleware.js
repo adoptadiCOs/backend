@@ -7,7 +7,7 @@ const verifyToken = (req, res, next) => {
   const bearerHeader = req.headers.authorization;
 
   if (typeof bearerHeader === "undefined") {
-    return res.status(403).send({ message: "No token provided" });
+    return res.status(401).send({ message: "Token necesario" });
   }
 
   // Extrae el token
@@ -20,7 +20,7 @@ const verifyToken = (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(400).json({ error: "token no es válido" });
+    return res.status(401).json({ error: "Token inválido" });
   }
 };
 
@@ -32,7 +32,7 @@ const isAdmin = async (req, res, next) => {
   if (user.role === "admin") {
     next();
   }
-  res.status(403).send({ error: "Require Admin Role!" });
+  return res.status(403).send({ error: "Requiere rol de administrador" });
 };
 
 module.exports = { verifyToken, isAdmin };

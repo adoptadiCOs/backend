@@ -34,8 +34,14 @@ const router = Router();
  *            repeatedPassword:
  *              type: string
  *    responses:
- *      200:
- *        description: Suscessful operation
+ *      201:
+ *        description: Operación realizada correctamente
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      409:
+ *        description: Usuario/correo ya en uso
+ *      500:
+ *        description: Error en la petición
  */
 router.post("/", UserController.signup);
 
@@ -65,23 +71,34 @@ router.post("/", UserController.signup);
  *              type: string
  *    responses:
  *      200:
- *        description: Suscessful operation
- *        schema:
- *          type: object
- *          properties:
- *            id:
- *              type: string
- *            username:
- *              type: string
- *            email:
- *              type: string
- *            rol:
- *              type: string
- *            createdAt:
- *              type: date
- *            accessToken:
- *              type: string
- *
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *                username:
+ *                  type: string
+ *                email:
+ *                  type: string
+ *                role:
+ *                  type: string
+ *                bio:
+ *                  type: string
+ *                avatar:
+ *                  type: string
+ *                createdAt:
+ *                  type: string
+ *                accessToken:
+ *                  type: string
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
  */
 router.get("/login", UserController.login);
 
@@ -103,8 +120,12 @@ router.get("/login", UserController.login);
  *        in: header
  *        required: true
  *    responses:
- *      200:
- *        description: Suscessful operation
+ *      204:
+ *        description: Operación realizada correctamente
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      500:
+ *        description: Error en la petición
  */
 router.get("/logout", verifyToken, UserController.logout);
 
@@ -135,7 +156,32 @@ router.get("/logout", verifyToken, UserController.logout);
  *              type: string
  *    responses:
  *      200:
- *        description: Suscessful operation
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *                username:
+ *                  type: string
+ *                email:
+ *                  type: string
+ *                role:
+ *                  type: string
+ *                bio:
+ *                  type: string
+ *                avatar:
+ *                  type: string
+ *                createdAt:
+ *                  type: string
+ *                accessToken:
+ *                  type: string
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
  */
 router.put("/", verifyToken, UserController.updateUser);
 
@@ -151,11 +197,15 @@ router.put("/", verifyToken, UserController.updateUser);
  *    consumes:
  *      - "application/json"
  *    produces:
- *    - application/json
+ *      - application/json
  *    parameters:
  *    responses:
- *      200:
- *        description: Suscessful operation
+ *      204:
+ *        description: Operación realizada correctamente
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      500:
+ *        description: Error en la petición
  */
 router.delete("/", verifyToken, UserController.deleteUser);
 
