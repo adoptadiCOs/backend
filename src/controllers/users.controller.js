@@ -35,7 +35,7 @@ const signup = async (req, res) => {
 
     return res.status(201).json({ message: "Cuenta creada correctamente" });
   } catch (error) {
-    return res.status(400).send({
+    return res.status(409).send({
       error: "Ese usuario/correo ya está en uso. Prueba con otro.",
     });
   }
@@ -65,7 +65,7 @@ const login = async (req, res) => {
         .json({ error: "No se ha podido encontrar tú cuenta." });
     }
   } catch (error) {
-    return res.status(500).json({});
+    return res.status(500).json({ error: error });
   }
 
   // Comprueba que las contraseñas son iguales
@@ -129,7 +129,7 @@ const updateUser = async (req, res) => {
       createdAt: user.createdAt,
     });
   } catch (error) {
-    return res.status(500).send(error);
+    return res.status(500).json({ error: error });
   }
 };
 
@@ -143,9 +143,9 @@ const deleteUser = async (req, res) => {
     if (deletedCount == 0) {
       return res
         .status(400)
-        .json({ error: "el usuario no ha podido eliminarse" });
+        .json({ error: "El usuario no ha podido eliminarse" });
     }
-    return res.status(200).json({});
+    return res.status(204).json({ message: "Usuario eliminado correctamente" });
   } catch (error) {
     return res.status(500).send(error);
   }
