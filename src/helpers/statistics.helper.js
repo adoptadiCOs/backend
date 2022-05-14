@@ -1,4 +1,5 @@
 const Statistic = require("../models/statistics");
+const Pet = require("../models/pets");
 
 const insertStatistic = async (num) => {
   try {

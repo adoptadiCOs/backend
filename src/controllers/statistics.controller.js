@@ -6,7 +6,9 @@ const GetStatistics = async (req, res) => {
   const res2 = await findDangerous();
 
   if (res1.err !== null || res2.err !== null) {
-    return res.status(400).json({ error: err });
+    return res
+      .status(400)
+      .json({ error: "error al acceder a las estadisticas" });
   }
 
   console.log(res2.data);
