@@ -64,6 +64,7 @@ const fetchPets = async () => {
     const pets = [...pets_adoption, ...pets_proteccion];
 
     await insertAll(pets);
+
     await insertStatistic(pets.length);
   } catch (err) {
     console.log(err);
