@@ -20,6 +20,16 @@ const ForumSchema = new Schema(
       type: String,
       required: true,
     },
+    // Date of the creation of the sub-forum
+    date: {
+      type: Date,
+      required: true,
+    },
+    enabled: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
 
     // Replies of the sub-forum
     replies: [{
@@ -30,6 +40,16 @@ const ForumSchema = new Schema(
       reply:  {
         type: String,
         required: true,
+      },
+      // Date of the creation of reply
+      reply_date: {
+        type: Date,
+        required: true,
+      },
+      reply_enabled: {
+        type: Boolean,
+        required: true,
+        default: true,
       },
     }],
 
