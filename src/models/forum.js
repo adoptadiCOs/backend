@@ -7,7 +7,7 @@ const ForumSchema = new Schema(
     // User that owns the sub-forum
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: User,
       required: true,
     },
     // Category of the sub-forum
@@ -39,13 +39,12 @@ const ForumSchema = new Schema(
       {
         user: {
           type: Schema.Types.ObjectId,
-          ref: "User",
+          ref: User,
           required: true,
         },
         reply: {
           type: String,
           required: true,
-          unique: true,
         },
         // Date of the creation of reply
         reply_date: {

@@ -11,6 +11,8 @@ const newForum = async (req, res) => {
 
   const user = await userHelper.findUserByName(username);
 
+  console.log(user)
+
   var prev = await forumHelper.getSubForum(user, title);
   var len = prev.length;
 
@@ -37,6 +39,7 @@ const newForum = async (req, res) => {
     }
     return res.status(201).json({ message: "Forum created" });
   } catch (error) {
+    console.log(error);
     return res
       .status(409)
       .send({ error: "This forum was previously created by the same user" });
@@ -72,8 +75,10 @@ const deleteSubForum = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
+  const user = await userHelper.findUserByName(username);
+
   try {
-    var aux = await forumHelper.deleteSubForum(username, title);
+    var aux = await forumHelper.deleteSubForum(user, title);
     if (!aux) {
       return res
         .status(409)
