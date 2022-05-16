@@ -48,7 +48,7 @@ const deleteSubForum = async (req, res) => {
 
     try{
         await forumHelper.deleteSubForum(owner, title);
-        return res.status(201).json({message: "Sub Forum Added"});
+        return res.status(201).json({message: "Sub Forum Deleted"});
     }catch (error) {
         return res.status(409).send({error: "Error trying to delete the subforum"});
     }
@@ -64,10 +64,10 @@ const deleteComment = async (req, res) => {
     }
 
     try{
-        await deleteReply.deleteReply(owner, title, user, comment);
+        await forumHelper.deleteReply(owner, title, user, comment);
         return res.status(201).json({message: "Comment deleted"});
     }catch (error) {
-        return res.status(409).send({error: "Error trying to add the reply"});
+        return res.status(409).send({error: "Error trying to delete the reply"});
     }
 
 }
@@ -75,10 +75,10 @@ const deleteComment = async (req, res) => {
 const listSubForum = async (req, res) => {
 
     try{
-        var data = await deleteReply.getAllSubForum();
+        var data = await forumHelper.getAllSubForum();
         return res.status(201).json({data});
     }catch (error) {
-        return res.status(409).send({error: "Error trying to add the reply"});
+        return res.status(409).send({error: "Error trying to list forums"});
     }
 
 }
@@ -92,10 +92,10 @@ const listSubForumByCategory = async (req, res) => {
     }
 
     try{
-        var data = await deleteReply.category();
+        var data = await forumHelper.getByCategory(category);
         return res.status(201).json({data});
     }catch (error) {
-        return res.status(409).send({error: "Error trying to add the reply"});
+        return res.status(409).send({error: "Error trying to list forums of that category"});
     }
 
 }
@@ -112,7 +112,7 @@ const getSubForum = async (req, res) => {
         var data = await forumHelper.getSubForum(owner, title);
         return res.status(201).json({data});
     }catch (error) {
-        return res.status(409).send({error: "Error trying to delete the subforum"});
+        return res.status(409).send({error: "Error trying to get the subforum"});
     }
 
 }

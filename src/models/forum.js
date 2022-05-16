@@ -49,7 +49,6 @@ const ForumSchema = new Schema(
       reply_enabled: {
         type: Boolean,
         required: true,
-        default: true,
       },
     }],
 

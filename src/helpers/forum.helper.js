@@ -61,11 +61,24 @@ const deleteSubForum = async (forum_owner, title_f) => {
 
 const deleteReply = async (forum_owner, title_f, user_reply, text_reply) => {
 
+    const query = { user: forum_owner, title: title_f };
+    const updateDocument = {
+      $set: { "replies.$[item].reply_enabled": false }
+    };
+    const options = {
+      arrayFilters: [{
+        "item.user": user_reply,
+        "item.reply": text_reply,
+      }]
+    };
+
+    return await Forum.updateOne(query, updateDocument, options)
+/*
     return await Forum.findOneAndUpdate(
         {user: forum_owner, title: title_f, replies: {user: user_reply, reply: text_reply}},
         { $set: {"replies.$.reply_enabled": false}},
     );
-
+*/
 }
 
 const getAllSubForum = async () => {
@@ -73,7 +86,7 @@ const getAllSubForum = async () => {
 }
 
 const getByCategory = async (category_f) => {
-    return await Forum.find({category: category_f, enabled: true}, { user: 1, title: 1, user_explanation: 1 })
+    return await Forum.find({category: category_f, enabled: true}, { user: 1, title: 1, user_explanation: 1, category: 1});
 }
 
 const getSubForum = async (forum_owner, title_f) => {
