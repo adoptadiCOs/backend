@@ -69,15 +69,15 @@ const deleteReply = async (forum_owner, title_f, user_reply, text_reply) => {
 }
 
 const getAllSubForum = async () => {
-    return await Forum.find({}, { user: 1, title: 1, user_explanation: 1 });
+    return await Forum.find({enabled: true}, { user: 1, title: 1, user_explanation: 1 });
 }
 
 const getByCategory = async (category_f) => {
-    return await Forum.find({category: category_f}, { user: 1, title: 1, user_explanation: 1 })
+    return await Forum.find({category: category_f, enabled: true}, { user: 1, title: 1, user_explanation: 1 })
 }
 
 const getSubForum = async (forum_owner, title_f) => {
-    return await Forum.find({user: forum_owner, title: title_f});
+    return await Forum.find({user: forum_owner, title: title_f, enabled: true});
 }
 
 module.exports = {

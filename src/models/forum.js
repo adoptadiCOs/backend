@@ -54,6 +54,7 @@ const ForumSchema = new Schema(
     }],
 
   },
+  { timestamps: true } // Adds createdAt and updatedAt properties
 );
 
 module.exports = model("Forum", ForumSchema);
