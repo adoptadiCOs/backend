@@ -33,6 +33,11 @@ const UserSchema = new Schema(
       type: String, // TODO: Investigar como guardar fotos
       default: "",
     },
+    enabled: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
   },
   { timestamps: true } // Adds createdAt and updatedAt properties
 );
