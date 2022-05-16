@@ -31,14 +31,17 @@ const newForum = async (req, res) => {
 };
 
 const addComment = async (req, res) => {
-  const { owner, title, user, comment } = req.body;
+  const { owner, title, username, comment } = req.body;
 
-  if (!owner || !title || !user || !comment) {
+  if (!owner || !title || !username || !comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
   try {
-    await forumHelper.addReply(owner, title, user, comment);
+    var aux = await forumHelper.addReply(owner, title, username, comment);
+    if (!aux){
+      return res.status(409).send({ error: "Error trying to add the reply" });
+    }
     return res.status(201).json({ message: "Comment Added" });
   } catch (error) {
     return res.status(409).send({ error: "Error trying to add the reply" });
