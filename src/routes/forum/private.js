@@ -1,6 +1,7 @@
 const Router = require("express");
 
 const ForumController = require("../../controllers/forum.controller");
+const { isAdmin } = require("../../middlewares/auth.middleware");
 
 const router = Router();
 

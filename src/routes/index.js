@@ -14,7 +14,7 @@ const private_forum = require("./forum/private");
 const router = Router();
 
 router.use("/forum", public_forum);
-router.use("/forum", private_forum);
+router.use("/forum", verifyToken, private_forum);
 
 router.use("/users", public_users);
 router.use("/users", verifyToken, private_users);
