@@ -8,7 +8,13 @@ const public_pets = require("./pets/public");
 const private_pets = require("./pets/private");
 const public_statistics = require("./statistics/public");
 
+const public_forum = require("./forum/public");
+const private_forum = require("./forum/private");
+
 const router = Router();
+
+router.use("/forum", public_forum);
+router.use("/forum", private_forum);
 
 router.use("/users", public_users);
 router.use("/users", verifyToken, private_users);
