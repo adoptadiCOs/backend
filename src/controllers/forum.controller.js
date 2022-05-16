@@ -11,8 +11,6 @@ const newForum = async (req, res) => {
 
   const user = await userHelper.findUserByName(username);
 
-  console.log(user)
-
   var prev = await forumHelper.getSubForum(user, title);
   var len = prev.length;
 
@@ -99,8 +97,10 @@ const deleteSubForumAdmin = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
+  const user = await userHelper.findUserByName(name);
+
   try {
-    var aux = await forumHelper.deleteSubForum(name, title);
+    var aux = await forumHelper.deleteSubForum(user, title);
     if (!aux) {
       return res
         .status(409)
@@ -121,8 +121,12 @@ const deleteComment = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
+  const user_owner = await userHelper.findUserByName(owner);
+
+  const user = await userHelper.findUserByName(username);
+
   try {
-    var aux = await forumHelper.deleteReply(owner, title, username, comment);
+    var aux = await forumHelper.deleteReply(user_owner, title, user, comment);
     if (!aux) {
       return res
         .status(409)
@@ -141,8 +145,12 @@ const deleteCommentAdmin = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
+  const user_owner = await userHelper.findUserByName(owner);
+
+  const user = await userHelper.findUserByName(name);
+
   try {
-    var aux = await forumHelper.deleteReply(owner, title, name, comment);
+    var aux = await forumHelper.deleteReply(user_owner, title, user, comment);
     if (!aux) {
       return res
         .status(409)
