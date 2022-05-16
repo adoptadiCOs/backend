@@ -9,11 +9,7 @@ const newForum = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  console.log(username);
-
   const user = await userHelper.findUserByName(username);
-
-  console.log(user);
 
   var prev = await forumHelper.getSubForum(user, title);
   var len = prev.length;
@@ -54,8 +50,12 @@ const addComment = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
+  const user_owner = await userHelper.findUserByName(owner);
+
+  const user = await userHelper.findUserByName(username);
+
   try {
-    var aux = await forumHelper.addReply(owner, title, username, comment);
+    var aux = await forumHelper.addReply(user_owner, title, user, comment);
     if (!aux) {
       return res.status(409).send({ error: "Error trying to add the reply" });
     }
