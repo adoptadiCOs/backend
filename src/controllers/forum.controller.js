@@ -69,14 +69,18 @@ const deleteSubForum = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  const { owner, title, user, comment } = req.body;
+  const { owner, title, username, comment } = req.body;
 
-  if (!owner || !title || !user || !comment) {
+  if (!owner || !title || !username || !comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
   try {
-    await forumHelper.deleteReply(owner, title, user, comment);
+    var aux = await forumHelper.deleteReply(owner, title, username, comment);
+    console.log(aux);
+    if (!aux){
+      return res.status(409).send({ error: "Error trying to delete the reply" });
+    }
     return res.status(201).json({ message: "Comment deleted" });
   } catch (error) {
     return res.status(409).send({ error: "Error trying to delete the reply" });
