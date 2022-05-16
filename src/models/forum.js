@@ -8,7 +8,7 @@ const ForumSchema = new Schema(
       required: true,
     },
     // Category of the sub-forum
-    category:  {
+    category: {
       type: String,
     },
     // Title and explanation of the sub-forum
@@ -32,26 +32,27 @@ const ForumSchema = new Schema(
     },
 
     // Replies of the sub-forum
-    replies: [{
-      user:  {
-        type: String,
-        required: true,
+    replies: [
+      {
+        user: {
+          type: String,
+          required: true,
+        },
+        reply: {
+          type: String,
+          required: true,
+        },
+        // Date of the creation of reply
+        reply_date: {
+          type: Date,
+          required: true,
+        },
+        reply_enabled: {
+          type: Boolean,
+          required: true,
+        },
       },
-      reply:  {
-        type: String,
-        required: true,
-      },
-      // Date of the creation of reply
-      reply_date: {
-        type: Date,
-        required: true,
-      },
-      reply_enabled: {
-        type: Boolean,
-        required: true,
-      },
-    }],
-
+    ],
   },
   { timestamps: true } // Adds createdAt and updatedAt properties
 );
