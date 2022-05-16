@@ -62,9 +62,11 @@ const deleteSubForum = async (forum_owner, title_f) => {
 const deleteReply = async (forum_owner, title_f, user_reply, text_reply) => {
 
     const query = { user: forum_owner, title: title_f };
+    
     const updateDocument = {
       $set: { "replies.$[item].reply_enabled": false }
     };
+
     const options = {
       arrayFilters: [{
         "item.user": user_reply,
