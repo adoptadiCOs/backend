@@ -80,14 +80,14 @@ const deleteSubForum = async (req, res) => {
 };
 
 const deleteSubForumAdmin = async (req, res) => {
-  const { username, title } = req.body;
+  const { name, title } = req.body;
 
-  if (!username || !title) {
+  if (!name || !title) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
   try {
-    var aux = await forumHelper.deleteSubForum(username, title);
+    var aux = await forumHelper.deleteSubForum(name, title);
     if (!aux) {
       return res
         .status(409)
