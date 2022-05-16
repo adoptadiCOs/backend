@@ -8,19 +8,28 @@ const newForum = async (req, res) => {
   }
 
   var prev = await forumHelper.getSubForum(username, title);
-  var len = prev.length; 
+  var len = prev.length;
 
-  if (len !== 0){
+  if (len !== 0) {
     return res
       .status(409)
-      .send({ error: "This forum was previously created by the same user"});
+      .send({ error: "This forum was previously created by the same user" });
   }
 
   try {
     if (category === undefined) {
-      await forumHelper.createSubForumWithoutCat(username, title, user_explanation);
+      await forumHelper.createSubForumWithoutCat(
+        username,
+        title,
+        user_explanation
+      );
     } else {
-      await forumHelper.createSubForum(username, category, title, user_explanation);
+      await forumHelper.createSubForum(
+        username,
+        category,
+        title,
+        user_explanation
+      );
     }
     return res.status(201).json({ message: "Forum created" });
   } catch (error) {
@@ -39,7 +48,7 @@ const addComment = async (req, res) => {
 
   try {
     var aux = await forumHelper.addReply(owner, title, username, comment);
-    if (!aux){
+    if (!aux) {
       return res.status(409).send({ error: "Error trying to add the reply" });
     }
     return res.status(201).json({ message: "Comment Added" });
@@ -57,8 +66,10 @@ const deleteSubForum = async (req, res) => {
 
   try {
     var aux = await forumHelper.deleteSubForum(username, title);
-    if (!aux){
-      return res.status(409).send({ error: "Error trying to delete the subforum" });
+    if (!aux) {
+      return res
+        .status(409)
+        .send({ error: "Error trying to delete the subforum" });
     }
     return res.status(201).json({ message: "Sub Forum Deleted" });
   } catch (error) {
@@ -77,9 +88,10 @@ const deleteComment = async (req, res) => {
 
   try {
     var aux = await forumHelper.deleteReply(owner, title, username, comment);
-    console.log(aux);
-    if (!aux){
-      return res.status(409).send({ error: "Error trying to delete the reply" });
+    if (!aux) {
+      return res
+        .status(409)
+        .send({ error: "Error trying to delete the reply" });
     }
     return res.status(201).json({ message: "Comment deleted" });
   } catch (error) {
