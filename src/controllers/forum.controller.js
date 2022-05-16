@@ -79,6 +79,28 @@ const deleteSubForum = async (req, res) => {
   }
 };
 
+const deleteSubForumAdmin = async (req, res) => {
+  const { username, title } = req.body;
+
+  if (!username || !title) {
+    return res.status(400).json({ error: "Unspecified some parameters" });
+  }
+
+  try {
+    var aux = await forumHelper.deleteSubForum(username, title);
+    if (!aux) {
+      return res
+        .status(409)
+        .send({ error: "Error trying to delete the subforum" });
+    }
+    return res.status(201).json({ message: "Sub Forum Deleted" });
+  } catch (error) {
+    return res
+      .status(409)
+      .send({ error: "Error trying to delete the subforum" });
+  }
+};
+
 const deleteComment = async (req, res) => {
   const { owner, title, username, comment } = req.body;
 
@@ -88,6 +110,26 @@ const deleteComment = async (req, res) => {
 
   try {
     var aux = await forumHelper.deleteReply(owner, title, username, comment);
+    if (!aux) {
+      return res
+        .status(409)
+        .send({ error: "Error trying to delete the reply" });
+    }
+    return res.status(201).json({ message: "Comment deleted" });
+  } catch (error) {
+    return res.status(409).send({ error: "Error trying to delete the reply" });
+  }
+};
+
+const deleteCommentAdmin = async (req, res) => {
+  const { owner, title, name, comment } = req.body;
+
+  if (!owner || !title || !name || !comment) {
+    return res.status(400).json({ error: "Unspecified some parameters" });
+  }
+
+  try {
+    var aux = await forumHelper.deleteReply(owner, title, name, comment);
     if (!aux) {
       return res
         .status(409)
@@ -144,7 +186,9 @@ module.exports = {
   newForum,
   addComment,
   deleteSubForum,
+  deleteSubForumAdmin,
   deleteComment,
+  deleteCommentAdmin,
   listSubForum,
   listSubForumByCategory,
   getSubForum,
