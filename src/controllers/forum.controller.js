@@ -49,14 +49,17 @@ const addComment = async (req, res) => {
 };
 
 const deleteSubForum = async (req, res) => {
-  const { owner, title } = req.body;
+  const { username, title } = req.body;
 
-  if (!owner || !title) {
+  if (!username || !title) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
   try {
-    await forumHelper.deleteSubForum(owner, title);
+    var aux = await forumHelper.deleteSubForum(username, title);
+    if (!aux){
+      return res.status(409).send({ error: "Error trying to delete the subforum" });
+    }
     return res.status(201).json({ message: "Sub Forum Deleted" });
   } catch (error) {
     return res
