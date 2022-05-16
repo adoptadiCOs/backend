@@ -1,5 +1,7 @@
 const forumHelper = require("../helpers/forum.helper");
 
+const userHelper = require("../helpers/users.helpers");
+
 const newForum = async (req, res) => {
   const { username, category, title, user_explanation } = req.body;
 
@@ -7,7 +9,13 @@ const newForum = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  var prev = await forumHelper.getSubForum(username, title);
+  console.log(username);
+
+  const user = await userHelper.findUserByName(username);
+
+  console.log(user);
+
+  var prev = await forumHelper.getSubForum(user, title);
   var len = prev.length;
 
   if (len !== 0) {
@@ -19,13 +27,13 @@ const newForum = async (req, res) => {
   try {
     if (category === undefined) {
       await forumHelper.createSubForumWithoutCat(
-        username,
+        user,
         title,
         user_explanation
       );
     } else {
       await forumHelper.createSubForum(
-        username,
+        user,
         category,
         title,
         user_explanation

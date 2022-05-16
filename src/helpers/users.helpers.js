@@ -14,6 +14,10 @@ const findUserByEmail = async (email) => {
   return await User.findOne({ email: email, enabled: true });
 };
 
+const findUserByName = async (username) => {
+  return await User.findOne({ username: username, enabled: true });
+};
+
 const findUserById = async (id) => {
   return await User.findById({ _id: id, enabled: true });
 };
@@ -29,6 +33,7 @@ const findUserAndUpdate = async (id, fieldsToUpdate) => {
 module.exports = {
   createUser,
   findUserByEmail,
+  findUserByName,
   findUserById,
   deleteUserById,
   findUserAndUpdate,
