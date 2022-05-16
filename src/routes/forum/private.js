@@ -4,11 +4,11 @@ const ForumController = require("../../controllers/forum.controller");
 
 const router = Router();
 
-router.post("/newforum", ForumController.newForum);
+router.post("/new", ForumController.newForum);
 
-router.post("/addreply", ForumController.addComment);
+router.post("/reply", ForumController.addComment);
 
-router.delete("/deleteforum", ForumController.deleteSubForum);
+router.delete("/delete", ForumController.deleteSubForum);
 
 router.delete("/deletereply", ForumController.deleteComment);
 
