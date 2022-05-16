@@ -85,12 +85,6 @@ const deleteReply = async (forum_owner, title_f, user_reply, text_reply) => {
   };
 
   return await Forum.findOneAndUpdate(query, updateDocument, options);
-  /*
-    return await Forum.findOneAndUpdate(
-        {user: forum_owner, title: title_f, replies: {user: user_reply, reply: text_reply}},
-        { $set: {"replies.$.reply_enabled": false}},
-    );
-*/
 };
 
 const getAllSubForum = async () => {
@@ -108,7 +102,7 @@ const getByCategory = async (category_f) => {
 };
 
 const getSubForum = async (forum_owner, title_f) => {
-  return await Forum.find({ user: forum_owner, title: title_f, enabled: true });
+  return await Forum.find({ user: forum_owner, title: title_f, enabled: true,});
 };
 
 module.exports = {
