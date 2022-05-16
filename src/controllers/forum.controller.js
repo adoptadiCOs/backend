@@ -176,17 +176,8 @@ const getSubForum = async (req, res) => {
 
   try {
     var data = await forumHelper.getSubForum(owner, title);
-    //var newarr = data.replies.filter(function(a){return a.reply_enabled !== false})
-    return res.status(201).json({data
-      /*
-      "user": data.user,
-      "title": data.title,
-      "user_explanation": data.user_explanation,
-      "date": data.date,
-      "replies": data.replies,//newarr,
-      "createdAt": data.createdAt,
-      "updatedAt": data.updatedAt,*/
-    });
+    data[0].replies = data[0].replies.filter(function(a){return a.reply_enabled !== false})
+    return res.status(201).json({ data });
   } catch (error) {
     return res.status(409).send({ error: "Error trying to get the subforum" });
   }
