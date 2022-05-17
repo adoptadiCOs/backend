@@ -186,10 +186,22 @@ router.delete("/", UserController.deleteUser);
  *      - application/json
  *    parameters:
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
- *      400:
- *        description: Descripción del error en la respuesta
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *                username:
+ *                  type: string
+ *                  enum: [user, admin]
+ *                role:
+ *                  type: string
+ *                avatar:
+ *                  type: string
  *      500:
  *        description: Error en la petición
  */
