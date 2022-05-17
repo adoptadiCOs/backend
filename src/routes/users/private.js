@@ -18,9 +18,6 @@ const router = Router();
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *    responses:
  *      204:
  *        description: Operación realizada correctamente
@@ -31,30 +28,27 @@ const router = Router();
  */
 router.get("/logout", UserController.logout);
 
-/* Update user */
+/* Update biography */
 /**
  * @swagger
- * /users:
+ * /users/biography:
  *  put:
  *    tags:
  *      - users
- *    summary: Update user
+ *    summary: Update user biography
  *    description:
  *    consumes:
  *      - "application/json"
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: user
- *        in: body
- *        description: Fields to update
- *        required: false
+ *      - in: body
+ *        description: New user biography
+ *        required: true
  *        schema:
  *          type: object
  *          properties:
  *            bio:
- *              type: string
- *            avatar:
  *              type: string
  *    responses:
  *      200:
@@ -64,28 +58,93 @@ router.get("/logout", UserController.logout);
  *            schema:
  *              type: object
  *              properties:
- *                id:
- *                  type: string
- *                username:
- *                  type: string
- *                email:
- *                  type: string
- *                role:
- *                  type: string
  *                bio:
- *                  type: string
- *                avatar:
- *                  type: string
- *                createdAt:
- *                  type: string
- *                accessToken:
  *                  type: string
  *      404:
  *        description: Usuario no encontrado
  *      500:
  *        description: Error en la petición
  */
-router.put("/", UserController.updateUser);
+router.put("/bio", UserController.updateBio);
+
+/**
+ * @swagger
+ * /users/password:
+ *  put:
+ *    tags:
+ *      - users
+ *    summary: Update user password
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - in: body
+ *        description: New user password
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            password:
+ *              type: string
+ *            newPassword:
+ *              type: string
+ *            repeatedNewPassword:
+ *              type: string
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
+ */
+router.put("/password", UserController.updatePassword);
+
+/**
+ * @swagger
+ * /users/username:
+ *  put:
+ *    tags:
+ *      - users
+ *    summary: Update username
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - in: body
+ *        description: New username
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            newUsername:
+ *              type: string
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                username:
+ *                  type: string
+ *              accessToken:
+ *                  type: string
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      409:
+ *        description: Usuario ya en uso
+ *      500:
+ *        description: Error en la petición
+ */
+router.put("/username", UserController.updateUsername);
 
 /* Delete user */
 /**
