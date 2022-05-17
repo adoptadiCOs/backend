@@ -5,7 +5,6 @@ const { isAdmin } = require("../../middlewares/auth.middleware");
 
 const router = Router();
 
-/* Update user */
 /**
  * @swagger
  * /forum/new:
@@ -31,11 +30,14 @@ const router = Router();
  *          properties:
  *            title:
  *              type: string
+ *            category:
+ *              type: string
  *            user_explanation:
  *              type: string
  *          example:
  *            title: "title1"
  *            user_explanation: "explanation1"
+ *            category: "cats"
  *    responses:
  *      201:
  *        description: Forum created
@@ -48,6 +50,49 @@ const router = Router();
  */
 router.post("/new", ForumController.newForum);
 
+/**
+ * @swagger
+ * /forum/reply:
+ *  post:
+ *    tags:
+ *      - forum
+ *    summary: Add a reply to some forum
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - name: access-token
+ *        in: header
+ *        required: true
+ *      - name: forum
+ *        in: body
+ *        description: Fields to update
+ *        required: false
+ *        schema:
+ *          type: object
+ *          properties:
+ *            owner:
+ *              type: string
+ *            title:
+ *              type: string
+ *            comment:
+ *              type: string
+ *          example:
+ *            owner: "user1"
+ *            title: "title1"
+ *            comment: "comment1"
+ *    responses:
+ *      201:
+ *        description: Comment added
+ *      400:
+ *        description: No enough parameters
+ *      409:
+ *        description: Forum does not exits
+ *      500:
+ *        description: Error of the server
+ */
 router.post("/reply", ForumController.addComment);
 
 router.delete("/admin/delete", isAdmin, ForumController.deleteSubForumAdmin);
