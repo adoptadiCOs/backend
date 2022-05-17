@@ -171,6 +171,35 @@ router.put("/username", UserController.updateUsername);
  */
 router.delete("/", UserController.deleteUser);
 
+/* Ban user */
+/**
+ * @swagger
+ * /users/{id}:
+ *  delete:
+ *    tags:
+ *      - users
+ *    summary: Ban user
+ *    description: Solo disponible para administradores
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *    responses:
+ *      204:
+ *        description: Operación realizada correctamente
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      403:
+ *        description: No se esta autorizado para realizar la tarea
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
+ */
+router.delete("/:id", isAdmin, UserController.banUser);
+
+
 /* Get all users */
 /**
  * @swagger
@@ -180,11 +209,12 @@ router.delete("/", UserController.deleteUser);
  *      - users
  *    summary: Get all users
  *    description: Solo disponible para administradores
- *    consumes:
- *      - "application/json"
  *    produces:
  *      - application/json
  *    parameters:
+ *      - in: query
+ *        name: id
+ *        required:true
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
