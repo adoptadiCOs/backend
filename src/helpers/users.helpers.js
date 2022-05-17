@@ -22,8 +22,12 @@ const deleteUserById = async (id) => {
   return await User.findByIdAndUpdate(id, { enabled: false });
 };
 
-const findUserAndUpdate = async (id, fieldsToUpdate) => {
-  return await User.findByIdAndUpdate(id, fieldsToUpdate, { new: true });
+const updateBio = async (id, bio) => {
+  return await User.findByIdAndUpdate(id, { bio: bio }, { new: true });
+};
+
+const updatePassword = async (id, password) => {
+  return await User.updateOne({ _id: id }, { password: password });
 };
 
 module.exports = {
@@ -31,5 +35,6 @@ module.exports = {
   findUserByEmail,
   findUserById,
   deleteUserById,
-  findUserAndUpdate,
+  updateBio,
+  updatePassword,
 };
