@@ -185,6 +185,10 @@ router.delete("/", UserController.deleteUser);
  *    produces:
  *      - application/json
  *    parameters:
+ *      - in: query
+ *        name: id
+ *        description: Id del usuario a eliminar
+ *        required: true
  *    responses:
  *      204:
  *        description: Operación realizada correctamente
@@ -212,9 +216,6 @@ router.delete("/:id", isAdmin, UserController.banUser);
  *    produces:
  *      - application/json
  *    parameters:
- *      - in: query
- *        name: id
- *        required:true
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
