@@ -1,6 +1,7 @@
 const Router = require("express");
 
 const UserController = require("../../controllers/users.controller");
+const { isAdmin } = require("../../middlewares/auth.middleware");
 
 const router = Router();
 
@@ -169,5 +170,29 @@ router.put("/username", UserController.updateUsername);
  *        description: Error en la petición
  */
 router.delete("/", UserController.deleteUser);
+
+/* Get all users */
+/**
+ * @swagger
+ * /users:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Get all users
+ *    description: Solo disponible para administradores
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *    responses:
+ *      204:
+ *        description: Operación realizada correctamente
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      500:
+ *        description: Error en la petición
+ */
+router.get("/", isAdmin, UserController.getUsers);
 
 module.exports = router;

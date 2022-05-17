@@ -231,6 +231,16 @@ const updateUsername = async (req, res) => {
   }
 };
 
+const getUsers = async (req, res) => {
+  try {
+    const users = await userHelper.findAll();
+
+    return res.status(200).json({ users: users });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -239,4 +249,5 @@ module.exports = {
   updateBio,
   updatePassword,
   updateUsername,
+  getUsers,
 };

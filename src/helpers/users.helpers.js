@@ -38,6 +38,10 @@ const updateUsername = async (id, username) => {
   );
 };
 
+const findAll = async () => {
+  return await User.find({ enabled: true }).select("username avatar role");
+};
+
 module.exports = {
   createUser,
   findUserByEmail,
@@ -46,4 +50,5 @@ module.exports = {
   updateBio,
   updatePassword,
   updateUsername,
+  findAll,
 };
