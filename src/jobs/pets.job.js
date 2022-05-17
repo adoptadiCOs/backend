@@ -66,7 +66,9 @@ const fetchPets = async () => {
 
     await insertAll(pets);
 
-    postTwit(`Buenos dias a todos los amantes de los animaliCOs!!! \n solo pasabamos para recordaros que seguimos teniendo ${pets.length} animales para poder adoptar! \n\n pasaros por nuestra pagina web para poder descubrirlos a todos 😇😇`)
+    postTwit(
+      `Buenos dias a todos los amantes de los animaliCOs!!! \n solo pasabamos para recordaros que seguimos teniendo ${pets.length} animales para poder adoptar! \n\n pasaros por nuestra pagina web para poder descubrirlos a todos 😇😇`
+    );
 
     await insertStatistic(pets.length);
   } catch (err) {
@@ -77,4 +79,4 @@ const fetchPets = async () => {
 const sync = new Cronjob("0 0 0 * * *", fetchPets);
 
 module.exports = sync;
-module.exports = {sync, fetchPets}
+module.exports = { sync, fetchPets };

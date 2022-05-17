@@ -6,7 +6,6 @@ dotenv.config();
 const mongoose = require("mongoose");
 const syncro = require("./jobs/pets.job");
 
-
 mongoose.connect(process.env.DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
