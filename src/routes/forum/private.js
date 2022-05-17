@@ -98,7 +98,7 @@ router.post("/reply", ForumController.addComment);
 /**
  * @swagger
  * /forum/admin/delete:
- *  post:
+ *  delete:
  *    tags:
  *      - forum
  *    summary: Delete forum as admin
@@ -140,7 +140,7 @@ router.delete("/admin/delete", isAdmin, ForumController.deleteSubForumAdmin);
 /**
  * @swagger
  * /forum/delete:
- *  post:
+ *  delete:
  *    tags:
  *      - forum
  *    summary: Delete forum as regular user (only can be deleted forums that the user owns)
@@ -179,8 +179,97 @@ router.delete("/admin/delete", isAdmin, ForumController.deleteSubForumAdmin);
  */
 router.delete("/delete", ForumController.deleteSubForum);
 
+/**
+ * @swagger
+ * /forum/admin/deletereply:
+ *  delete:
+ *    tags:
+ *      - forum
+ *    summary: Delete reply from a forum as admin
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - name: access-token
+ *        in: header
+ *        required: true
+ *      - name: forum
+ *        in: body
+ *        description: Fields to update
+ *        required: false
+ *        schema:
+ *          type: object
+ *          properties:
+ *            owner:
+ *              type: string
+ *            title:
+ *              type: string
+ *            name:
+ *              type: string
+ *            comment:
+ *              type: string
+ *          example:
+ *            owner: "user1"
+ *            title: "title1"
+ *            name: "user2"
+ *            comment: "comment2"
+ *    responses:
+ *      201:
+ *        description: Reply deleted
+ *      400:
+ *        description: No enough parameters
+ *      409:
+ *        description: Forum or reply does not exits
+ *      500:
+ *        description: Error of the server
+ */
 router.delete("/admin/deletereply", isAdmin, ForumController.deleteCommentAdmin);
 
+/**
+ * @swagger
+ * /forum/deletereply:
+ *  delete:
+ *    tags:
+ *      - forum
+ *    summary: Delete reply from a forum as regular user (only can be deleted forums that the user owns)
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - name: access-token
+ *        in: header
+ *        required: true
+ *      - name: forum
+ *        in: body
+ *        description: Fields to update
+ *        required: false
+ *        schema:
+ *          type: object
+ *          properties:
+ *            owner:
+ *              type: string
+ *            title:
+ *              type: string
+ *            comment:
+ *              type: string
+ *          example:
+ *            owner: "user1"
+ *            title: "title1"
+ *            comment: "comment"
+ *    responses:
+ *      201:
+ *        description: Reply deleted
+ *      400:
+ *        description: No enough parameters
+ *      409:
+ *        description: Forum or reply does not exits
+ *      500:
+ *        description: Error of the server
+ */
 router.delete("/deletereply", ForumController.deleteComment);
 
 module.exports = router;
