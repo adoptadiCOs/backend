@@ -2,6 +2,8 @@ const Router = require("express");
 
 const UserController = require("../../controllers/users.controller");
 
+const upload = require("../../middlewares/upload.middleware");
+
 const router = Router();
 
 /* Logs out the current user  */
@@ -86,6 +88,22 @@ router.get("/logout", UserController.logout);
  *        description: Error en la petición
  */
 router.put("/", UserController.updateUser);
+
+/* Update avatar */
+router.put(
+  "/avatar",
+  (req, res, next) => {
+    console.log("Body de la ruta");
+    console.log(req.body);
+
+    next();
+  },
+  upload.single("avatar"),
+  UserController.updateAvatar
+);
+
+/* Get avatar image */
+router.get("/avatar/:avatar", UserController.getAvatar);
 
 /* Delete user */
 /**

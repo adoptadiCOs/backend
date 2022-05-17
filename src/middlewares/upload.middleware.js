@@ -6,9 +6,15 @@ const DB = process.env.DB || "mongodb://localhost:27017/animaliCOs";
 const storage = new GridFsStorage({
   url: DB,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
-  file: () => {
+  file: (req, file) => {
+    console.log("Body del middleware");
+    console.log(req.body);
+
+    const filename = req.body.id;
+
     return {
-      bucketName: "photos",
+      filename: filename,
+      bucketName: "avatars",
     };
   },
 });

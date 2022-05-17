@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 
 const userHelper = require("../helpers/users.helpers");
+const { gfs } = require("../utils/db");
 
 /* Create user */
 const signup = async (req, res) => {
@@ -102,6 +103,31 @@ const logout = async (_, res) => {
   return res.status(200).json({ message: "Tú sesión ha sido finalizada" });
 };
 
+/* Update avatar */
+const updateAvatar = async (req, res) => {
+  const file = req.file;
+
+  console.log("Body del controlador");
+  console.log(req.body);
+
+  if (!file) {
+    return res.send("you must select a file.");
+  }
+
+  return res.status(200).json({ avatar: file.filename });
+};
+
+const getAvatar = async (req, res) => {
+  try {
+    const file = await gfs.files.findOne({ filename: req.params.avatar });
+
+    const readStream = gfs.createReadStream(file.filename);
+    readStream.pipe(res);
+  } catch (error) {
+    res.status(404).json({ error: "Avatar no encontrado" });
+  }
+};
+
 /* Update user */
 const updateUser = async (req, res) => {
   const { id, bio, avatar } = req.body;
@@ -162,5 +188,7 @@ module.exports = {
   login,
   logout,
   updateUser,
+  updateAvatar,
+  getAvatar,
   deleteUser,
 };
