@@ -203,7 +203,6 @@ router.delete("/", UserController.deleteUser);
  */
 router.delete("/:id", isAdmin, UserController.banUser);
 
-
 /* Get all users */
 /**
  * @swagger
