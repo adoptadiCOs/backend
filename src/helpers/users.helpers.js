@@ -31,7 +31,11 @@ const updatePassword = async (id, password) => {
 };
 
 const updateUsername = async (id, username) => {
-  return await User.findByIdAndUpdate(id, { username: username }, { new: true });
+  return await User.findByIdAndUpdate(
+    id,
+    { username: username },
+    { new: true }
+  );
 };
 
 module.exports = {
