@@ -220,7 +220,7 @@ const getSubForum = async (req, res) => {
       data_aux.map(async (message) => {
         var user_aux = await userHelper.findUserById(message.user);
 
-        resplies_aux = message.replies.filter(function (a) {
+        var resplies_aux = message.replies.filter(function (a) {
           return a.reply_enabled !== false;
         });
 
