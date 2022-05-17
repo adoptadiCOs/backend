@@ -195,8 +195,10 @@ const getSubForum = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
+  const user_owner = await userHelper.findUserByName(owner);
+
   try {
-    var data = await forumHelper.getSubForum(owner, title);
+    var data = await forumHelper.getSubForum(user_owner, title);
     data[0].replies = data[0].replies.filter(function(a){return a.reply_enabled !== false})
     return res.status(201).json({ data });
   } catch (error) {
