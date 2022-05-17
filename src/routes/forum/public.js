@@ -8,7 +8,7 @@ const router = Router();
 /**
  * @swagger
  * /forum/list:
- *  post:
+ *  get:
  *    tags:
  *      - forum
  *    summary: List forums
@@ -37,7 +37,7 @@ router.get("/list", ForumController.listSubForum);
 /**
  * @swagger
  * /forum/category:
- *  post:
+ *  get:
  *    tags:
  *      - forum
  *    summary: List forums by a category
@@ -80,7 +80,7 @@ router.get("/category", ForumController.listSubForumByCategory);
 /**
  * @swagger
  * /forum:
- *  post:
+ *  get:
  *    tags:
  *      - forum
  *    summary: Get all information about one forum
