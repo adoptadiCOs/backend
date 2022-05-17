@@ -24,7 +24,7 @@ const router = Router();
  *          application/json:
  *            schema:
  *              type: array
- *              example: 
+ *              example:
  *                - user: "628363d68dba721583799b54"
  *                  title: "title1"
  *                  user_explanation: "description1"
@@ -64,7 +64,7 @@ router.get("/list", ForumController.listSubForum);
  *          application/json:
  *            schema:
  *              type: array
- *              example: 
+ *              example:
  *                - user: "628363d68dba721583799b54"
  *                  title: "title1"
  *                  user_explanation: "description1"
@@ -75,7 +75,6 @@ router.get("/list", ForumController.listSubForum);
  *        description: Error of the server
  */
 router.get("/category", ForumController.listSubForumByCategory);
-
 
 /**
  * @swagger
@@ -110,7 +109,7 @@ router.get("/category", ForumController.listSubForumByCategory);
  *          application/json:
  *            schema:
  *              type: object
- *              example: 
+ *              example:
  *                - user: "628363d68dba721583799b54"
  *                  title: "title1"
  *                  user_explanation: "description1"

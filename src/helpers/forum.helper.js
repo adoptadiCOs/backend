@@ -102,7 +102,7 @@ const getByCategory = async (category_f) => {
 };
 
 const getSubForum = async (forum_owner, title_f) => {
-  return await Forum.find({ user: forum_owner, title: title_f, enabled: true,});
+  return await Forum.find({ user: forum_owner, title: title_f, enabled: true });
 };
 
 module.exports = {

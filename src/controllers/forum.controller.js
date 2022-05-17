@@ -22,18 +22,9 @@ const newForum = async (req, res) => {
 
   try {
     if (category === undefined) {
-      await forumHelper.createSubForumWithoutCat(
-        user,
-        title,
-        user_explanation
-      );
+      await forumHelper.createSubForumWithoutCat(user, title, user_explanation);
     } else {
-      await forumHelper.createSubForum(
-        user,
-        category,
-        title,
-        user_explanation
-      );
+      await forumHelper.createSubForum(user, category, title, user_explanation);
     }
     return res.status(201).json({ message: "Forum created" });
   } catch (error) {
@@ -199,7 +190,9 @@ const getSubForum = async (req, res) => {
 
   try {
     var data = await forumHelper.getSubForum(user_owner, title);
-    data[0].replies = data[0].replies.filter(function(a){return a.reply_enabled !== false})
+    data[0].replies = data[0].replies.filter(function (a) {
+      return a.reply_enabled !== false;
+    });
     return res.status(201).json({ data });
   } catch (error) {
     return res.status(404).send({ error: "Error trying to get the subforum" });

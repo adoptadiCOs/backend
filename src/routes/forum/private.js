@@ -225,7 +225,11 @@ router.delete("/delete", ForumController.deleteSubForum);
  *      500:
  *        description: Error of the server
  */
-router.delete("/admin/deletereply", isAdmin, ForumController.deleteCommentAdmin);
+router.delete(
+  "/admin/deletereply",
+  isAdmin,
+  ForumController.deleteCommentAdmin
+);
 
 /**
  * @swagger
