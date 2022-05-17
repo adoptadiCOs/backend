@@ -18,9 +18,6 @@ const router = Router();
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *    responses:
  *      204:
  *        description: Operación realizada correctamente
@@ -85,7 +82,7 @@ router.put("/bio", UserController.updateBio);
  *    parameters:
  *      - in: body
  *        description: New user password
- *        required: false
+ *        required: true
  *        schema:
  *          type: object
  *          properties:
@@ -106,6 +103,46 @@ router.put("/bio", UserController.updateBio);
  *        description: Error en la petición
  */
 router.put("/password", UserController.updatePassword);
+
+/**
+ * @swagger
+ * /users/username:
+ *  put:
+ *    tags:
+ *      - users
+ *    summary: Update username
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - in: body
+ *        description: New username
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            newUsername:
+ *              type: string
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                username:
+ *                  type: string
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      409:
+ *        description: Usuario ya en uso
+ *      500:
+ *        description: Error en la petición
+ */
+router.put("/username", UserController.updateUsername);
 
 /* Delete user */
 /**

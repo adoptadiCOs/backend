@@ -30,6 +30,10 @@ const updatePassword = async (id, password) => {
   return await User.updateOne({ _id: id }, { password: password });
 };
 
+const updateUsername = async (id, username) => {
+  return await User.findByIdAndUpdate(id, { username: username }, { new: true });
+};
+
 module.exports = {
   createUser,
   findUserByEmail,
@@ -37,4 +41,5 @@ module.exports = {
   deleteUserById,
   updateBio,
   updatePassword,
+  updateUsername,
 };

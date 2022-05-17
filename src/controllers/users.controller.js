@@ -195,6 +195,32 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const updateUsername = async (req, res) => {
+  const { id, newUsername } = req.body;
+
+  if (!newUsername) {
+    return res
+      .status(400)
+      .json({ error: "Requiere un nuevo nombre de usuario" });
+  }
+
+  try {
+    var user = await userHelper.updateUsername(id, newUsername);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+
+    return res.status(200).json({ username: user.username });
+  } catch (error) {
+    return res.status(409).send({
+      error: "Ese usuario ya está en uso. Prueba con otro.",
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -202,4 +228,5 @@ module.exports = {
   deleteUser,
   updateBio,
   updatePassword,
+  updateUsername,
 };
