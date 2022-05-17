@@ -25,7 +25,7 @@ const router = Router();
  *            schema:
  *              type: array
  *              example:
- *                - user: "628363d68dba721583799b54"
+ *                - user: "user1"
  *                  title: "title1"
  *                  user_explanation: "description1"
  *      500:
@@ -65,7 +65,7 @@ router.get("/list", ForumController.listSubForum);
  *            schema:
  *              type: array
  *              example:
- *                - user: "628363d68dba721583799b54"
+ *                - user: "user1"
  *                  title: "title1"
  *                  user_explanation: "description1"
  *                  category: "cats"
@@ -110,13 +110,13 @@ router.get("/category", ForumController.listSubForumByCategory);
  *            schema:
  *              type: object
  *              example:
- *                - user: "628363d68dba721583799b54"
+ *                - user: "user1"
  *                  title: "title1"
  *                  user_explanation: "description1"
  *                  date: "2022-05-17T08:59:49.802Z"
  *                  createdAt: "2022-05-17T08:59:49.802Z"
  *                  updatedAt: "2022-05-17T08:59:49.802Z"
- *                  replies: [ { user: "628363d68dba721583799b54",
+ *                  replies: [ { user: "user1",
  *                             reply: "reply1",
  *                             reply_date: "2022-05-17T09:00:02.265Z" } ]
  *      400:
