@@ -1,10 +1,13 @@
 const { model, Schema } = require("mongoose");
 
+const User = require("./users");
+
 const ForumSchema = new Schema(
   {
     // User that owns the sub-forum
     user: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: User,
       required: true,
     },
     // Category of the sub-forum
@@ -35,7 +38,8 @@ const ForumSchema = new Schema(
     replies: [
       {
         user: {
-          type: String,
+          type: Schema.Types.ObjectId,
+          ref: User,
           required: true,
         },
         reply: {
