@@ -135,6 +135,8 @@ router.put("/password", UserController.updatePassword);
  *              properties:
  *                username:
  *                  type: string
+ *              accessToken:
+ *                  type: string
  *      400:
  *        description: Descripción del error en la respuesta
  *      409:

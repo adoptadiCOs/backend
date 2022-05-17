@@ -213,7 +213,17 @@ const updateUsername = async (req, res) => {
         .json({ error: "No se ha podido encontrar tú cuenta." });
     }
 
-    return res.status(200).json({ username: user.username });
+    const accessToken = jwt.sign(
+      {
+        username: user.username,
+        id: user._id,
+      },
+      process.env.SECRET
+    );
+
+    return res
+      .status(200)
+      .json({ username: user.username, accessToken: accessToken });
   } catch (error) {
     return res.status(409).send({
       error: "Ese usuario ya está en uso. Prueba con otro.",
