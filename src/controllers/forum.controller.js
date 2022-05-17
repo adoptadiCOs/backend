@@ -167,7 +167,7 @@ const listSubForum = async (req, res) => {
     var data = await forumHelper.getAllSubForum();
     return res.status(201).json({ data });
   } catch (error) {
-    return res.status(409).send({ error: "Error trying to list forums" });
+    return res.status(500).send({ error: "Error trying to list forums" });
   }
 };
 
