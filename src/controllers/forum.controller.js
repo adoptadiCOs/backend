@@ -155,7 +155,19 @@ const deleteCommentAdmin = async (req, res) => {
 
 const listSubForum = async (req, res) => {
   try {
-    var data = await forumHelper.getAllSubForum();
+    var data_aux = await forumHelper.getAllSubForum();
+
+    var data = await Promise.all(
+      data_aux.map(async (message) => {
+        var user_aux = await userHelper.findUserById(message.user);
+        return {
+          user: user_aux.username,
+          title: message.title,
+          user_explanation: message.user_explanation,
+        };
+      })
+    );
+
     return res.status(201).json({ data });
   } catch (error) {
     return res.status(500).send({ error: "Error trying to list forums" });
@@ -170,7 +182,20 @@ const listSubForumByCategory = async (req, res) => {
   }
 
   try {
-    var data = await forumHelper.getByCategory(category);
+    var data_aux = await forumHelper.getByCategory(category);
+
+    var data = await Promise.all(
+      data_aux.map(async (message) => {
+        var user_aux = await userHelper.findUserById(message.user);
+        return {
+          user: user_aux.username,
+          title: message.title,
+          user_explanation: message.user_explanation,
+          category: message.category,
+        };
+      })
+    );
+
     return res.status(201).json({ data });
   } catch (error) {
     return res
@@ -189,10 +214,41 @@ const getSubForum = async (req, res) => {
   const user_owner = await userHelper.findUserByName(owner);
 
   try {
-    var data = await forumHelper.getSubForum(user_owner, title);
-    data[0].replies = data[0].replies.filter(function (a) {
-      return a.reply_enabled !== false;
-    });
+    var data_aux = await forumHelper.getSubForum(user_owner, title);
+
+    var data_arr = await Promise.all(
+      data_aux.map(async (message) => {
+        var user_aux = await userHelper.findUserById(message.user);
+
+        var resplies_aux = message.replies.filter(function (a) {
+          return a.reply_enabled !== false;
+        });
+
+        var resplies_final = await Promise.all(
+          resplies_aux.map(async (reply_i) => {
+            var user_aux = await userHelper.findUserById(reply_i.user);
+            return {
+              user: user_aux.username,
+              reply: reply_i.reply,
+              reply_date: reply_i.reply_date,
+            };
+          })
+        );
+
+        return {
+          user: user_aux.username,
+          title: message.title,
+          user_explanation: message.user_explanation,
+          replies: resplies_final,
+          date: message.date,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+        };
+      })
+    );
+
+    var data = data_arr[0];
+
     return res.status(201).json({ data });
   } catch (error) {
     return res.status(404).send({ error: "Error trying to get the subforum" });

@@ -79,4 +79,4 @@ const fetchPets = async () => {
 const sync = new Cronjob("0 0 0 * * *", fetchPets);
 
 module.exports = sync;
-module.exports = { sync, fetchPets };
+//module.exports = { sync, fetchPets };
