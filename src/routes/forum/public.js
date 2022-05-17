@@ -25,7 +25,7 @@ const router = Router();
  *            schema:
  *              type: array
  *              example: 
- *                - user: "user1"
+ *                - user: "628363d68dba721583799b54"
  *                  title: "title1"
  *                  user_explanation: "description1"
  *      500:
@@ -65,7 +65,7 @@ router.get("/list", ForumController.listSubForum);
  *            schema:
  *              type: array
  *              example: 
- *                - user: "user1"
+ *                - user: "628363d68dba721583799b54"
  *                  title: "title1"
  *                  user_explanation: "description1"
  *                  category: "cats"
@@ -73,6 +73,54 @@ router.get("/list", ForumController.listSubForum);
  *        description: Error of the server
  */
 router.get("/category", ForumController.listSubForumByCategory);
+
+
+/**
+ * @swagger
+ * /forum:
+ *  post:
+ *    tags:
+ *      - forum
+ *    summary: Get all information about one forum
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - name: forumx
+ *        in: body
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            owner:
+ *              type: string
+ *            title:
+ *              type: string
+ *          example:
+ *            owner: "user1"
+ *            title: "title1"
+ *    responses:
+ *      201:
+ *        description: A list of enabled forums
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example: 
+ *                - user: "628363d68dba721583799b54"
+ *                  title: "title1"
+ *                  user_explanation: "description1"
+ *                  date: "2022-05-17T08:59:49.802Z"
+ *                  createdAt: "2022-05-17T08:59:49.802Z"
+ *                  updatedAt: "2022-05-17T08:59:49.802Z"
+ *                  replies: [ { user: "628363d68dba721583799b54",
+ *                             reply: "reply1",
+ *                             reply_date: "2022-05-17T09:00:02.265Z" } ]
+ *      500:
+ *        description: Error of the server
+ */
 
 router.get("/", ForumController.getSubForum);
 
