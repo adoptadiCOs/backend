@@ -237,7 +237,7 @@ router.delete(
  *  delete:
  *    tags:
  *      - forum
- *    summary: Delete reply from a forum as regular user (only can be deleted forums that the user owns)
+ *    summary: Delete reply from a forum as regular user (only can be deleted replies that the user owns)
  *    description:
  *    consumes:
  *      - "application/json"
