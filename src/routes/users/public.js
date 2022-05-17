@@ -11,7 +11,7 @@ const router = Router();
  *  post:
  *    tags:
  *      - users
- *    summary: Create user
+ *    summary: Create user (Register)
  *    description:
  *    consumes:
  *      - "application/json"

@@ -182,9 +182,9 @@ const deleteUser = async (req, res) => {
   const { id } = req.body;
 
   try {
-    const { deletedCount } = await userHelper.deleteUserById(id);
+    const deletedUser = await userHelper.deleteUserById(id);
 
-    if (deletedCount == 0) {
+    if (!deletedUser) {
       return res
         .status(400)
         .json({ error: "No se ha podido eliminar tú cuenta" });
@@ -231,6 +231,50 @@ const updateUsername = async (req, res) => {
   }
 };
 
+const getUsers = async (req, res) => {
+  try {
+    const users = await userHelper.findAll();
+
+    return res.status(200).json({ users: users });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+const banUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    var user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+
+    if (user.role === "admin") {
+      return res.status(403).json({
+        error: "No está permitido eliminar la cuenta de un administrador.",
+      });
+    }
+
+    const deletedUser = await userHelper.deleteUserById(id);
+
+    if (!deletedUser) {
+      return res
+        .status(400)
+        .json({ error: "No se ha podido eliminar tú cuenta" });
+    }
+
+    return res
+      .status(204)
+      .json({ message: "La cuenta ha sido sido eliminada" });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -239,4 +283,6 @@ module.exports = {
   updateBio,
   updatePassword,
   updateUsername,
+  getUsers,
+  banUser,
 };
