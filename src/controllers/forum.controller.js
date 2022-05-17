@@ -202,7 +202,7 @@ const getSubForum = async (req, res) => {
     data[0].replies = data[0].replies.filter(function(a){return a.reply_enabled !== false})
     return res.status(201).json({ data });
   } catch (error) {
-    return res.status(409).send({ error: "Error trying to get the subforum" });
+    return res.status(404).send({ error: "Error trying to get the subforum" });
   }
 };
 

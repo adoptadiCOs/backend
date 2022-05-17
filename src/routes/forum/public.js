@@ -69,6 +69,8 @@ router.get("/list", ForumController.listSubForum);
  *                  title: "title1"
  *                  user_explanation: "description1"
  *                  category: "cats"
+ *      400:
+ *        description: No enough parameters
  *      500:
  *        description: Error of the server
  */
@@ -118,6 +120,10 @@ router.get("/category", ForumController.listSubForumByCategory);
  *                  replies: [ { user: "628363d68dba721583799b54",
  *                             reply: "reply1",
  *                             reply_date: "2022-05-17T09:00:02.265Z" } ]
+ *      400:
+ *        description: No enough parameters
+ *      404:
+ *        description: Forum not found
  *      500:
  *        description: Error of the server
  */
