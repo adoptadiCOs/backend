@@ -9,7 +9,8 @@ const GetPets = async (req, res) => {
   const specie = req.query.specie;
   const breed = req.query.breed;
   const starts = parseInt(req.query.starts) || 0;
-  const rows = req.query.rows < 50 && req.query.rows > 0 ? parseInt(req.query.rows) : 50;
+  const rows =
+    req.query.rows < 50 && req.query.rows > 0 ? parseInt(req.query.rows) : 50;
 
   const { data, err } = await findPets(specie, breed, starts, rows);
 
