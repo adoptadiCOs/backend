@@ -24,6 +24,4 @@ router.use("/users", verifyToken, private_users);
 router.use("/", public_pets);
 router.use("/", verifyToken, private_pets);
 
-
-
 module.exports = router;
