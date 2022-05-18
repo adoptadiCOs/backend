@@ -1,6 +1,7 @@
 const Router = require("express");
 
 const UserController = require("../../controllers/users.controller");
+const { isAdmin } = require("../../middlewares/auth.middleware");
 
 const router = Router();
 
@@ -169,5 +170,71 @@ router.put("/username", UserController.updateUsername);
  *        description: Error en la petición
  */
 router.delete("/", UserController.deleteUser);
+
+/* Ban user */
+/**
+ * @swagger
+ * /users/{id}:
+ *  delete:
+ *    tags:
+ *      - users
+ *    summary: Ban user
+ *    description: Solo disponible para administradores
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: id
+ *        description: Id del usuario a eliminar
+ *        required: true
+ *    responses:
+ *      204:
+ *        description: Operación realizada correctamente
+ *      400:
+ *        description: Descripción del error en la respuesta
+ *      403:
+ *        description: No se esta autorizado para realizar la tarea
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
+ */
+router.delete("/:id", isAdmin, UserController.banUser);
+
+/* Get all users */
+/**
+ * @swagger
+ * /users:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Get all users
+ *    description: Solo disponible para administradores
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *                username:
+ *                  type: string
+ *                  enum: [user, admin]
+ *                role:
+ *                  type: string
+ *                avatar:
+ *                  type: string
+ *      500:
+ *        description: Error en la petición
+ */
+router.get("/", isAdmin, UserController.getUsers);
 
 module.exports = router;

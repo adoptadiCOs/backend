@@ -42,6 +42,16 @@ const updateUsername = async (id, username) => {
   );
 };
 
+const findAll = async () => {
+  return await User.find({ enabled: true }).select({
+    _id: 0,
+    id: "$_id",
+    username: 1,
+    avatar: 1,
+    role: 1,
+  });
+};
+
 module.exports = {
   createUser,
   findUserByEmail,
@@ -51,4 +61,5 @@ module.exports = {
   updateBio,
   updatePassword,
   updateUsername,
+  findAll,
 };

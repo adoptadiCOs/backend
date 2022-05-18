@@ -3,7 +3,7 @@ const Cronjob = require("cron").CronJob;
 
 const Pet = require("../models/pets");
 const { insertAll } = require("../helpers/pets.helper");
-const { insertStatistic } = require("../helpers/statistics.helper");
+//const { insertStatistic } = require("../helpers/statistics.helper");
 const { postTwit } = require("../helpers/twitter.helper");
 
 const URL_ADOPTION =
@@ -69,8 +69,6 @@ const fetchPets = async () => {
     postTwit(
       `Buenos dias a todos los amantes de los animaliCOs!!! \n solo pasabamos para recordaros que seguimos teniendo ${pets.length} animales para poder adoptar! \n\n pasaros por nuestra pagina web para poder descubrirlos a todos 😇😇`
     );
-
-    await insertStatistic(pets.length);
   } catch (err) {
     console.log(err);
   }

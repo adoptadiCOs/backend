@@ -13,6 +13,8 @@ const private_forum = require("./forum/private");
 
 const router = Router();
 
+router.use("/", public_statistics);
+
 router.use("/forum", public_forum);
 router.use("/forum", verifyToken, private_forum);
 
@@ -21,7 +23,5 @@ router.use("/users", verifyToken, private_users);
 
 router.use("/", public_pets);
 router.use("/", verifyToken, private_pets);
-
-router.use("/", public_statistics);
 
 module.exports = router;
