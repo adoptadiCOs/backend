@@ -26,12 +26,32 @@ const newForum = async (req, res) => {
     } else {
       await forumHelper.createSubForum(user, category, title, user_explanation);
     }
-    return res.status(201).json({ message: "Forum created" });
+
+    var data_aux = await forumHelper.getSubForum(user, title);
+
+    var data_arr = await Promise.all(
+      data_aux.map(async (message) => {
+        var user_aux = await userHelper.findUserById(message.user);
+
+        return {
+          user: user_aux.username,
+          id: message._id,
+          title: message.title,
+          user_explanation: message.user_explanation,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+        };
+      })
+    );
+
+    var data = data_arr[0];
+
+    return res.status(201).json({ data });
   } catch (error) {
     console.log(error);
     return res
       .status(409)
-      .send({ error: "This forum was previously created by the same user" });
+      .send({ error: "Error creating the new forum" });
   }
 };
 

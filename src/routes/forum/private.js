@@ -40,7 +40,18 @@ const router = Router();
  *            category: "cats"
  *    responses:
  *      201:
- *        description: Forum created
+ *        description: A list of enabled forums
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - user: "user1"
+ *                  title: "title1"
+ *                  user_explanation: "description1"
+ *                  id: "6286bf884cb06d5a3c7bddda"
+ *                  createdAt: "2022-05-19T22:12:58.080Z"
+ *                  updatedAt: "2022-05-19T22:12:58.080Z"
  *      400:
  *        description: No enough parameters
  *      409:
