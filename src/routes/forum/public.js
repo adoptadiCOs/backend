@@ -62,7 +62,7 @@ router.get("/list", ForumController.listSubForum);
  *            category: "cats"
  *    responses:
  *      201:
- *        description: A list of enabled forums
+ *        description: A list of enabled forums with specified category
  *        content:
  *          application/json:
  *            schema:
@@ -109,7 +109,7 @@ router.get("/category", ForumController.listSubForumByCategory);
  *            id_forum: "6286bf884cb06d5a3c7bddda"
  *    responses:
  *      201:
- *        description: A list of enabled forums
+ *        description: Get all information of a forum
  *        content:
  *          application/json:
  *            schema:
