@@ -161,6 +161,7 @@ const listSubForum = async (req, res) => {
       data_aux.map(async (message) => {
         var user_aux = await userHelper.findUserById(message.user);
         return {
+          id: message._id,
           user: user_aux.username,
           title: message.title,
           user_explanation: message.user_explanation,
@@ -189,6 +190,7 @@ const listSubForumByCategory = async (req, res) => {
         var user_aux = await userHelper.findUserById(message.user);
         return {
           user: user_aux.username,
+          id: message._id,
           title: message.title,
           user_explanation: message.user_explanation,
           category: message.category,
@@ -229,6 +231,7 @@ const getSubForum = async (req, res) => {
             var user_aux = await userHelper.findUserById(reply_i.user);
             return {
               user: user_aux.username,
+              id: reply_i._id,
               reply: reply_i.reply,
               reply_date: reply_i.reply_date,
             };
@@ -237,6 +240,7 @@ const getSubForum = async (req, res) => {
 
         return {
           user: user_aux.username,
+          id: message._id,
           title: message.title,
           user_explanation: message.user_explanation,
           replies: resplies_final,
