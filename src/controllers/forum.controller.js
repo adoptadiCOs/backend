@@ -163,10 +163,15 @@ const listSubForum = async (req, res) => {
         return {
           user: user_aux.username,
           title: message.title,
+          id: message._id,
           user_explanation: message.user_explanation,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
         };
       })
     );
+
+    console.log(data)
 
     return res.status(201).json({ data });
   } catch (error) {
@@ -190,8 +195,11 @@ const listSubForumByCategory = async (req, res) => {
         return {
           user: user_aux.username,
           title: message.title,
+          id: message._id,
           user_explanation: message.user_explanation,
           category: message.category,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
         };
       })
     );
@@ -230,6 +238,7 @@ const getSubForum = async (req, res) => {
             return {
               user: user_aux.username,
               reply: reply_i.reply,
+              id: reply_i._id,
               reply_date: reply_i.reply_date,
             };
           })
@@ -237,10 +246,10 @@ const getSubForum = async (req, res) => {
 
         return {
           user: user_aux.username,
+          id: message._id,
           title: message.title,
           user_explanation: message.user_explanation,
           replies: resplies_final,
-          date: message.date,
           createdAt: message.createdAt,
           updatedAt: message.updatedAt,
         };
