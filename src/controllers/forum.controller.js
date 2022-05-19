@@ -56,22 +56,58 @@ const newForum = async (req, res) => {
 };
 
 const addComment = async (req, res) => {
-  const { owner, title, username, comment } = req.body;
+  const { id_forum, username, comment } = req.body;
 
-  if (!owner || !title || !username || !comment) {
+  if (!id_forum || !username || !comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
-
-  const user_owner = await userHelper.findUserByName(owner);
 
   const user = await userHelper.findUserByName(username);
 
   try {
-    var aux = await forumHelper.addReply(user_owner, title, user, comment);
+    var aux = await forumHelper.addReply(id_forum, user, comment);
     if (!aux) {
       return res.status(409).send({ error: "Error trying to add the reply" });
     }
-    return res.status(201).json({ message: "Comment Added" });
+
+    var data_aux = await forumHelper.getSubForum(id_forum);
+
+    var data_arr = await Promise.all(
+      data_aux.map(async (message) => {
+
+        var user_aux = await userHelper.findUserById(message.user);
+
+        var resplies_aux = message.replies.filter(function (a) {
+          return a.reply_enabled !== false;
+        });
+
+        var resplies_final = await Promise.all(
+          resplies_aux.map(async (reply_i) => {
+            var user_aux = await userHelper.findUserById(reply_i.user);
+            return {
+              user: user_aux.username,
+              reply: reply_i.reply,
+              id: reply_i._id,
+              reply_date: reply_i.reply_date,
+            };
+          })
+        );
+
+        return {
+          user: user_aux.username,
+          id: message._id,
+          title: message.title,
+          user_explanation: message.user_explanation,
+          replies: resplies_final,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+        };
+      })
+    );
+
+    var data = data_arr[0];
+
+    return res.status(201).json({ data });
   } catch (error) {
     return res.status(409).send({ error: "Error trying to add the reply" });
   }
@@ -233,19 +269,20 @@ const listSubForumByCategory = async (req, res) => {
 };
 
 const getSubForum = async (req, res) => {
-  const { owner, title } = req.body;
+  const { id_forum } = req.body;
 
-  if (!owner || !title) {
+  if (!id_forum) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user_owner = await userHelper.findUserByName(owner);
-
   try {
-    var data_aux = await forumHelper.getSubForum(user_owner, title);
+    var data_aux = await forumHelper.getSubForum(id_forum);
+
+    console.log(data_aux)
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
+
         var user_aux = await userHelper.findUserById(message.user);
 
         var resplies_aux = message.replies.filter(function (a) {

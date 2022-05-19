@@ -106,8 +106,7 @@ router.get("/category", ForumController.listSubForumByCategory);
  *            title:
  *              type: string
  *          example:
- *            owner: "user1"
- *            title: "title1"
+ *            id_forum: "6286bf884cb06d5a3c7bddda"
  *    responses:
  *      201:
  *        description: A list of enabled forums

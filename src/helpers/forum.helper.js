@@ -38,11 +38,11 @@ const createSubForumWithoutCat = async (
   return await forum.save();
 };
 
-const addReply = async (forum_owner, title_f, user_reply, text_reply) => {
+const addReply = async (id_forum, user_reply, text_reply) => {
   const date = new Date().getTime();
 
   return await Forum.findOneAndUpdate(
-    { user: forum_owner, title: title_f },
+    { _id: id_forum },
     {
       $push: {
         replies: {
@@ -99,8 +99,8 @@ const getByCategory = async (category_f) => {
   );
 };
 
-const getSubForum = async (forum_owner, title_f) => {
-  return await Forum.find({ user: forum_owner, title: title_f, enabled: true });
+const getSubForum = async (id_forum) => {
+  return await Forum.find({ _id: id_forum, enabled: true });
 };
 
 module.exports = {

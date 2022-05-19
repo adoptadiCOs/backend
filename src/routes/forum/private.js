@@ -91,8 +91,7 @@ router.post("/new", ForumController.newForum);
  *            comment:
  *              type: string
  *          example:
- *            owner: "user1"
- *            title: "title1"
+ *            id_forum: "6286bf884cb06d5a3c7bddda"
  *            comment: "comment1"
  *    responses:
  *      201:
