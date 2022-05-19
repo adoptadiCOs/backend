@@ -84,9 +84,7 @@ router.post("/new", ForumController.newForum);
  *        schema:
  *          type: object
  *          properties:
- *            owner:
- *              type: string
- *            title:
+ *            id_forum:
  *              type: string
  *            comment:
  *              type: string
@@ -143,13 +141,9 @@ router.post("/reply", ForumController.addComment);
  *        schema:
  *          type: object
  *          properties:
- *            name:
- *              type: string
- *            title:
- *              type: string
+ *            id_forum: string
  *          example:
- *            name: "user1"
- *            title: "title1"
+ *            id_forum: "23r2r9fwsdf9asf3"
  *    responses:
  *      201:
  *        description: Forum deleted
@@ -185,13 +179,9 @@ router.delete("/admin/delete", isAdmin, ForumController.deleteSubForumAdmin);
  *        schema:
  *          type: object
  *          properties:
- *            name:
- *              type: string
- *            title:
- *              type: string
+ *            id_forum: string
  *          example:
- *            name: "user1"
- *            title: "title1"
+ *            id_forum: "23r2r9fwsdf9asf3"
  *    responses:
  *      201:
  *        description: Forum deleted

@@ -114,16 +114,26 @@ const addComment = async (req, res) => {
 };
 
 const deleteSubForum = async (req, res) => {
-  const { username, title } = req.body;
+  const { id_forum, id } = req.body;
 
-  if (!username || !title) {
+  if (!id_forum || !id) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user = await userHelper.findUserByName(username);
-
   try {
-    var aux = await forumHelper.deleteSubForum(user, title);
+
+    var forum_aux = await forumHelper.getSubForum(id_forum);
+
+    console.log(id)
+    console.log(forum_aux[0].user)
+
+    if (forum_aux[0].user != id){
+      return res
+        .status(409)
+        .send({ error: "Error: You don't have permission to delete this forum" });
+    }
+
+    var aux = await forumHelper.deleteSubForum(id_forum);
     if (!aux) {
       return res
         .status(409)
@@ -138,16 +148,14 @@ const deleteSubForum = async (req, res) => {
 };
 
 const deleteSubForumAdmin = async (req, res) => {
-  const { name, title } = req.body;
+  const { id_forum } = req.body;
 
-  if (!name || !title) {
+  if (!id_forum) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user = await userHelper.findUserByName(name);
-
   try {
-    var aux = await forumHelper.deleteSubForum(user, title);
+    var aux = await forumHelper.deleteSubForum(id_forum);
     if (!aux) {
       return res
         .status(409)

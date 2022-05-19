@@ -56,9 +56,9 @@ const addReply = async (id_forum, user_reply, text_reply) => {
   );
 };
 
-const deleteSubForum = async (forum_owner, title_f) => {
+const deleteSubForum = async (id_forum) => {
   return await Forum.findOneAndUpdate(
-    { user: forum_owner, title: title_f, enabled: true },
+    { _id: id_forum, enabled: true },
     { enabled: false }
   );
 };
