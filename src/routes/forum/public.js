@@ -27,6 +27,7 @@ const router = Router();
  *              example:
  *                - user: "user1"
  *                  title: "title1"
+ *                  id: "asdasfderttertwt3456345"
  *                  user_explanation: "description1"
  *      500:
  *        description: Error of the server
@@ -67,6 +68,7 @@ router.get("/list", ForumController.listSubForum);
  *              example:
  *                - user: "user1"
  *                  title: "title1"
+ *                  id: "asdasfderttertwt3456345"
  *                  user_explanation: "description1"
  *                  category: "cats"
  *      400:
@@ -112,11 +114,13 @@ router.get("/category", ForumController.listSubForumByCategory);
  *              example:
  *                - user: "user1"
  *                  title: "title1"
+ *                  id: "asdasfderttertwt3456345"
  *                  user_explanation: "description1"
  *                  date: "2022-05-17T08:59:49.802Z"
  *                  createdAt: "2022-05-17T08:59:49.802Z"
  *                  updatedAt: "2022-05-17T08:59:49.802Z"
  *                  replies: [ { user: "user1",
+ *                             id: "asdasfderttertwt3456346",
  *                             reply: "reply1",
  *                             reply_date: "2022-05-17T09:00:02.265Z" } ]
  *      400:
