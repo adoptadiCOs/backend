@@ -285,32 +285,4 @@ router.delete(
  */
 router.delete("/deletereply", ForumController.deleteComment);
 
-/**
- * @swagger
- * /forum/admin/numberofforums:
- *  get:
- *    tags:
- *      - forum
- *    summary: Gets the number of forums
- *    description:
- *    consumes:
- *      - "application/json"
- *    produces:
- *    - application/json
- *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
- *    responses:
- *      201:
- *        description: Returns the number of active forums
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              example:
- *                - data: 4
- */
-router.get("/admin/numberofforums", isAdmin, ForumController.numberOfForums);
-
 module.exports = router;

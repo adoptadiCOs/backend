@@ -135,4 +135,28 @@ router.get("/category", ForumController.listSubForumByCategory);
 
 router.get("/", ForumController.getSubForum);
 
+/**
+ * @swagger
+ * /forum/admin/numberofforums:
+ *  get:
+ *    tags:
+ *      - forum
+ *    summary: Gets the number of forums
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    responses:
+ *      201:
+ *        description: Returns the number of active forums
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - data: 4
+ */
+ router.get("/admin/numberofforums", ForumController.numberOfForums);
+
 module.exports = router;
