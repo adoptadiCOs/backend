@@ -176,6 +176,6 @@ router.get("/", ForumController.getSubForum);
  *              example:
  *                - data: 4
  */
- router.get("/admin/numberofforums", ForumController.numberOfForums);
+router.get("/admin/numberofforums", ForumController.numberOfForums);
 
 module.exports = router;

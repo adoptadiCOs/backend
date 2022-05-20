@@ -220,7 +220,6 @@ const deleteCommentAdmin = async (req, res) => {
 };
 
 const listSubForum = async (req, res) => {
-
   const starts = parseInt(req.query.starts) || 0;
   const rows =
     req.query.rows < 50 && req.query.rows > 0 ? parseInt(req.query.rows) : 50;

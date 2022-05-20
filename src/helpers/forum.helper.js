@@ -106,7 +106,11 @@ const getAllSubForumPaged = async (starts, rows) => {
 };
 
 const getByCategoryPaged = async (category_f, starts, rows) => {
-  return await Forum.find({ category: category_f, enabled: true }, {}, { skip: starts, limit: rows });
+  return await Forum.find(
+    { category: category_f, enabled: true },
+    {},
+    { skip: starts, limit: rows }
+  );
 };
 
 const getSubForum = async (id_forum) => {
