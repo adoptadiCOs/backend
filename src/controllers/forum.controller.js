@@ -350,17 +350,15 @@ const numberOfReplies = async (req, res) => {
   try {
     var data_aux = await forumHelper.getAllSubForum();
 
-    console.log(data_aux);
-
-    var data_arr = await Promise.all(
+    await Promise.all(
       data_aux.map(async (message) => {
         var resplies_aux = message.replies.filter(function (a) {
           return a.reply_enabled !== false;
         });
 
         var resplies_final = resplies_aux.map((reply_i) => {
-          data = data +1;
-        })
+          data = data + 1;
+        });
 
         return {
           user_id: message.user,
@@ -377,7 +375,9 @@ const numberOfReplies = async (req, res) => {
 
     return res.status(201).json({ data });
   } catch (error) {
-    return res.status(500).send({ error: "Error trying to get the number of replies" });
+    return res
+      .status(500)
+      .send({ error: "Error trying to get the number of replies" });
   }
 };
 

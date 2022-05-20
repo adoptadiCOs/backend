@@ -307,6 +307,6 @@ router.delete("/deletereply", ForumController.deleteComment);
  *              example:
  *                - data: 4
  */
- router.get("/admin/numberofreplies", isAdmin, ForumController.numberOfReplies);
+router.get("/admin/numberofreplies", isAdmin, ForumController.numberOfReplies);
 
 module.exports = router;
