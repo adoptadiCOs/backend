@@ -115,10 +115,9 @@ const getByCategoryPaged = async (category_f, starts, rows) => {
 
 const getBestCategory = async () => {
   return await Forum.aggregate([
-    { $match:{enabled: true}},
-    { $sortByCount: "$category" }
-]);
-
+    { $match: { enabled: true } },
+    { $sortByCount: "$category" },
+  ]);
 };
 
 const getSubForum = async (id_forum) => {

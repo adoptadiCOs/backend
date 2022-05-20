@@ -331,6 +331,6 @@ router.get("/admin/numberofreplies", isAdmin, ForumController.numberOfReplies);
  *              example:
  *                - data: gato
  */
- router.get("/admin/bestcategory", isAdmin, ForumController.bestCategory);
+router.get("/admin/bestcategory", isAdmin, ForumController.bestCategory);
 
 module.exports = router;

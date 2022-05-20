@@ -380,14 +380,13 @@ const numberOfReplies = async (req, res) => {
 };
 
 const bestCategory = async (req, res) => {
-
   try {
     var data_aux = await forumHelper.getBestCategory();
 
     var best = data_aux[0]._id;
 
-    if (!best){
-      best = "undefined category"
+    if (!best) {
+      best = "undefined category";
     }
     return res.status(200).json({ best });
   } catch (error) {
