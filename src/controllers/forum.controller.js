@@ -356,7 +356,7 @@ const numberOfReplies = async (req, res) => {
           return a.reply_enabled !== false;
         });
 
-        var resplies_final = resplies_aux.map((reply_i) => {
+        var resplies_final = resplies_aux.map(() => {
           data = data + 1;
         });
 
