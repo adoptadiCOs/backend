@@ -265,7 +265,6 @@ const listSubForumByCategory = async (req, res) => {
 
     var data = await Promise.all(
       data_aux.map(async (message) => {
-        var user_aux = await userHelper.findUserById(message.user);
         return {
           user_id: message.user,
           category: message.category,
@@ -300,8 +299,6 @@ const getSubForum = async (req, res) => {
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
-        var user_aux = await userHelper.findUserById(message.user);
-
         var resplies_aux = message.replies.filter(function (a) {
           return a.reply_enabled !== false;
         });
