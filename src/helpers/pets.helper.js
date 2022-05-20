@@ -171,6 +171,33 @@ const findBreeds = async (specie) => {
   }
 };
 
+const findAdoptedAnimal = async () => {
+  try {
+    const date = new Date(new Date().setHours(0, 0, 0, 0));
+    const yesterday = date.setDate(date.getDate() - 1);
+
+    const t = await Pet.find({ date: date });
+
+    const y = await Pet.find({ date: yesterday });
+
+    const results = t.filter(
+      ({ id: id1 }) => !y.some(({ id: id2 }) => id2 === id1)
+    );
+
+    console.log(results);
+
+    return {
+      data: results,
+      err: null,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      err: err,
+    };
+  }
+};
+
 module.exports = {
   insertAll,
   findPets,
@@ -179,4 +206,5 @@ module.exports = {
   findPetByID,
   findDangerous,
   findPetByIDPublic,
+  findAdoptedAnimal,
 };
