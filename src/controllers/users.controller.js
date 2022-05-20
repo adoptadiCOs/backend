@@ -100,6 +100,7 @@ const login = async (req, res) => {
 
 /* Logs out the current user  */
 const logout = async (_, res) => {
+  // ? Solo para posibles estadisticas
   return res.status(200).json({ message: "Tú sesión ha sido finalizada" });
 };
 
@@ -128,22 +129,16 @@ const getAvatar = async (req, res) => {
   }
 };
 
-/* Update user */
-const updateUser = async (req, res) => {
-  const { id, bio, avatar } = req.body;
+/* Update biography */
+const updateBio = async (req, res) => {
+  const { id, bio } = req.body;
 
-  let fieldsToUpdate = {};
-
-  if (bio !== undefined) {
-    fieldsToUpdate["bio"] = bio;
-  }
-
-  if (avatar !== undefined) {
-    fieldsToUpdate["avatar"] = avatar;
+  if (!bio) {
+    return res.status(400).json({ error: "Requiere una nueva biografía" });
   }
 
   try {
-    var user = await userHelper.findUserAndUpdate(id, fieldsToUpdate);
+    var user = await userHelper.updateBio(id, bio);
 
     if (!user) {
       return res
@@ -151,15 +146,58 @@ const updateUser = async (req, res) => {
         .json({ error: "No se ha podido encontrar tú cuenta." });
     }
 
-    return res.status(200).json({
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      bio: user.bio,
-      avatar: user.avatar,
-      createdAt: user.createdAt,
+    return res.status(200).json({ bio: user.bio });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+/* Update password */
+const updatePassword = async (req, res) => {
+  const { id, password, newPassword, repeatedNewPassword } = req.body;
+
+  // Comprueba que se le pasan todos los parametros
+  if (!password || !newPassword || !repeatedNewPassword) {
+    return res.status(400).json({ error: "Introduce todos los campos." });
+  }
+
+  try {
+    var user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+
+  // Comprueba que la contraseña es correcta
+  const validPassword = await bcrypt.compare(password, user.password);
+
+  if (!validPassword) {
+    return res
+      .status(400)
+      .json({ error: "Contraseña incorrecta. Vuelve a intentarlo" });
+  }
+
+  // Comprueba que las nuevas contraseñas sean iguales
+  if (newPassword !== repeatedNewPassword) {
+    return res.status(400).json({
+      error: "Las nuevas contraseñas no coinciden. Inténtalo de nuevo.",
     });
+  }
+
+  // Cifra la contraseña
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(newPassword, salt);
+
+  //Actualiza la contraseña
+  try {
+    await userHelper.updatePassword(id, hash);
+
+    return res.status(200).json({ message: "Tú contraseña ha sido cambiada" });
   } catch (error) {
     return res.status(500).json({ error: error });
   }
@@ -170,9 +208,9 @@ const deleteUser = async (req, res) => {
   const { id } = req.body;
 
   try {
-    const { deletedCount } = await userHelper.deleteUserById(id);
+    const deletedUser = await userHelper.deleteUserById(id);
 
-    if (deletedCount == 0) {
+    if (!deletedUser) {
       return res
         .status(400)
         .json({ error: "No se ha podido eliminar tú cuenta" });
@@ -183,12 +221,96 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const updateUsername = async (req, res) => {
+  const { id, newUsername } = req.body;
+
+  if (!newUsername) {
+    return res
+      .status(400)
+      .json({ error: "Requiere un nuevo nombre de usuario" });
+  }
+
+  try {
+    var user = await userHelper.updateUsername(id, newUsername);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+
+    const accessToken = jwt.sign(
+      {
+        username: user.username,
+        id: user._id,
+      },
+      process.env.SECRET
+    );
+
+    return res
+      .status(200)
+      .json({ username: user.username, accessToken: accessToken });
+  } catch (error) {
+    return res.status(409).send({
+      error: "Ese usuario ya está en uso. Prueba con otro.",
+    });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const users = await userHelper.findAll();
+
+    return res.status(200).json({ users: users });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+const banUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    var user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+
+    if (user.role === "admin") {
+      return res.status(403).json({
+        error: "No está permitido eliminar la cuenta de un administrador.",
+      });
+    }
+
+    const deletedUser = await userHelper.deleteUserById(id);
+
+    if (!deletedUser) {
+      return res
+        .status(400)
+        .json({ error: "No se ha podido eliminar tú cuenta" });
+    }
+
+    return res
+      .status(204)
+      .json({ message: "La cuenta ha sido sido eliminada" });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};
+
 module.exports = {
   signup,
   login,
   logout,
-  updateUser,
   updateAvatar,
   getAvatar,
   deleteUser,
+  updateBio,
+  updatePassword,
+  updateUsername,
+  getUsers,
+  banUser,
 };

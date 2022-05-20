@@ -11,15 +11,14 @@ const router = Router();
  *  post:
  *    tags:
  *      - users
- *    summary: Create user
+ *    summary: Create user (Register)
  *    description:
  *    consumes:
  *      - "application/json"
  *    produces:
  *      - application/json
  *    parameters:
- *      - name: user
- *        in: body
+ *      - in: body
  *        required: true
  *        schema:
  *          type: object
@@ -58,8 +57,7 @@ router.post("/", UserController.signup);
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: user
- *        in: body
+ *      - in: body
  *        required: true
  *        schema:
  *          type: object

@@ -2,13 +2,14 @@ const axios = require("axios");
 const Cronjob = require("cron").CronJob;
 
 const Pet = require("../models/pets");
-const { insertAll } = require("../helpers/pets.helper");
-const { insertStatistic } = require("../helpers/statistics.helper");
+const { insertAll, findAdoptedAnimal } = require("../helpers/pets.helper");
+//const { insertStatistic } = require("../helpers/statistics.helper");
+const { postTwit } = require("../helpers/twitter.helper");
 
 const URL_ADOPTION =
-  "https://www.zaragoza.es/sede/servicio/mascotas?rf=html&start=0&rows=500";
+  "https://www.zaragoza.es/sede/servicio/mascotas?rf=html&start=0&rows=750";
 const URL_PROTECCION =
-  "https://www.zaragoza.es/sede/servicio/proteccion-animal?rf=html&start=0&rows=500";
+  "https://www.zaragoza.es/sede/servicio/proteccion-animal?rf=html&start=0&rows=750";
 
 const fetchFromUrl = async (url) => {
   const res = await axios.get(url);
@@ -65,7 +66,53 @@ const fetchPets = async () => {
 
     await insertAll(pets);
 
-    await insertStatistic(pets.length);
+    // Creamos array con los meses del año
+    const meses = [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ];
+    // Creamos array con los días de la semana
+    const dias_semana = [
+      "Domingo",
+      "Lunes",
+      "martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+      "Sábado",
+    ];
+    // Creamos el objeto fecha instanciándolo con la clase Date
+    const fecha = new Date();
+    // Construimos el formato de salida
+
+    const date =
+      dias_semana[fecha.getDay()] +
+      ", " +
+      fecha.getDate() +
+      " de " +
+      meses[fecha.getMonth()] +
+      " de " +
+      fecha.getUTCFullYear();
+    const tweet = `Buen dia ${date} a todos los amantes de los animaliCOs!!! \n solo pasabamos para recordaros que seguimos teniendo ${pets.length} animales para poder adoptar! \n\n pasaros por nuestra pagina web para poder descubrirlos a todos 😇😇`;
+
+    postTwit(tweet);
+
+    const adopted = await findAdoptedAnimal();
+
+    for (const animal of adopted.data) {
+      const tweet = `Hoy felicitamos a ${animal.name} un ${animal.specie} de raza ${animal.breed} por ser adoptado!! mucha suerte con tu nueva familia!!`;
+      postTwit(tweet);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -74,4 +121,4 @@ const fetchPets = async () => {
 const sync = new Cronjob("0 0 0 * * *", fetchPets);
 
 module.exports = sync;
-//module.exports = {sync, fetchPets}
+//module.exports = { sync, fetchPets };

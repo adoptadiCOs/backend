@@ -25,34 +25,27 @@ const findStatistics = async () => {
   }
 };
 
-const insertStatisticBest = async (starts, rows) => {
+const findPetsNumber = async () => {
   try {
     const date = new Date(new Date().setHours(0, 0, 0, 0));
-    date.setDate(date.getDate() - 1).getTime();
 
-    const query = {};
-    query["date"] = date;
+    console.log(date);
 
-    const res = await Pet.find(query, {}, { skip: starts, limit: rows }).select(
-      {
-        date: 0,
-        id: 0,
-        size: 0,
-        color: 0,
-        description: 0,
-        rage: 0,
-        danger: 0,
-        sterile: 0,
-        bornDate: 0,
-        adoptionDate: 0,
-        __v: 0,
-      }
-    );
+    const res = await Pet.aggregate([
+      { $match: { date: date } },
+      { $group: { _id: "$specie", count: { $sum: 1 } } },
+    ]);
 
-    return res;
+    return {
+      data: res,
+      err: null,
+    };
   } catch (err) {
     console.log(err);
+    return {
+      err: err,
+    };
   }
 };
 
-module.exports = { insertStatistic, findStatistics, insertStatisticBest };
+module.exports = { insertStatistic, findStatistics, findPetsNumber };
