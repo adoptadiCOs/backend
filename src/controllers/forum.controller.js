@@ -220,14 +220,19 @@ const deleteCommentAdmin = async (req, res) => {
 };
 
 const listSubForum = async (req, res) => {
+
+  const starts = parseInt(req.query.starts) || 0;
+  const rows =
+    req.query.rows < 50 && req.query.rows > 0 ? parseInt(req.query.rows) : 50;
+
   try {
-    var data_aux = await forumHelper.getAllSubForum();
+    var data_aux = await forumHelper.getAllSubForumPaged(starts, rows);
 
     var data = await Promise.all(
       data_aux.map(async (message) => {
-        var user_aux = await userHelper.findUserById(message.user);
         return {
-          user: user_aux.username,
+          user_id: message.user,
+          category: message.category,
           title: message.title,
           id: message._id,
           user_explanation: message.user_explanation,
@@ -239,7 +244,7 @@ const listSubForum = async (req, res) => {
 
     console.log(data);
 
-    return res.status(201).json({ data });
+    return res.status(200).json({ data });
   } catch (error) {
     return res.status(500).send({ error: "Error trying to list forums" });
   }
