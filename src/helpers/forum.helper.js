@@ -89,19 +89,20 @@ const deleteReply = async (forum_id, user_id, reply_id) => {
 };
 
 const checkCommentOwner = async (forum_id, user_id, reply_id) => {
-  return await Forum.find({"replies.reply_enabled": true, "replies._id": reply_id,"replies.user": user_id, _id: forum_id})
-}
+  return await Forum.find({
+    "replies.reply_enabled": true,
+    "replies._id": reply_id,
+    "replies.user": user_id,
+    _id: forum_id,
+  });
+};
 
 const getAllSubForum = async () => {
-  return await Forum.find(
-    { enabled: true },
-  );
+  return await Forum.find({ enabled: true });
 };
 
 const getByCategory = async (category_f) => {
-  return await Forum.find(
-    { category: category_f, enabled: true },
-  );
+  return await Forum.find({ category: category_f, enabled: true });
 };
 
 const getSubForum = async (id_forum) => {

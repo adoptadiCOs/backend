@@ -1,4 +1,7 @@
-const { findStatistics, findPetsNumber } = require("../helpers/statistics.helper");
+const {
+  findStatistics,
+  findPetsNumber,
+} = require("../helpers/statistics.helper");
 const { findDangerous } = require("../helpers/pets.helper");
 
 const GetStatistics = async (req, res) => {
@@ -6,8 +9,7 @@ const GetStatistics = async (req, res) => {
   const res2 = await findDangerous();
   const res3 = await findPetsNumber();
 
-  console.log(res3.data)
-
+  console.log(res3.data);
 
   if (res1.err !== null || res2.err !== null) {
     return res
@@ -28,8 +30,7 @@ const GetStatistics = async (req, res) => {
   let total_adoptions = dogs_adopted + cats_adopted + others;
 
   const statistics = {
-    1: res3.data
-    ,
+    1: res3.data,
     2: {
       total_adoptions,
       animals_in_adoption,

@@ -49,9 +49,7 @@ const newForum = async (req, res) => {
     return res.status(201).json({ data });
   } catch (error) {
     console.log(error);
-    return res
-      .status(409)
-      .send({ error: "Error creating the new forum" });
+    return res.status(409).send({ error: "Error creating the new forum" });
   }
 };
 
@@ -74,7 +72,6 @@ const addComment = async (req, res) => {
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
-
         var user_aux = await userHelper.findUserById(message.user);
 
         var resplies_aux = message.replies.filter(function (a) {
@@ -121,13 +118,14 @@ const deleteSubForum = async (req, res) => {
   }
 
   try {
-
     var forum_aux = await forumHelper.getSubForum(id_forum);
 
-    if (forum_aux[0].user != id){
+    if (forum_aux[0].user != id) {
       return res
         .status(409)
-        .send({ error: "Error: You don't have permission to delete this forum" });
+        .send({
+          error: "Error: You don't have permission to delete this forum",
+        });
     }
 
     var aux = await forumHelper.deleteSubForum(id_forum);
@@ -174,19 +172,20 @@ const deleteComment = async (req, res) => {
   }
 
   try {
-
     var prev = await forumHelper.checkCommentOwner(id_forum, id, id_comment);
     var len = prev.length;
 
     if (len === 0) {
       return res
         .status(409)
-        .send({ error: "This reply doesn't exist or you don't have permissions" });
+        .send({
+          error: "This reply doesn't exist or you don't have permissions",
+        });
     }
 
     var aux = await forumHelper.deleteReply(id_forum, id, id_comment);
 
-    console.log(aux)
+    console.log(aux);
 
     if (!aux) {
       return res
@@ -206,13 +205,13 @@ const deleteCommentAdmin = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  console.log(id_forum)
-  console.log(id_comment)
-  console.log(id_user)
+  console.log(id_forum);
+  console.log(id_comment);
+  console.log(id_user);
 
   try {
     var aux = await forumHelper.deleteReply(id_forum, id_user, id_comment);
-    console.log(aux)
+    console.log(aux);
     if (!aux) {
       return res
         .status(409)
@@ -242,7 +241,7 @@ const listSubForum = async (req, res) => {
       })
     );
 
-    console.log(data)
+    console.log(data);
 
     return res.status(201).json({ data });
   } catch (error) {
@@ -293,11 +292,10 @@ const getSubForum = async (req, res) => {
   try {
     var data_aux = await forumHelper.getSubForum(id_forum);
 
-    console.log(data_aux)
+    console.log(data_aux);
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
-
         var user_aux = await userHelper.findUserById(message.user);
 
         var resplies_aux = message.replies.filter(function (a) {
@@ -343,7 +341,7 @@ const numberOfForums = async (req, res) => {
   var data = data_aux.length;
 
   return res.status(201).json({ data });
-}
+};
 
 module.exports = {
   newForum,
@@ -355,5 +353,5 @@ module.exports = {
   listSubForum,
   listSubForumByCategory,
   getSubForum,
-  numberOfForums
+  numberOfForums,
 };
