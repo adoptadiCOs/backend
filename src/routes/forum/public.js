@@ -66,17 +66,26 @@ router.get("/list", ForumController.listSubForum);
  *      - "application/json"
  *    produces:
  *      - application/json
- *    parameters:
- *      - name: category
- *        in: body
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            category:
+*    parameters:
+ *        - in: query
+ *          name: starts
+ *          schema:
+ *              type: integer
+ *              minimum: 0
+ *              default: 0
+ *              description: Page starts on
+ *        - in: query
+ *          name: rows
+ *          schema:
+ *              type: integer
+ *              minimum: 0
+ *              maximun: 50
+ *              default: 0
+ *          description: The numbers of items to return
+ *        - in: category
+ *          schema:
  *              type: string
- *          example:
- *            category: "cats"
+ *              description: Category to search
  *    responses:
  *      201:
  *        description: A list of enabled forums with specified category
@@ -85,10 +94,10 @@ router.get("/list", ForumController.listSubForum);
  *            schema:
  *              type: array
  *              example:
- *                - user: "user1"
+ *                - user_id: "6286bf884cb06d5a3c7bddda2"
+ *                  category: "gatos"
  *                  title: "title1"
  *                  user_explanation: "description1"
- *                  category: "cats"
  *                  id: "6286bf884cb06d5a3c7bddda"
  *                  createdAt: "2022-05-19T22:12:58.080Z"
  *                  updatedAt: "2022-05-19T22:12:58.080Z"
