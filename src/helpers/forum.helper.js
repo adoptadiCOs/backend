@@ -120,6 +120,10 @@ const getBestCategory = async () => {
   ]);
 };
 
+const getSubForumUserName = async (user_id, title) => {
+  return await Forum.find({ user: user_id, title: title, enabled: true });
+};
+
 const getSubForum = async (id_forum) => {
   return await Forum.find({ _id: id_forum, enabled: true });
 };
@@ -135,5 +139,6 @@ module.exports = {
   getAllSubForumPaged,
   getByCategoryPaged,
   getBestCategory,
+  getSubForumUserName,
   getSubForum,
 };

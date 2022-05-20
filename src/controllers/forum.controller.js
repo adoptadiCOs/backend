@@ -11,7 +11,7 @@ const newForum = async (req, res) => {
 
   const user = await userHelper.findUserByName(username);
 
-  var prev = await forumHelper.getSubForum(user, title);
+  var prev = await forumHelper.getSubForumUserName(user, title);
   var len = prev.length;
 
   if (len !== 0) {
@@ -27,7 +27,7 @@ const newForum = async (req, res) => {
       await forumHelper.createSubForum(user, category, title, user_explanation);
     }
 
-    var data_aux = await forumHelper.getSubForum(user, title);
+    var data_aux = await forumHelper.getSubForumUserName(user, title);
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
