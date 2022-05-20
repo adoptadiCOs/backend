@@ -48,4 +48,4 @@ const findPetsNumber = async () => {
   }
 };
 
-module.exports = { insertStatistic, findStatistics,findPetsNumber };
+module.exports = { insertStatistic, findStatistics, findPetsNumber };

@@ -3,7 +3,7 @@ const {
   findSpecies,
   findBreeds,
   findPetByID,
-  findPetByIDPublic
+  findPetByIDPublic,
 } = require("../helpers/pets.helper");
 
 const GetPets = async (req, res) => {
@@ -21,8 +21,6 @@ const GetPets = async (req, res) => {
 
   return res.status(200).json({ data: data });
 };
-
-
 
 const GetPet = async (req, res) => {
   const id = req.query.id;

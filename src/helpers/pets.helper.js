@@ -106,21 +106,19 @@ const findPetByIDPublic = async (id) => {
     const date = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
     const _id = parseInt(id.toString() + date.toString(), 10).toString(16);
 
-    const res = await Pet.findById(_id).select(
-      {
-        date: 0,
-        _id: 0,
-        size: 0,
-        color: 0,
-        description: 0,
-        rage: 0,
-        danger: 0,
-        sterile: 0,
-        bornDate: 0,
-        adoptionDate: 0,
-        __v: 0,
-      }
-    );;
+    const res = await Pet.findById(_id).select({
+      date: 0,
+      _id: 0,
+      size: 0,
+      color: 0,
+      description: 0,
+      rage: 0,
+      danger: 0,
+      sterile: 0,
+      bornDate: 0,
+      adoptionDate: 0,
+      __v: 0,
+    });
 
     return {
       data: res,
@@ -180,5 +178,5 @@ module.exports = {
   findBreeds,
   findPetByID,
   findDangerous,
-  findPetByIDPublic
+  findPetByIDPublic,
 };
