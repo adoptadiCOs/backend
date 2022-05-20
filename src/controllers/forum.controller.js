@@ -337,6 +337,14 @@ const getSubForum = async (req, res) => {
   }
 };
 
+const numberOfForums = async (req, res) => {
+  var data_aux = await forumHelper.getAllSubForum();
+
+  var data = data_aux.length;
+
+  return res.status(201).json({ data });
+}
+
 module.exports = {
   newForum,
   addComment,
@@ -347,4 +355,5 @@ module.exports = {
   listSubForum,
   listSubForumByCategory,
   getSubForum,
+  numberOfForums
 };
