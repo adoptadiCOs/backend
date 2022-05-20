@@ -113,6 +113,14 @@ const getByCategoryPaged = async (category_f, starts, rows) => {
   );
 };
 
+const getBestCategory = async () => {
+  return await Forum.aggregate([
+    { $match:{enabled: true}},
+    { $sortByCount: "$category" }
+]);
+
+};
+
 const getSubForum = async (id_forum) => {
   return await Forum.find({ _id: id_forum, enabled: true });
 };
@@ -127,5 +135,6 @@ module.exports = {
   getAllSubForum,
   getAllSubForumPaged,
   getByCategoryPaged,
+  getBestCategory,
   getSubForum,
 };
