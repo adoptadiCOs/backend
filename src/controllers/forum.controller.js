@@ -82,7 +82,7 @@ const addComment = async (req, res) => {
           resplies_aux.map(async (reply_i) => {
             var user_aux = await userHelper.findUserById(reply_i.user);
             return {
-              user: user_aux.username,
+              user_id: user_aux._id,
               reply: reply_i.reply,
               id: reply_i._id,
               reply_date: reply_i.reply_date,
@@ -91,7 +91,7 @@ const addComment = async (req, res) => {
         );
 
         return {
-          user: user_aux.username,
+          user_id: message.user,
           id: message._id,
           title: message.title,
           user_explanation: message.user_explanation,
