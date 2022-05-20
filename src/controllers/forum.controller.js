@@ -121,11 +121,9 @@ const deleteSubForum = async (req, res) => {
     var forum_aux = await forumHelper.getSubForum(id_forum);
 
     if (forum_aux[0].user != id) {
-      return res
-        .status(409)
-        .send({
-          error: "Error: You don't have permission to delete this forum",
-        });
+      return res.status(409).send({
+        error: "Error: You don't have permission to delete this forum",
+      });
     }
 
     var aux = await forumHelper.deleteSubForum(id_forum);
@@ -176,11 +174,9 @@ const deleteComment = async (req, res) => {
     var len = prev.length;
 
     if (len === 0) {
-      return res
-        .status(409)
-        .send({
-          error: "This reply doesn't exist or you don't have permissions",
-        });
+      return res.status(409).send({
+        error: "This reply doesn't exist or you don't have permissions",
+      });
     }
 
     var aux = await forumHelper.deleteReply(id_forum, id, id_comment);
