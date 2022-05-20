@@ -3,6 +3,7 @@ const {
   findSpecies,
   findBreeds,
   findPetByID,
+  findPetByIDPublic,
 } = require("../helpers/pets.helper");
 
 const GetPets = async (req, res) => {
@@ -37,6 +38,22 @@ const GetPet = async (req, res) => {
   return res.status(200).json({ data: data });
 };
 
+const GetPetPublic = async (req, res) => {
+  const id = req.query.id;
+
+  if (id === undefined) {
+    return res.status(400).json({ error: "ID required" });
+  }
+
+  const { data, err } = await findPetByIDPublic(id);
+
+  if (err !== null) {
+    return res.status(400).json({ error: err });
+  }
+
+  return res.status(200).json({ data: data });
+};
+
 const GetSpecies = async (req, res) => {
   const { data, err } = await findSpecies();
   if (err !== null) {
@@ -56,4 +73,4 @@ const GetBreeds = async (req, res) => {
   return res.status(200).json({ data: data });
 };
 
-module.exports = { GetPets, GetSpecies, GetBreeds, GetPet };
+module.exports = { GetPets, GetSpecies, GetBreeds, GetPet, GetPetPublic };

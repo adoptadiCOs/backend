@@ -26,48 +26,107 @@ const newForum = async (req, res) => {
     } else {
       await forumHelper.createSubForum(user, category, title, user_explanation);
     }
-    return res.status(201).json({ message: "Forum created" });
+
+    var data_aux = await forumHelper.getSubForum(user, title);
+
+    var data_arr = await Promise.all(
+      data_aux.map(async (message) => {
+        var user_aux = await userHelper.findUserById(message.user);
+
+        return {
+          user: user_aux.username,
+          id: message._id,
+          title: message.title,
+          user_explanation: message.user_explanation,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+        };
+      })
+    );
+
+    var data = data_arr[0];
+
+    return res.status(201).json({ data });
   } catch (error) {
     console.log(error);
-    return res
-      .status(409)
-      .send({ error: "This forum was previously created by the same user" });
+    return res.status(409).send({ error: "Error creating the new forum" });
   }
 };
 
 const addComment = async (req, res) => {
-  const { owner, title, username, comment } = req.body;
+  const { id_forum, username, comment } = req.body;
 
-  if (!owner || !title || !username || !comment) {
+  if (!id_forum || !username || !comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
-
-  const user_owner = await userHelper.findUserByName(owner);
 
   const user = await userHelper.findUserByName(username);
 
   try {
-    var aux = await forumHelper.addReply(user_owner, title, user, comment);
+    var aux = await forumHelper.addReply(id_forum, user, comment);
     if (!aux) {
       return res.status(409).send({ error: "Error trying to add the reply" });
     }
-    return res.status(201).json({ message: "Comment Added" });
+
+    var data_aux = await forumHelper.getSubForum(id_forum);
+
+    var data_arr = await Promise.all(
+      data_aux.map(async (message) => {
+        var user_aux = await userHelper.findUserById(message.user);
+
+        var resplies_aux = message.replies.filter(function (a) {
+          return a.reply_enabled !== false;
+        });
+
+        var resplies_final = await Promise.all(
+          resplies_aux.map(async (reply_i) => {
+            var user_aux = await userHelper.findUserById(reply_i.user);
+            return {
+              user: user_aux.username,
+              reply: reply_i.reply,
+              id: reply_i._id,
+              reply_date: reply_i.reply_date,
+            };
+          })
+        );
+
+        return {
+          user: user_aux.username,
+          id: message._id,
+          title: message.title,
+          user_explanation: message.user_explanation,
+          replies: resplies_final,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+        };
+      })
+    );
+
+    var data = data_arr[0];
+
+    return res.status(201).json({ data });
   } catch (error) {
     return res.status(409).send({ error: "Error trying to add the reply" });
   }
 };
 
 const deleteSubForum = async (req, res) => {
-  const { username, title } = req.body;
+  const { id_forum, id } = req.body;
 
-  if (!username || !title) {
+  if (!id_forum || !id) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user = await userHelper.findUserByName(username);
-
   try {
-    var aux = await forumHelper.deleteSubForum(user, title);
+    var forum_aux = await forumHelper.getSubForum(id_forum);
+
+    if (forum_aux[0].user != id) {
+      return res.status(409).send({
+        error: "Error: You don't have permission to delete this forum",
+      });
+    }
+
+    var aux = await forumHelper.deleteSubForum(id_forum);
     if (!aux) {
       return res
         .status(409)
@@ -82,16 +141,14 @@ const deleteSubForum = async (req, res) => {
 };
 
 const deleteSubForumAdmin = async (req, res) => {
-  const { name, title } = req.body;
+  const { id_forum } = req.body;
 
-  if (!name || !title) {
+  if (!id_forum) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user = await userHelper.findUserByName(name);
-
   try {
-    var aux = await forumHelper.deleteSubForum(user, title);
+    var aux = await forumHelper.deleteSubForum(id_forum);
     if (!aux) {
       return res
         .status(409)
@@ -106,18 +163,26 @@ const deleteSubForumAdmin = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  const { owner, title, username, comment } = req.body;
+  const { id_forum, id_comment, id } = req.body;
 
-  if (!owner || !title || !username || !comment) {
+  if (!id_forum || !id || !id_comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user_owner = await userHelper.findUserByName(owner);
-
-  const user = await userHelper.findUserByName(username);
-
   try {
-    var aux = await forumHelper.deleteReply(user_owner, title, user, comment);
+    var prev = await forumHelper.checkCommentOwner(id_forum, id, id_comment);
+    var len = prev.length;
+
+    if (len === 0) {
+      return res.status(409).send({
+        error: "This reply doesn't exist or you don't have permissions",
+      });
+    }
+
+    var aux = await forumHelper.deleteReply(id_forum, id, id_comment);
+
+    console.log(aux);
+
     if (!aux) {
       return res
         .status(409)
@@ -130,18 +195,19 @@ const deleteComment = async (req, res) => {
 };
 
 const deleteCommentAdmin = async (req, res) => {
-  const { owner, title, name, comment } = req.body;
+  const { id_forum, id_comment, id_user } = req.body;
 
-  if (!owner || !title || !name || !comment) {
+  if (!id_forum || !id_user || !id_comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user_owner = await userHelper.findUserByName(owner);
-
-  const user = await userHelper.findUserByName(name);
+  console.log(id_forum);
+  console.log(id_comment);
+  console.log(id_user);
 
   try {
-    var aux = await forumHelper.deleteReply(user_owner, title, user, comment);
+    var aux = await forumHelper.deleteReply(id_forum, id_user, id_comment);
+    console.log(aux);
     if (!aux) {
       return res
         .status(409)
@@ -163,10 +229,15 @@ const listSubForum = async (req, res) => {
         return {
           user: user_aux.username,
           title: message.title,
+          id: message._id,
           user_explanation: message.user_explanation,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
         };
       })
     );
+
+    console.log(data);
 
     return res.status(201).json({ data });
   } catch (error) {
@@ -190,8 +261,11 @@ const listSubForumByCategory = async (req, res) => {
         return {
           user: user_aux.username,
           title: message.title,
+          id: message._id,
           user_explanation: message.user_explanation,
           category: message.category,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
         };
       })
     );
@@ -205,16 +279,16 @@ const listSubForumByCategory = async (req, res) => {
 };
 
 const getSubForum = async (req, res) => {
-  const { owner, title } = req.body;
+  const { id_forum } = req.body;
 
-  if (!owner || !title) {
+  if (!id_forum) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user_owner = await userHelper.findUserByName(owner);
-
   try {
-    var data_aux = await forumHelper.getSubForum(user_owner, title);
+    var data_aux = await forumHelper.getSubForum(id_forum);
+
+    console.log(data_aux);
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
@@ -229,7 +303,9 @@ const getSubForum = async (req, res) => {
             var user_aux = await userHelper.findUserById(reply_i.user);
             return {
               user: user_aux.username,
+              user_id: user_aux._id,
               reply: reply_i.reply,
+              id: reply_i._id,
               reply_date: reply_i.reply_date,
             };
           })
@@ -237,10 +313,10 @@ const getSubForum = async (req, res) => {
 
         return {
           user: user_aux.username,
+          id: message._id,
           title: message.title,
           user_explanation: message.user_explanation,
           replies: resplies_final,
-          date: message.date,
           createdAt: message.createdAt,
           updatedAt: message.updatedAt,
         };
@@ -255,6 +331,14 @@ const getSubForum = async (req, res) => {
   }
 };
 
+const numberOfForums = async (req, res) => {
+  var data_aux = await forumHelper.getAllSubForum();
+
+  var data = data_aux.length;
+
+  return res.status(201).json({ data });
+};
+
 module.exports = {
   newForum,
   addComment,
@@ -265,4 +349,5 @@ module.exports = {
   listSubForum,
   listSubForumByCategory,
   getSubForum,
+  numberOfForums,
 };

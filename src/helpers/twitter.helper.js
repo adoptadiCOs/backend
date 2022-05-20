@@ -15,7 +15,9 @@ const client = new Twitter({
 });
 
 const postTwit = async (msg) => {
-  client.post("statuses/update", { status: msg }, function (error, tweet) {
+  const tweet = { status: msg };
+
+  client.post("statuses/update", tweet, function (error, tweet) {
     if (error) {
       console.log(error);
     } else {
