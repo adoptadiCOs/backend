@@ -217,19 +217,16 @@ router.delete("/delete", ForumController.deleteSubForum);
  *        schema:
  *          type: object
  *          properties:
- *            owner:
+ *            id_forum:
  *              type: string
- *            title:
+ *            id_comment:
  *              type: string
- *            name:
- *              type: string
- *            comment:
+ *            id_user:
  *              type: string
  *          example:
- *            owner: "user1"
- *            title: "title1"
- *            name: "user2"
- *            comment: "comment2"
+ *            id_forum: "fwerg4gregd234fgd3424"
+ *            id_comment: "fwerg4gregd234fgd342g"
+ *            id_user: "fwerg4gregd234fgd342h"
  *    responses:
  *      201:
  *        description: Reply deleted
@@ -269,16 +266,13 @@ router.delete(
  *        schema:
  *          type: object
  *          properties:
- *            owner:
+ *            id_forum:
  *              type: string
- *            title:
- *              type: string
- *            comment:
+ *            id_comment:
  *              type: string
  *          example:
- *            owner: "user1"
- *            title: "title1"
- *            comment: "comment"
+ *            id_forum: "fwerg4gregd234fgd3424"
+ *            id_comment: "fwerg4gregd234fgd342g"
  *    responses:
  *      201:
  *        description: Reply deleted

@@ -124,9 +124,6 @@ const deleteSubForum = async (req, res) => {
 
     var forum_aux = await forumHelper.getSubForum(id_forum);
 
-    console.log(id)
-    console.log(forum_aux[0].user)
-
     if (forum_aux[0].user != id){
       return res
         .status(409)
@@ -170,18 +167,27 @@ const deleteSubForumAdmin = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  const { owner, title, username, comment } = req.body;
+  const { id_forum, id_comment, id } = req.body;
 
-  if (!owner || !title || !username || !comment) {
+  if (!id_forum || !id || !id_comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user_owner = await userHelper.findUserByName(owner);
-
-  const user = await userHelper.findUserByName(username);
-
   try {
-    var aux = await forumHelper.deleteReply(user_owner, title, user, comment);
+
+    var prev = await forumHelper.checkCommentOwner(id_forum, id, id_comment);
+    var len = prev.length;
+
+    if (len === 0) {
+      return res
+        .status(409)
+        .send({ error: "This reply doesn't exist or you don't have permissions" });
+    }
+
+    var aux = await forumHelper.deleteReply(id_forum, id, id_comment);
+
+    console.log(aux)
+
     if (!aux) {
       return res
         .status(409)
@@ -194,18 +200,19 @@ const deleteComment = async (req, res) => {
 };
 
 const deleteCommentAdmin = async (req, res) => {
-  const { owner, title, name, comment } = req.body;
+  const { id_forum, id_comment, id_user } = req.body;
 
-  if (!owner || !title || !name || !comment) {
+  if (!id_forum || !id_user || !id_comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user_owner = await userHelper.findUserByName(owner);
-
-  const user = await userHelper.findUserByName(name);
+  console.log(id_forum)
+  console.log(id_comment)
+  console.log(id_user)
 
   try {
-    var aux = await forumHelper.deleteReply(user_owner, title, user, comment);
+    var aux = await forumHelper.deleteReply(id_forum, id_user, id_comment);
+    console.log(aux)
     if (!aux) {
       return res
         .status(409)
@@ -302,6 +309,7 @@ const getSubForum = async (req, res) => {
             var user_aux = await userHelper.findUserById(reply_i.user);
             return {
               user: user_aux.username,
+              user_id: user_aux._id,
               reply: reply_i.reply,
               id: reply_i._id,
               reply_date: reply_i.reply_date,
