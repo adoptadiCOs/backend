@@ -344,6 +344,43 @@ const numberOfForums = async (req, res) => {
   return res.status(201).json({ data });
 };
 
+const numberOfReplies = async (req, res) => {
+  var data = 0;
+
+  try {
+    var data_aux = await forumHelper.getAllSubForum();
+
+    console.log(data_aux);
+
+    var data_arr = await Promise.all(
+      data_aux.map(async (message) => {
+        var resplies_aux = message.replies.filter(function (a) {
+          return a.reply_enabled !== false;
+        });
+
+        var resplies_final = resplies_aux.map((reply_i) => {
+          data = data +1;
+        })
+
+        return {
+          user_id: message.user,
+          category: message.category,
+          title: message.title,
+          id: message._id,
+          user_explanation: message.user_explanation,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+          replies: resplies_final,
+        };
+      })
+    );
+
+    return res.status(201).json({ data });
+  } catch (error) {
+    return res.status(500).send({ error: "Error trying to get the number of replies" });
+  }
+};
+
 module.exports = {
   newForum,
   addComment,
@@ -355,4 +392,5 @@ module.exports = {
   listSubForumByCategory,
   getSubForum,
   numberOfForums,
+  numberOfReplies,
 };
