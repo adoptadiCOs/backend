@@ -66,7 +66,7 @@ router.get("/list", ForumController.listSubForum);
  *      - "application/json"
  *    produces:
  *      - application/json
-*    parameters:
+ *    parameters:
  *        - in: query
  *          name: starts
  *          schema:
@@ -121,18 +121,10 @@ router.get("/category", ForumController.listSubForumByCategory);
  *    produces:
  *      - application/json
  *    parameters:
- *      - name: forumx
- *        in: body
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            owner:
+ *        - in: id_forum
+ *          schema:
  *              type: string
- *            title:
- *              type: string
- *          example:
- *            id_forum: "6286bf884cb06d5a3c7bddda"
+ *              description: Category to search
  *    responses:
  *      201:
  *        description: Get all information of a forum
@@ -141,13 +133,14 @@ router.get("/category", ForumController.listSubForumByCategory);
  *            schema:
  *              type: object
  *              example:
- *                - user: "user1"
+ *                - user_id: "6286c608be23981510abb356"
+ *                  category: "gatos"
  *                  title: "title1"
  *                  user_explanation: "description1"
  *                  id: "6286bf884cb06d5a3c7bddda"
  *                  createdAt: "2022-05-19T22:12:58.080Z"
  *                  updatedAt: "2022-05-19T22:12:58.080Z"
- *                  replies: [ { user: "user1",
+ *                  replies: [ { user_id: "6286c608be23981510abb356",
  *                             reply: "reply1",
  *                             id: "6286c608be23981510abb356",
  *                             reply_date: "2022-05-17T09:00:02.265Z" } ]

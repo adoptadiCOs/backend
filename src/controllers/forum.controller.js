@@ -288,7 +288,7 @@ const listSubForumByCategory = async (req, res) => {
 };
 
 const getSubForum = async (req, res) => {
-  const { id_forum } = req.body;
+  const id_forum = req.query.id_forum;
 
   if (!id_forum) {
     return res.status(400).json({ error: "Unspecified some parameters" });
@@ -311,7 +311,6 @@ const getSubForum = async (req, res) => {
           resplies_aux.map(async (reply_i) => {
             var user_aux = await userHelper.findUserById(reply_i.user);
             return {
-              user: user_aux.username,
               user_id: user_aux._id,
               reply: reply_i.reply,
               id: reply_i._id,
@@ -321,13 +320,14 @@ const getSubForum = async (req, res) => {
         );
 
         return {
-          user: user_aux.username,
-          id: message._id,
+          user_id: message.user,
+          category: message.category,
           title: message.title,
+          id: message._id,
           user_explanation: message.user_explanation,
-          replies: resplies_final,
           createdAt: message.createdAt,
           updatedAt: message.updatedAt,
+          replies: resplies_final,
         };
       })
     );
