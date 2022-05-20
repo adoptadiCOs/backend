@@ -40,7 +40,18 @@ const router = Router();
  *            category: "cats"
  *    responses:
  *      201:
- *        description: Forum created
+ *        description: Info about the created forum
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - user: "user1"
+ *                  title: "title1"
+ *                  user_explanation: "description1"
+ *                  id: "6286bf884cb06d5a3c7bddda"
+ *                  createdAt: "2022-05-19T22:12:58.080Z"
+ *                  updatedAt: "2022-05-19T22:12:58.080Z"
  *      400:
  *        description: No enough parameters
  *      409:
@@ -73,19 +84,31 @@ router.post("/new", ForumController.newForum);
  *        schema:
  *          type: object
  *          properties:
- *            owner:
- *              type: string
- *            title:
+ *            id_forum:
  *              type: string
  *            comment:
  *              type: string
  *          example:
- *            owner: "user1"
- *            title: "title1"
+ *            id_forum: "6286bf884cb06d5a3c7bddda"
  *            comment: "comment1"
  *    responses:
  *      201:
- *        description: Comment added
+ *        description: Added the comment
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - user: "user1"
+ *                  title: "title1"
+ *                  user_explanation: "description1"
+ *                  id: "6286bf884cb06d5a3c7bddda"
+ *                  createdAt: "2022-05-19T22:12:58.080Z"
+ *                  updatedAt: "2022-05-19T22:12:58.080Z"
+ *                  replies: [ { user: "user1",
+ *                             reply: "reply1",
+ *                             id: "6286c608be23981510abb356",
+ *                             reply_date: "2022-05-17T09:00:02.265Z" } ]
  *      400:
  *        description: No enough parameters
  *      409:
@@ -118,13 +141,9 @@ router.post("/reply", ForumController.addComment);
  *        schema:
  *          type: object
  *          properties:
- *            name:
- *              type: string
- *            title:
- *              type: string
+ *            id_forum: string
  *          example:
- *            name: "user1"
- *            title: "title1"
+ *            id_forum: "23r2r9fwsdf9asf3"
  *    responses:
  *      201:
  *        description: Forum deleted
@@ -160,13 +179,9 @@ router.delete("/admin/delete", isAdmin, ForumController.deleteSubForumAdmin);
  *        schema:
  *          type: object
  *          properties:
- *            name:
- *              type: string
- *            title:
- *              type: string
+ *            id_forum: string
  *          example:
- *            name: "user1"
- *            title: "title1"
+ *            id_forum: "23r2r9fwsdf9asf3"
  *    responses:
  *      201:
  *        description: Forum deleted
@@ -202,19 +217,16 @@ router.delete("/delete", ForumController.deleteSubForum);
  *        schema:
  *          type: object
  *          properties:
- *            owner:
+ *            id_forum:
  *              type: string
- *            title:
+ *            id_comment:
  *              type: string
- *            name:
- *              type: string
- *            comment:
+ *            id_user:
  *              type: string
  *          example:
- *            owner: "user1"
- *            title: "title1"
- *            name: "user2"
- *            comment: "comment2"
+ *            id_forum: "fwerg4gregd234fgd3424"
+ *            id_comment: "fwerg4gregd234fgd342g"
+ *            id_user: "fwerg4gregd234fgd342h"
  *    responses:
  *      201:
  *        description: Reply deleted
@@ -254,16 +266,13 @@ router.delete(
  *        schema:
  *          type: object
  *          properties:
- *            owner:
+ *            id_forum:
  *              type: string
- *            title:
- *              type: string
- *            comment:
+ *            id_comment:
  *              type: string
  *          example:
- *            owner: "user1"
- *            title: "title1"
- *            comment: "comment"
+ *            id_forum: "fwerg4gregd234fgd3424"
+ *            id_comment: "fwerg4gregd234fgd342g"
  *    responses:
  *      201:
  *        description: Reply deleted
@@ -275,5 +284,33 @@ router.delete(
  *        description: Error of the server
  */
 router.delete("/deletereply", ForumController.deleteComment);
+
+/**
+ * @swagger
+ * /forum/admin/numberofforums:
+ *  get:
+ *    tags:
+ *      - forum
+ *    summary: Gets the number of forums
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - name: access-token
+ *        in: header
+ *        required: true
+ *    responses:
+ *      201:
+ *        description: Returns the number of active forums
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - data: 4
+ */
+router.get("/admin/numberofforums", isAdmin, ForumController.numberOfForums);
 
 module.exports = router;
