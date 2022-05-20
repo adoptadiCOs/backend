@@ -64,7 +64,7 @@ const fetchPets = async () => {
 
     const pets = [...pets_adoption, ...pets_proteccion];
 
-    //await insertAll(pets);
+    await insertAll(pets);
 
     // Creamos array con los meses del año
     const meses = [
@@ -94,7 +94,8 @@ const fetchPets = async () => {
     // Creamos el objeto fecha instanciándolo con la clase Date
     const fecha = new Date();
     // Construimos el formato de salida
-    date =
+
+    const date =
       dias_semana[fecha.getDay()] +
       ", " +
       fecha.getDate() +
