@@ -99,4 +99,7 @@ router.post("/", UserController.signup);
  */
 router.post("/login", UserController.login);
 
+/* Get avatar image */
+router.get("/avatar/:id", UserController.getAvatar);
+
 module.exports = router;

@@ -150,20 +150,7 @@ router.put("/password", UserController.updatePassword);
 router.put("/username", UserController.updateUsername);
 
 /* Update avatar */
-router.put(
-  "/avatar",
-  (req, res, next) => {
-    console.log("Body de la ruta");
-    console.log(req.body);
-
-    next();
-  },
-  upload.single("avatar"),
-  UserController.updateAvatar
-);
-
-/* Get avatar image */
-router.get("/avatar/:avatar", UserController.getAvatar);
+router.put("/avatar", upload.single("avatar"), UserController.updateAvatar);
 
 /* Delete user */
 /**

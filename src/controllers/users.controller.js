@@ -3,7 +3,16 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 
 const userHelper = require("../helpers/users.helpers");
-const { gfs } = require("../utils/db");
+
+const Grid = require("gridfs-stream");
+const mongoose = require("mongoose");
+
+let gfs;
+
+const conn = mongoose.connection;
+conn.once("open", function () {
+  gfs = Grid(conn.db, mongoose.mongo);
+});
 
 /* Create user */
 const signup = async (req, res) => {
@@ -108,23 +117,22 @@ const logout = async (_, res) => {
 const updateAvatar = async (req, res) => {
   const file = req.file;
 
-  console.log("Body del controlador");
-  console.log(req.body);
-
   if (!file) {
-    return res.send("you must select a file.");
+    return res.status(400).json({ error: "Debes añadir una imagen." });
   }
 
-  return res.status(200).json({ avatar: file.filename });
+  return res.status(201).json({ message: "Avatar añadido correctamente" });
 };
 
 const getAvatar = async (req, res) => {
-  try {
-    const file = await gfs.files.findOne({ filename: req.params.avatar });
+  const { id: avatar } = req.params;
 
+  try {
+    const file = await gfs.files.findOne({ filename: avatar });
     const readStream = gfs.createReadStream(file.filename);
     readStream.pipe(res);
   } catch (error) {
+    console.error(error);
     res.status(404).json({ error: "Avatar no encontrado" });
   }
 };
