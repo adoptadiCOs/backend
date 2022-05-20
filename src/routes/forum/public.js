@@ -28,6 +28,9 @@ const router = Router();
  *                - user: "user1"
  *                  title: "title1"
  *                  user_explanation: "description1"
+ *                  id: "6286bf884cb06d5a3c7bddda"
+ *                  createdAt: "2022-05-19T22:12:58.080Z"
+ *                  updatedAt: "2022-05-19T22:12:58.080Z"
  *      500:
  *        description: Error of the server
  */
@@ -59,7 +62,7 @@ router.get("/list", ForumController.listSubForum);
  *            category: "cats"
  *    responses:
  *      201:
- *        description: A list of enabled forums
+ *        description: A list of enabled forums with specified category
  *        content:
  *          application/json:
  *            schema:
@@ -69,6 +72,9 @@ router.get("/list", ForumController.listSubForum);
  *                  title: "title1"
  *                  user_explanation: "description1"
  *                  category: "cats"
+ *                  id: "6286bf884cb06d5a3c7bddda"
+ *                  createdAt: "2022-05-19T22:12:58.080Z"
+ *                  updatedAt: "2022-05-19T22:12:58.080Z"
  *      400:
  *        description: No enough parameters
  *      500:
@@ -100,11 +106,10 @@ router.get("/category", ForumController.listSubForumByCategory);
  *            title:
  *              type: string
  *          example:
- *            owner: "user1"
- *            title: "title1"
+ *            id_forum: "6286bf884cb06d5a3c7bddda"
  *    responses:
  *      201:
- *        description: A list of enabled forums
+ *        description: Get all information of a forum
  *        content:
  *          application/json:
  *            schema:
@@ -113,11 +118,12 @@ router.get("/category", ForumController.listSubForumByCategory);
  *                - user: "user1"
  *                  title: "title1"
  *                  user_explanation: "description1"
- *                  date: "2022-05-17T08:59:49.802Z"
- *                  createdAt: "2022-05-17T08:59:49.802Z"
- *                  updatedAt: "2022-05-17T08:59:49.802Z"
+ *                  id: "6286bf884cb06d5a3c7bddda"
+ *                  createdAt: "2022-05-19T22:12:58.080Z"
+ *                  updatedAt: "2022-05-19T22:12:58.080Z"
  *                  replies: [ { user: "user1",
  *                             reply: "reply1",
+ *                             id: "6286c608be23981510abb356",
  *                             reply_date: "2022-05-17T09:00:02.265Z" } ]
  *      400:
  *        description: No enough parameters
