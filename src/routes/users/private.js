@@ -303,8 +303,6 @@ router.get("/", isAdmin, UserController.getUsers);
  *                  type: string
  *                username:
  *                  type: string
- *                email:
- *                  type: string
  *                role:
  *                  type: string
  *                  enum: [user, admin]
