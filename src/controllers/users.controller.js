@@ -116,17 +116,30 @@ const logout = async (_, res) => {
 /* Update avatar */
 const updateAvatar = async (req, res) => {
   const file = req.file;
+  const { id } = req.user;
 
   if (!file) {
     return res.status(400).json({ error: "Debes añadir una imagen." });
   }
 
-  return res.status(201).json({ message: "Avatar añadido correctamente" });
+  try {
+    var user = await userHelper.updateAvatar(id, file.filename);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+
+    return res.status(200).json({ avatar: user.avatar });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
 };
 
 const getAvatar = async (req, res) => {
   const { id: avatar } = req.params;
-
+  
   try {
     const file = await gfs.files.findOne({ filename: avatar });
     const readStream = gfs.createReadStream(file.filename);
