@@ -386,7 +386,7 @@ const bestCategory = async (req, res) => {
     var best = data_aux[0]._id;
 
     if (!best) {
-      best = "undefined category";
+      best = data_aux[1]._id;
     }
     return res.status(200).json({ best });
   } catch (error) {
