@@ -43,11 +43,7 @@ const updateUsername = async (id, username) => {
 };
 
 const updateAvatar = async (id, avatar) => {
-  return await User.findByIdAndUpdate(
-    id,
-    { avatar: avatar },
-    { new: true }
-  );
+  return await User.findByIdAndUpdate(id, { avatar: avatar }, { new: true });
 };
 
 const findAll = async () => {

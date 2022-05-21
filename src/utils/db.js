@@ -11,4 +11,3 @@ mongoose.connect(DB, {
 mongoose.connection.once("open", () => {
   console.log("DB connected");
 });
-

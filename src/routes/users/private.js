@@ -178,7 +178,6 @@ router.put("/username", UserController.updateUsername);
  *              properties:
  *                avatar:
  *                  type: string
- *          
  *      404:
  *        description: Usuario no encontrado
  *      500:

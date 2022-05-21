@@ -139,7 +139,7 @@ const updateAvatar = async (req, res) => {
 
 const getAvatar = async (req, res) => {
   const { id: avatar } = req.params;
-  
+
   try {
     const file = await gfs.files.findOne({ filename: avatar });
     const readStream = gfs.createReadStream(file.filename);
