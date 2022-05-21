@@ -150,6 +150,40 @@ router.put("/password", UserController.updatePassword);
 router.put("/username", UserController.updateUsername);
 
 /* Update avatar */
+/**
+ * @swagger
+ * /users/avatar:
+ *  put:
+ *    tags:
+ *      - users
+ *    summary: Update user avatar
+ *    description:
+ *    consumes:
+ *      - multipart/form-data
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: formData
+ *        name: avatar
+ *        description: Imagen de avatar (png, jpg)
+ *        required: true
+ *        type: file
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                avatar:
+ *                  type: string
+ *          
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
+ */
 router.put("/avatar", upload.single("avatar"), UserController.updateAvatar);
 
 /* Delete user */

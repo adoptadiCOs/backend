@@ -100,6 +100,28 @@ router.post("/", UserController.signup);
 router.post("/login", UserController.login);
 
 /* Get avatar image */
+/**
+ * @swagger
+ * /users/avatar/{id}:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Get user avatar
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: id
+ *        description: Id del avatar del usuario
+ *        required: true
+ *    responses:
+ *      200:
+ *        description: Imagen de avatar
+ *      404:
+ *        description: Avatar no encontrado
+ */
 router.get("/avatar/:id", UserController.getAvatar);
 
 module.exports = router;
