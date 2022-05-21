@@ -322,6 +322,33 @@ const banUser = async (req, res) => {
   }
 };
 
+const getUserInfo = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar el usuario." });
+    }
+
+    return res.status(200).json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+    });
+
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -334,4 +361,5 @@ module.exports = {
   updateUsername,
   getUsers,
   banUser,
+  getUserInfo,
 };
