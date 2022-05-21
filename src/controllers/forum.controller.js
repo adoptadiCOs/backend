@@ -11,7 +11,7 @@ const newForum = async (req, res) => {
 
   const user = await userHelper.findUserByName(username);
 
-  var prev = await forumHelper.getSubForum(user, title);
+  var prev = await forumHelper.getSubForumUserName(user, title);
   var len = prev.length;
 
   if (len !== 0) {
@@ -27,7 +27,7 @@ const newForum = async (req, res) => {
       await forumHelper.createSubForum(user, category, title, user_explanation);
     }
 
-    var data_aux = await forumHelper.getSubForum(user, title);
+    var data_aux = await forumHelper.getSubForumUserName(user, title);
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
@@ -72,8 +72,6 @@ const addComment = async (req, res) => {
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
-        var user_aux = await userHelper.findUserById(message.user);
-
         var resplies_aux = message.replies.filter(function (a) {
           return a.reply_enabled !== false;
         });
@@ -82,7 +80,7 @@ const addComment = async (req, res) => {
           resplies_aux.map(async (reply_i) => {
             var user_aux = await userHelper.findUserById(reply_i.user);
             return {
-              user: user_aux.username,
+              user_id: user_aux._id,
               reply: reply_i.reply,
               id: reply_i._id,
               reply_date: reply_i.reply_date,
@@ -91,7 +89,7 @@ const addComment = async (req, res) => {
         );
 
         return {
-          user: user_aux.username,
+          user_id: message.user,
           id: message._id,
           title: message.title,
           user_explanation: message.user_explanation,
@@ -344,6 +342,58 @@ const numberOfForums = async (req, res) => {
   return res.status(201).json({ data });
 };
 
+const numberOfReplies = async (req, res) => {
+  var data = 0;
+
+  try {
+    var data_aux = await forumHelper.getAllSubForum();
+
+    await Promise.all(
+      data_aux.map(async (message) => {
+        var resplies_aux = message.replies.filter(function (a) {
+          return a.reply_enabled !== false;
+        });
+
+        var resplies_final = resplies_aux.map(() => {
+          data = data + 1;
+        });
+
+        return {
+          user_id: message.user,
+          category: message.category,
+          title: message.title,
+          id: message._id,
+          user_explanation: message.user_explanation,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+          replies: resplies_final,
+        };
+      })
+    );
+
+    return res.status(201).json({ data });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: "Error trying to get the number of replies" });
+  }
+};
+
+const bestCategory = async (req, res) => {
+  try {
+    var data_aux = await forumHelper.getBestCategory();
+
+    var best = data_aux[0]._id;
+
+    if (!best) {
+      best = "undefined category";
+    }
+    return res.status(200).json({ best });
+  } catch (error) {
+    return res.status(500).send({ error: "Error trying to list forums" });
+  }
+};
+
 module.exports = {
   newForum,
   addComment,
@@ -355,4 +405,6 @@ module.exports = {
   listSubForumByCategory,
   getSubForum,
   numberOfForums,
+  numberOfReplies,
+  bestCategory,
 };

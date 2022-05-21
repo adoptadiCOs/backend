@@ -285,4 +285,52 @@ router.delete(
  */
 router.delete("/deletereply", ForumController.deleteComment);
 
+/**
+ * @swagger
+ * /forum/admin/numberofreplies:
+ *  get:
+ *    tags:
+ *      - forum
+ *    summary: Gets the number of replies
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    responses:
+ *      201:
+ *        description: Returns the number of active replies
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - data: 4
+ */
+router.get("/admin/numberofreplies", isAdmin, ForumController.numberOfReplies);
+
+/**
+ * @swagger
+ * /forum/admin/bestcategory:
+ *  get:
+ *    tags:
+ *      - forum
+ *    summary: Gets the best category
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    responses:
+ *      201:
+ *        description: Don't have description
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - data: gato
+ */
+router.get("/admin/bestcategory", isAdmin, ForumController.bestCategory);
+
 module.exports = router;
