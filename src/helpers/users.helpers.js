@@ -42,6 +42,10 @@ const updateUsername = async (id, username) => {
   );
 };
 
+const updateAvatar = async (id, avatar) => {
+  return await User.findByIdAndUpdate(id, { avatar: avatar }, { new: true });
+};
+
 const findAll = async () => {
   return await User.find({ enabled: true }).select({
     _id: 0,
@@ -61,5 +65,6 @@ module.exports = {
   updateBio,
   updatePassword,
   updateUsername,
+  updateAvatar,
   findAll,
 };

@@ -17,6 +17,7 @@ const verifyToken = (req, res, next) => {
 
     // Añade al cuerpo los valores decodificados
     req.body = { ...req.body, username: decoded.username, id: decoded.id };
+    req.user = { id: decoded.id };
 
     return next();
   } catch (error) {
