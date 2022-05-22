@@ -100,6 +100,30 @@ router.post("/", UserController.signup);
  */
 router.post("/login", UserController.login);
 
+
+/* Logs user into the system */
+/**
+ * @swagger
+ * /users/google:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Access to the system with Google credentials.
+ *    description: Si el usuario no tiene una cuenta la crea
+ *    parameters:
+ *    responses:
+ *     :
+ *      description: Redirect to the application with the accessToken as query parameter
+ */
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    session: false,
+  }),
+  UserController.auth_google
+);
+
 /* Get avatar image */
 /**
  * @swagger
@@ -168,14 +192,5 @@ router.get("/avatar/:id", UserController.getAvatar);
  *        description: Error en la petición
  */
 router.get("/:id", UserController.getUserInfo);
-
-router.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-    session: false,
-  }),
-  UserController.auth_google
-);
 
 module.exports = router;

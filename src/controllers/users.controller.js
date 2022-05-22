@@ -41,8 +41,12 @@ const signup = async (req, res) => {
 
   // Comprueba que no exista un usuario con el mismo nombre/email. Y crea la cuenta
   try {
-    await userHelper.createUser(username, email, hash);
-
+    await userHelper.createUser({
+      username: username,
+      email: email,
+      password: hash,
+    });
+    
     return res.status(201).json({ message: "Cuenta creada correctamente" });
   } catch (error) {
     return res.status(409).send({
@@ -137,9 +141,7 @@ const auth_google = async (req, res) => {
       process.env.SECRET
     );
 
-    res.redirect(
-      `${process.env.APP_HOST}/auth-success/?accessToken=${accessToken}`
-    );
+    res.redirect(`${process.env.APP_HOST}/success/?accessToken=${accessToken}`);
   } catch (error) {
     res.redirect(`${process.env.APP_HOST}`);
   }
@@ -379,6 +381,31 @@ const getUserInfo = async (req, res) => {
   }
 };
 
+const getOwnInfo = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar el usuario." });
+    }
+
+    return res.status(200).json({
+      id: user._id,
+      username: user.username,
+      role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -393,4 +420,5 @@ module.exports = {
   getUsers,
   banUser,
   getUserInfo,
+  getOwnInfo,
 };
