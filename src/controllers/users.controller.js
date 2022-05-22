@@ -4,6 +4,16 @@ const validator = require("validator");
 
 const userHelper = require("../helpers/users.helpers");
 
+const Grid = require("gridfs-stream");
+const mongoose = require("mongoose");
+
+let gfs;
+
+const conn = mongoose.connection;
+conn.once("open", function () {
+  gfs = Grid(conn.db, mongoose.mongo);
+});
+
 /* Create user */
 const signup = async (req, res) => {
   const { username, email, password, repeatedPassword } = req.body;
@@ -101,6 +111,43 @@ const login = async (req, res) => {
 const logout = async (_, res) => {
   // ? Solo para posibles estadisticas
   return res.status(200).json({ message: "Tú sesión ha sido finalizada" });
+};
+
+/* Update avatar */
+const updateAvatar = async (req, res) => {
+  const file = req.file;
+  const { id } = req.user;
+
+  if (!file) {
+    return res.status(400).json({ error: "Debes añadir una imagen." });
+  }
+
+  try {
+    var user = await userHelper.updateAvatar(id, file.filename);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+
+    return res.status(200).json({ avatar: user.avatar });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+const getAvatar = async (req, res) => {
+  const { id: avatar } = req.params;
+
+  try {
+    const file = await gfs.files.findOne({ filename: avatar });
+    const readStream = gfs.createReadStream(file.filename);
+    readStream.pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ error: "Avatar no encontrado" });
+  }
 };
 
 /* Update biography */
@@ -275,14 +322,42 @@ const banUser = async (req, res) => {
   }
 };
 
+const getUserInfo = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar el usuario." });
+    }
+
+    return res.status(200).json({
+      id: user._id,
+      username: user.username,
+      role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
 module.exports = {
   signup,
   login,
   logout,
+  updateAvatar,
+  getAvatar,
   deleteUser,
   updateBio,
   updatePassword,
   updateUsername,
   getUsers,
   banUser,
+  getUserInfo,
 };

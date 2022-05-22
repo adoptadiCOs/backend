@@ -99,4 +99,73 @@ router.post("/", UserController.signup);
  */
 router.post("/login", UserController.login);
 
+/* Get avatar image */
+/**
+ * @swagger
+ * /users/avatar/{id}:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Get user avatar
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        description: Id del avatar del usuario
+ *        required: true
+ *    responses:
+ *      200:
+ *        description: Imagen de avatar
+ *      404:
+ *        description: Avatar no encontrado
+ */
+router.get("/avatar/:id", UserController.getAvatar);
+
+/* Get user info */
+/**
+ * @swagger
+ * /users/{id}:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Get user info
+ *    description:
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        description: Identificador del usuario a consultar
+ *        required: true
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *                username:
+ *                  type: string
+ *                role:
+ *                  type: string
+ *                  enum: [user, admin]
+ *                bio:
+ *                  type: string
+ *                avatar:
+ *                  type: string
+ *                createdAt:
+ *                  type: string
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
+ */
+router.get("/:id", UserController.getUserInfo);
+
 module.exports = router;
