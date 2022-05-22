@@ -22,7 +22,7 @@ const router = Router();
  *    - application/json
  *    parameters:
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta
@@ -200,7 +200,7 @@ router.put("/avatar", upload.single("avatar"), UserController.updateAvatar);
  *      - application/json
  *    parameters:
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta
@@ -228,7 +228,7 @@ router.delete("/", UserController.deleteUser);
  *        description: Id del usuario a eliminar
  *        required: true
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta

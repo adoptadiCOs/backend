@@ -236,7 +236,7 @@ const deleteUser = async (req, res) => {
         .status(400)
         .json({ error: "No se ha podido eliminar tú cuenta" });
     }
-    return res.status(204).json({ message: "Tú cuenta ha sido eliminada" });
+    return res.status(200).json({ message: "Tú cuenta ha sido eliminada" });
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -315,7 +315,7 @@ const banUser = async (req, res) => {
     }
 
     return res
-      .status(204)
+      .status(200)
       .json({ message: "La cuenta ha sido sido eliminada" });
   } catch (error) {
     return res.status(500).send(error);
