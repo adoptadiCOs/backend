@@ -46,7 +46,7 @@ const signup = async (req, res) => {
       email: email,
       password: hash,
     });
-    
+
     return res.status(201).json({ message: "Cuenta creada correctamente" });
   } catch (error) {
     return res.status(409).send({

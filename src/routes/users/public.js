@@ -100,7 +100,6 @@ router.post("/", UserController.signup);
  */
 router.post("/login", UserController.login);
 
-
 /* Logs user into the system */
 /**
  * @swagger
