@@ -120,4 +120,6 @@ router.get("/species", pets.GetSpecies);
  */
 router.get("/breeds", pets.GetBreeds);
 
+router.get("/pet/public", pets.GetPetPublic);
+
 module.exports = router;

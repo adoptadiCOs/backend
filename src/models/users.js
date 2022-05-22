@@ -29,8 +29,13 @@ const UserSchema = new Schema(
       maxLength: 160,
     },
     avatar: {
-      type: String, // TODO: Investigar como guardar fotos
+      type: String,
       default: "",
+    },
+    enabled: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   { timestamps: true } // Adds createdAt and updatedAt properties

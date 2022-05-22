@@ -17,8 +17,9 @@ const verifyToken = (req, res, next) => {
 
     // Añade al cuerpo los valores decodificados
     req.body = { ...req.body, username: decoded.username, id: decoded.id };
+    req.user = { id: decoded.id };
 
-    next();
+    return next();
   } catch (error) {
     return res.status(401).json({ error: "Token inválido" });
   }
@@ -30,8 +31,9 @@ const isAdmin = async (req, res, next) => {
   const user = await userHelper.findUserById(id);
 
   if (user.role === "admin") {
-    next();
+    return next();
   }
+
   return res.status(403).send({ error: "Requiere rol de administrador" });
 };
 
