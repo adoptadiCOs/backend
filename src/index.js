@@ -28,6 +28,12 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // API Routes
 app.use("/api", routes);
 
+app.all("*", (req, res) => {
+  res
+    .status(404)
+    .json({ error: `El método ${req.method} ${req.url} no esta definido` });
+});
+
 // Starting server
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);

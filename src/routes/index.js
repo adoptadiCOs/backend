@@ -24,10 +24,4 @@ router.use("/users", verifyToken, private_users);
 router.use("/", public_pets);
 router.use("/", verifyToken, private_pets);
 
-router.all("*", (req, res) => {
-  res
-    .status(404)
-    .json({ error: `El método ${req.method} ${req.url} no esta definido` });
-});
-
 module.exports = router;
