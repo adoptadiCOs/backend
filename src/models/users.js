@@ -15,8 +15,6 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
-      minLength: 8,
     },
     role: {
       type: String,
@@ -27,7 +25,6 @@ const UserSchema = new Schema(
     bio: {
       type: String,
       default: "",
-      maxLength: 160,
     },
     avatar: {
       type: String,

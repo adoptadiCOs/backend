@@ -41,7 +41,11 @@ const signup = async (req, res) => {
 
   // Comprueba que no exista un usuario con el mismo nombre/email. Y crea la cuenta
   try {
-    await userHelper.createUser(username, email, hash);
+    await userHelper.createUser({
+      username: username,
+      email: email,
+      password: hash,
+    });
 
     return res.status(201).json({ message: "Cuenta creada correctamente" });
   } catch (error) {
@@ -111,6 +115,36 @@ const login = async (req, res) => {
 const logout = async (_, res) => {
   // ? Solo para posibles estadisticas
   return res.status(200).json({ message: "Tú sesión ha sido finalizada" });
+};
+
+/* Authentication with google*/
+const auth_google = async (req, res) => {
+  const email = req.user.emails[0].value;
+  const username = req.user.displayName;
+
+  try {
+    // Comprueba si el usuario esta registrado
+    let user = await userHelper.findUserByEmail(email);
+
+    // Si no esta registrado crea el usuario
+    if (!user) {
+      user = await userHelper.createUser({
+        username: username,
+        email: email,
+      });
+    }
+    const accessToken = jwt.sign(
+      {
+        username: user.username,
+        id: user._id,
+      },
+      process.env.SECRET
+    );
+
+    res.redirect(`${process.env.APP_HOST}/success/?accessToken=${accessToken}`);
+  } catch (error) {
+    res.redirect(`${process.env.APP_HOST}`);
+  }
 };
 
 /* Update avatar */
@@ -347,10 +381,36 @@ const getUserInfo = async (req, res) => {
   }
 };
 
+const getOwnInfo = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar el usuario." });
+    }
+
+    return res.status(200).json({
+      id: user._id,
+      username: user.username,
+      role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
 module.exports = {
   signup,
   login,
   logout,
+  auth_google,
   updateAvatar,
   getAvatar,
   deleteUser,
@@ -360,4 +420,5 @@ module.exports = {
   getUsers,
   banUser,
   getUserInfo,
+  getOwnInfo,
 };

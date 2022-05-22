@@ -1,4 +1,5 @@
 const Router = require("express");
+const passport = require("passport");
 
 const UserController = require("../../controllers/users.controller");
 
@@ -98,6 +99,29 @@ router.post("/", UserController.signup);
  *        description: Error en la petición
  */
 router.post("/login", UserController.login);
+
+/* Logs user into the system */
+/**
+ * @swagger
+ * /users/google:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Access to the system with Google credentials.
+ *    description: Si el usuario no tiene una cuenta la crea
+ *    parameters:
+ *    responses:
+ *     :
+ *      description: Redirect to the application with the accessToken as query parameter
+ */
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    session: false,
+  }),
+  UserController.auth_google
+);
 
 /* Get avatar image */
 /**
