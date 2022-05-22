@@ -22,7 +22,7 @@ const router = Router();
  *    - application/json
  *    parameters:
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta
@@ -200,7 +200,7 @@ router.put("/avatar", upload.single("avatar"), UserController.updateAvatar);
  *      - application/json
  *    parameters:
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta
@@ -228,7 +228,7 @@ router.delete("/", UserController.deleteUser);
  *        description: Id del usuario a eliminar
  *        required: true
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta
@@ -274,5 +274,45 @@ router.delete("/:id", isAdmin, UserController.banUser);
  *        description: Error en la petición
  */
 router.get("/", isAdmin, UserController.getUsers);
+
+/* Gets its own info */
+/**
+ * @swagger
+ * /users/info/me:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Gets its own info
+ *    description:
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *                username:
+ *                  type: string
+ *                role:
+ *                  type: string
+ *                  enum: [user, admin]
+ *                bio:
+ *                  type: string
+ *                avatar:
+ *                  type: string
+ *                createdAt:
+ *                  type: string
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
+ */
+router.get("/info/me", UserController.getOwnInfo);
 
 module.exports = router;
