@@ -3,9 +3,10 @@ require("./utils/db");
 require("./utils/jobs");
 require("./utils/passport");
 
+const logger = require("./utils/logger");
 const express = require("express");
 const cors = require("cors");
-const morgan = require("morgan");
+
 const passport = require("passport");
 const swaggerUi = require("swagger-ui-express");
 
@@ -16,11 +17,14 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
+
 // Middlewares
 app.use(passport.initialize());
-app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
+
+// Logger
+logger(app);
 
 // Swagger UI
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
