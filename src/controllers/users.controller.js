@@ -161,29 +161,22 @@ const deleteUser = async (req, res) => {
   }
 };
 
-/* Create user */
-const signup_google = async (req, res) => {
-  const user = req.user;
+/* Authentication with google*/
+const auth_google = async (req, res) => {
+  const email = req.user.emails[0].value;
+  const username = req.user.displayName;
 
   try {
-    await userHelper.createUser({
-      username: user.displayName,
-      email: user.emails[0].value,
-    });
+    // Comprueba si el usuario esta registrado
+    let user = await userHelper.findUserByEmail(email);
 
-    res.status(200).json({});
-  } catch (error) {
-    return res.status(500).send(error);
-  }
-};
-
-/* Logs user into the system */
-const login_google = async (req, res) => {
-  const user = req.user;
-  const email = user.emails[0].value;
-
-  try {
-    const user = await userHelper.findUserByEmail(email);
+    // Si no esta registrado crea el usuario
+    if (!user) {
+      user = await userHelper.createUser({
+        username: username,
+        email: email,
+      });
+    }
 
     const accessToken = jwt.sign(
       {
@@ -193,27 +186,18 @@ const login_google = async (req, res) => {
       process.env.SECRET
     );
 
-    res.status(200).json({
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      bio: user.bio,
-      avatar: user.avatar,
-      createdAt: user.createdAt,
-      accessToken: accessToken,
-    });
+    res.redirect(`http://localhost:3000?token=${accessToken}`);
   } catch (error) {
-    return res.status(500).send(error);
+    res.redirect(`http://localhost:3000/`);
   }
 };
 
+/* Create user */
 module.exports = {
   signup,
   login,
   logout,
   updateUser,
   deleteUser,
-  login_google,
-  signup_google,
+  auth_google,
 };

@@ -1,7 +1,7 @@
 require("./utils/env");
 require("./utils/db");
 require("./utils/jobs");
-require("./passport/google-auth");
+require("./utils/passport");
 
 const express = require("express");
 const cors = require("cors");

@@ -102,25 +102,13 @@ router.post("/", UserController.signup);
  */
 router.post("/login", UserController.login);
 
-//ruta para Registrarse
-
 router.get(
-  "/login/google",
-  passport.authenticate("login-google", {
+  "/google",
+  passport.authenticate("google", {
     scope: ["profile", "email"],
     session: false,
   }),
-  UserController.login_google
-);
-
-//rutas para Iniciar Sesion
-router.get(
-  "/signup/google",
-  passport.authenticate("signup-google", {
-    scope: ["profile", "email"],
-    session: false,
-  }),
-  UserController.signup_google
+  UserController.auth_google
 );
 
 module.exports = router;
