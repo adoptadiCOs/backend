@@ -223,7 +223,7 @@ router.delete("/", UserController.deleteUser);
  *    produces:
  *      - application/json
  *    parameters:
- *      - in: query
+ *      - in: path
  *        name: id
  *        description: Id del usuario a eliminar
  *        required: true
@@ -274,49 +274,5 @@ router.delete("/:id", isAdmin, UserController.banUser);
  *        description: Error en la petición
  */
 router.get("/", isAdmin, UserController.getUsers);
-
-/* Get user info */
-/**
- * @swagger
- * /users/{id}:
- *  get:
- *    tags:
- *      - users
- *    summary: Get user info
- *    description:
- *    produces:
- *      - application/json
- *    parameters:
- *      - in: query
- *        name: id
- *        description: Identificador del usuario a consultar
- *        required: true
- *    responses:
- *      200:
- *        description: Operación realizada correctamente
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                id:
- *                  type: string
- *                username:
- *                  type: string
- *                role:
- *                  type: string
- *                  enum: [user, admin]
- *                bio:
- *                  type: string
- *                avatar:
- *                  type: string
- *                createdAt:
- *                  type: string
- *      404:
- *        description: Usuario no encontrado
- *      500:
- *        description: Error en la petición
- */
-router.get("/:id", UserController.getUserInfo);
 
 module.exports = router;
