@@ -186,9 +186,9 @@ const auth_google = async (req, res) => {
       process.env.SECRET
     );
 
-    res.redirect(`http://localhost:3000?token=${accessToken}`);
+    res.redirect(`${process.env.APP_HOST}/auth-success/?accessToken=${accessToken}`);
   } catch (error) {
-    res.redirect(`http://localhost:3000/`);
+    res.redirect(`${process.env.APP_HOST}`);
   }
 };
 
