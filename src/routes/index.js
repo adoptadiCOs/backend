@@ -24,4 +24,8 @@ router.use("/users", verifyToken, private_users);
 router.use("/", public_pets);
 router.use("/", verifyToken, private_pets);
 
+router.all("*", (req, res) => {
+  res.status(404).json({ error: `La ruta especificada no existe` });
+});
+
 module.exports = router;
