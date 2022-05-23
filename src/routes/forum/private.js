@@ -18,9 +18,6 @@ const router = Router();
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *      - name: forum
  *        in: body
  *        description: Fields to update
@@ -74,9 +71,6 @@ router.post("/new", ForumController.newForum);
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *      - name: forum
  *        in: body
  *        description: Fields to update
@@ -131,9 +125,6 @@ router.post("/reply", ForumController.addComment);
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *      - name: forum
  *        in: body
  *        description: Fields to update
@@ -169,9 +160,6 @@ router.delete("/admin/delete", isAdmin, ForumController.deleteSubForumAdmin);
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *      - name: forum
  *        in: body
  *        description: Fields to update
@@ -207,9 +195,6 @@ router.delete("/delete", ForumController.deleteSubForum);
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *      - name: forum
  *        in: body
  *        description: Fields to update
@@ -256,9 +241,6 @@ router.delete(
  *    produces:
  *    - application/json
  *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *      - name: forum
  *        in: body
  *        description: Fields to update

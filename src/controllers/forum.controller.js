@@ -5,6 +5,8 @@ const userHelper = require("../helpers/users.helpers");
 const newForum = async (req, res) => {
   const { id, category, title, user_explanation } = req.body;
 
+  console.log(req.body);
+
   if (!id || !title || !user_explanation) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
