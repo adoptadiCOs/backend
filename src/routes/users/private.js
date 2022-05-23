@@ -179,7 +179,6 @@ router.put("/avatar", upload.single("avatar"), UserController.updateAvatar);
  *      - "application/json"
  *    produces:
  *      - application/json
- *    parameters:
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
@@ -233,7 +232,6 @@ router.delete("/:id", isAdmin, UserController.banUser);
  *    description: Solo disponible para administradores
  *    produces:
  *      - application/json
- *    parameters:
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
@@ -267,7 +265,6 @@ router.get("/", isAdmin, UserController.getUsers);
  *    description:
  *    produces:
  *      - application/json
- *    parameters:
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
