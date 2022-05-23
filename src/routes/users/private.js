@@ -99,15 +99,16 @@ router.put("/password", UserController.updatePassword);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - in: body
- *        description: New username
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            newUsername:
- *              type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newUsername:
+ *                 type: string
+ *                 example: "usernuevo_test_1"
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
