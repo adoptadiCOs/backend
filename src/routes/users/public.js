@@ -18,20 +18,25 @@ const router = Router();
  *      - "application/json"
  *    produces:
  *      - application/json
- *    parameters:
- *      - in: body
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            username:
- *              type: string
- *            email:
- *              type: string
- *            password:
- *              type: string
- *            repeatedPassword:
- *              type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: "test_1_user_1"
+ *               email:
+ *                 type: string
+ *                 example: "test_1_user_1@gmail.com"
+ *               password:
+ *                 type: string
+ *                 example: "12345"
+ *               repeatedPassword:
+ *                 type: string
+ *                 example: "12345"
  *    responses:
  *      201:
  *        description: Operación realizada correctamente
@@ -57,16 +62,19 @@ router.post("/", UserController.signup);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - in: body
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            email:
- *              type: string
- *            password:
- *              type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "test_1_user_1@gmail.com"
+ *               password:
+ *                 type: string
+ *                 example: "12345"
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
@@ -156,7 +164,7 @@ router.get(
  *    produces:
  *      - application/json
  *    parameters:
- *      - in: path
+ *      - in: query
  *        name: id
  *        description: Id del avatar del usuario
  *        required: true

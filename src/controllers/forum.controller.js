@@ -46,7 +46,6 @@ const newForum = async (req, res) => {
 
     return res.status(201).json({ data });
   } catch (error) {
-    console.log(error);
     return res.status(409).send({ error: "Error creating the new forum" });
   }
 };
@@ -175,8 +174,6 @@ const deleteComment = async (req, res) => {
 
     var aux = await forumHelper.deleteReply(id_forum, id, id_comment);
 
-    console.log(aux);
-
     if (!aux) {
       return res
         .status(409)
@@ -195,13 +192,8 @@ const deleteCommentAdmin = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  console.log(id_forum);
-  console.log(id_comment);
-  console.log(id_user);
-
   try {
     var aux = await forumHelper.deleteReply(id_forum, id_user, id_comment);
-    console.log(aux);
     if (!aux) {
       return res
         .status(409)
@@ -234,8 +226,6 @@ const listSubForum = async (req, res) => {
         };
       })
     );
-
-    console.log(data);
 
     return res.status(200).json({ data });
   } catch (error) {
@@ -288,8 +278,6 @@ const getSubForum = async (req, res) => {
 
   try {
     var data_aux = await forumHelper.getSubForum(id_forum);
-
-    console.log(data_aux);
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
