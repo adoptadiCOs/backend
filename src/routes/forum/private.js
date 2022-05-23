@@ -68,21 +68,19 @@ router.post("/new", ForumController.newForum);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - name: forum
- *        in: body
- *        description: Fields to update
- *        required: false
- *        schema:
- *          type: object
- *          properties:
- *            id_forum:
- *              type: string
- *            comment:
- *              type: string
- *          example:
- *            id_forum: "6286bf884cb06d5a3c7bddda"
- *            comment: "comment1"
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_forum:
+ *                 type: string
+ *                 example: "2334523452345234"
+ *               comment:
+ *                 type: string
+ *                 example: "comment1"
  *    responses:
  *      201:
  *        description: Added the comment
@@ -122,17 +120,16 @@ router.post("/reply", ForumController.addComment);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - name: forum
- *        in: body
- *        description: Fields to update
- *        required: false
- *        schema:
- *          type: object
- *          properties:
- *            id_forum: string
- *          example:
- *            id_forum: "23r2r9fwsdf9asf3"
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_forum:
+ *                 type: string
+ *                 example: "2334523452345234"
  *    responses:
  *      201:
  *        description: Forum deleted
@@ -157,17 +154,16 @@ router.delete("/admin/delete", isAdmin, ForumController.deleteSubForumAdmin);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - name: forum
- *        in: body
- *        description: Fields to update
- *        required: false
- *        schema:
- *          type: object
- *          properties:
- *            id_forum: string
- *          example:
- *            id_forum: "23r2r9fwsdf9asf3"
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_forum:
+ *                 type: string
+ *                 example: "2334523452345234"
  *    responses:
  *      201:
  *        description: Forum deleted
@@ -192,24 +188,22 @@ router.delete("/delete", ForumController.deleteSubForum);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - name: forum
- *        in: body
- *        description: Fields to update
- *        required: false
- *        schema:
- *          type: object
- *          properties:
- *            id_forum:
- *              type: string
- *            id_comment:
- *              type: string
- *            id_user:
- *              type: string
- *          example:
- *            id_forum: "fwerg4gregd234fgd3424"
- *            id_comment: "fwerg4gregd234fgd342g"
- *            id_user: "fwerg4gregd234fgd342h"
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_forum:
+ *                 type: string
+ *                 example: "2334523452345234"
+ *               id_comment:
+ *                 type: string
+ *                 example: "2334523452345234"
+ *               id_user:
+ *                 type: string
+ *                 example: "2334523452345234"
  *    responses:
  *      201:
  *        description: Reply deleted
@@ -238,21 +232,19 @@ router.delete(
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - name: forum
- *        in: body
- *        description: Fields to update
- *        required: false
- *        schema:
- *          type: object
- *          properties:
- *            id_forum:
- *              type: string
- *            id_comment:
- *              type: string
- *          example:
- *            id_forum: "fwerg4gregd234fgd3424"
- *            id_comment: "fwerg4gregd234fgd342g"
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_forum:
+ *                 type: string
+ *                 example: "2334523452345234"
+ *               id_comment:
+ *                 type: string
+ *                 example: "2334523452345234"
  *    responses:
  *      201:
  *        description: Reply deleted
