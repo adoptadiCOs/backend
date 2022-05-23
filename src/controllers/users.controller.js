@@ -4,6 +4,16 @@ const validator = require("validator");
 
 const userHelper = require("../helpers/users.helpers");
 
+const Grid = require("gridfs-stream");
+const mongoose = require("mongoose");
+
+let gfs;
+
+const conn = mongoose.connection;
+conn.once("open", function () {
+  gfs = Grid(conn.db, mongoose.mongo);
+});
+
 /* Create user */
 const signup = async (req, res) => {
   const { username, email, password, repeatedPassword } = req.body;
@@ -31,7 +41,11 @@ const signup = async (req, res) => {
 
   // Comprueba que no exista un usuario con el mismo nombre/email. Y crea la cuenta
   try {
-    await userHelper.createUser(username, email, hash);
+    await userHelper.createUser({
+      username: username,
+      email: email,
+      password: hash,
+    });
 
     return res.status(201).json({ message: "Cuenta creada correctamente" });
   } catch (error) {
@@ -101,6 +115,73 @@ const login = async (req, res) => {
 const logout = async (_, res) => {
   // ? Solo para posibles estadisticas
   return res.status(200).json({ message: "Tú sesión ha sido finalizada" });
+};
+
+/* Authentication with google*/
+const auth_google = async (req, res) => {
+  const email = req.user.emails[0].value;
+  const username = req.user.displayName;
+
+  try {
+    // Comprueba si el usuario esta registrado
+    let user = await userHelper.findUserByEmail(email);
+
+    // Si no esta registrado crea el usuario
+    if (!user) {
+      user = await userHelper.createUser({
+        username: username,
+        email: email,
+      });
+    }
+    const accessToken = jwt.sign(
+      {
+        username: user.username,
+        id: user._id,
+      },
+      process.env.SECRET
+    );
+
+    res.redirect(`${process.env.APP_HOST}/success/?accessToken=${accessToken}`);
+  } catch (error) {
+    res.redirect(`${process.env.APP_HOST}`);
+  }
+};
+
+/* Update avatar */
+const updateAvatar = async (req, res) => {
+  const file = req.file;
+  const { id } = req.user;
+
+  if (!file) {
+    return res.status(400).json({ error: "Debes añadir una imagen." });
+  }
+
+  try {
+    var user = await userHelper.updateAvatar(id, file.filename);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar tú cuenta." });
+    }
+
+    return res.status(200).json({ avatar: user.avatar });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+const getAvatar = async (req, res) => {
+  const { id: avatar } = req.params;
+
+  try {
+    const file = await gfs.files.findOne({ filename: avatar });
+    const readStream = gfs.createReadStream(file.filename);
+    readStream.pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ error: "Avatar no encontrado" });
+  }
 };
 
 /* Update biography */
@@ -189,7 +270,7 @@ const deleteUser = async (req, res) => {
         .status(400)
         .json({ error: "No se ha podido eliminar tú cuenta" });
     }
-    return res.status(204).json({ message: "Tú cuenta ha sido eliminada" });
+    return res.status(200).json({ message: "Tú cuenta ha sido eliminada" });
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -268,10 +349,60 @@ const banUser = async (req, res) => {
     }
 
     return res
-      .status(204)
+      .status(200)
       .json({ message: "La cuenta ha sido sido eliminada" });
   } catch (error) {
     return res.status(500).send(error);
+  }
+};
+
+const getUserInfo = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar el usuario." });
+    }
+
+    return res.status(200).json({
+      id: user._id,
+      username: user.username,
+      role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+const getOwnInfo = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const user = await userHelper.findUserById(id);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "No se ha podido encontrar el usuario." });
+    }
+
+    return res.status(200).json({
+      id: user._id,
+      username: user.username,
+      role: user.role,
+      bio: user.bio,
+      avatar: user.avatar,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error });
   }
 };
 
@@ -279,10 +410,15 @@ module.exports = {
   signup,
   login,
   logout,
+  auth_google,
+  updateAvatar,
+  getAvatar,
   deleteUser,
   updateBio,
   updatePassword,
   updateUsername,
   getUsers,
   banUser,
+  getUserInfo,
+  getOwnInfo,
 };

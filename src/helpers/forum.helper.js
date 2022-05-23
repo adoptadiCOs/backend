@@ -101,8 +101,27 @@ const getAllSubForum = async () => {
   return await Forum.find({ enabled: true });
 };
 
-const getByCategory = async (category_f) => {
-  return await Forum.find({ category: category_f, enabled: true });
+const getAllSubForumPaged = async (starts, rows) => {
+  return await Forum.find({ enabled: true }, {}, { skip: starts, limit: rows });
+};
+
+const getByCategoryPaged = async (category_f, starts, rows) => {
+  return await Forum.find(
+    { category: category_f, enabled: true },
+    {},
+    { skip: starts, limit: rows }
+  );
+};
+
+const getBestCategory = async () => {
+  return await Forum.aggregate([
+    { $match: { enabled: true } },
+    { $sortByCount: "$category" },
+  ]);
+};
+
+const getSubForumUserName = async (user_id, title) => {
+  return await Forum.find({ user: user_id, title: title, enabled: true });
 };
 
 const getSubForum = async (id_forum) => {
@@ -117,6 +136,9 @@ module.exports = {
   deleteReply,
   checkCommentOwner,
   getAllSubForum,
-  getByCategory,
+  getAllSubForumPaged,
+  getByCategoryPaged,
+  getBestCategory,
+  getSubForumUserName,
   getSubForum,
 };

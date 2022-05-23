@@ -287,23 +287,19 @@ router.delete("/deletereply", ForumController.deleteComment);
 
 /**
  * @swagger
- * /forum/admin/numberofforums:
+ * /forum/admin/numberofreplies:
  *  get:
  *    tags:
  *      - forum
- *    summary: Gets the number of forums
+ *    summary: Gets the number of replies
  *    description:
  *    consumes:
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - name: access-token
- *        in: header
- *        required: true
  *    responses:
  *      201:
- *        description: Returns the number of active forums
+ *        description: Returns the number of active replies
  *        content:
  *          application/json:
  *            schema:
@@ -311,6 +307,30 @@ router.delete("/deletereply", ForumController.deleteComment);
  *              example:
  *                - data: 4
  */
-router.get("/admin/numberofforums", isAdmin, ForumController.numberOfForums);
+router.get("/admin/numberofreplies", isAdmin, ForumController.numberOfReplies);
+
+/**
+ * @swagger
+ * /forum/admin/bestcategory:
+ *  get:
+ *    tags:
+ *      - forum
+ *    summary: Gets the best category
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    responses:
+ *      201:
+ *        description: Don't have description
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - data: gato
+ */
+router.get("/admin/bestcategory", isAdmin, ForumController.bestCategory);
 
 module.exports = router;

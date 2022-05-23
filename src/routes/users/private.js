@@ -3,6 +3,8 @@ const Router = require("express");
 const UserController = require("../../controllers/users.controller");
 const { isAdmin } = require("../../middlewares/auth.middleware");
 
+const upload = require("../../middlewares/upload.middleware");
+
 const router = Router();
 
 /* Logs out the current user  */
@@ -20,7 +22,7 @@ const router = Router();
  *    - application/json
  *    parameters:
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta
@@ -147,6 +149,42 @@ router.put("/password", UserController.updatePassword);
  */
 router.put("/username", UserController.updateUsername);
 
+/* Update avatar */
+/**
+ * @swagger
+ * /users/avatar:
+ *  put:
+ *    tags:
+ *      - users
+ *    summary: Update user avatar
+ *    description:
+ *    consumes:
+ *      - multipart/form-data
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *      - in: formData
+ *        name: avatar
+ *        description: Imagen de avatar (png, jpg)
+ *        required: true
+ *        type: file
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                avatar:
+ *                  type: string
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
+ */
+router.put("/avatar", upload.single("avatar"), UserController.updateAvatar);
+
 /* Delete user */
 /**
  * @swagger
@@ -162,7 +200,7 @@ router.put("/username", UserController.updateUsername);
  *      - application/json
  *    parameters:
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta
@@ -185,12 +223,12 @@ router.delete("/", UserController.deleteUser);
  *    produces:
  *      - application/json
  *    parameters:
- *      - in: query
+ *      - in: path
  *        name: id
  *        description: Id del usuario a eliminar
  *        required: true
  *    responses:
- *      204:
+ *      200:
  *        description: Operación realizada correctamente
  *      400:
  *        description: Descripción del error en la respuesta
@@ -236,5 +274,45 @@ router.delete("/:id", isAdmin, UserController.banUser);
  *        description: Error en la petición
  */
 router.get("/", isAdmin, UserController.getUsers);
+
+/* Gets its own info */
+/**
+ * @swagger
+ * /users/info/me:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Gets its own info
+ *    description:
+ *    produces:
+ *      - application/json
+ *    parameters:
+ *    responses:
+ *      200:
+ *        description: Operación realizada correctamente
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *                username:
+ *                  type: string
+ *                role:
+ *                  type: string
+ *                  enum: [user, admin]
+ *                bio:
+ *                  type: string
+ *                avatar:
+ *                  type: string
+ *                createdAt:
+ *                  type: string
+ *      404:
+ *        description: Usuario no encontrado
+ *      500:
+ *        description: Error en la petición
+ */
+router.get("/info/me", UserController.getOwnInfo);
 
 module.exports = router;

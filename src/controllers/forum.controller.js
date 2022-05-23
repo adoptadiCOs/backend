@@ -11,7 +11,7 @@ const newForum = async (req, res) => {
 
   const user = await userHelper.findUserByName(username);
 
-  var prev = await forumHelper.getSubForum(user, title);
+  var prev = await forumHelper.getSubForumUserName(user, title);
   var len = prev.length;
 
   if (len !== 0) {
@@ -27,7 +27,7 @@ const newForum = async (req, res) => {
       await forumHelper.createSubForum(user, category, title, user_explanation);
     }
 
-    var data_aux = await forumHelper.getSubForum(user, title);
+    var data_aux = await forumHelper.getSubForumUserName(user, title);
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
@@ -72,8 +72,6 @@ const addComment = async (req, res) => {
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
-        var user_aux = await userHelper.findUserById(message.user);
-
         var resplies_aux = message.replies.filter(function (a) {
           return a.reply_enabled !== false;
         });
@@ -82,7 +80,7 @@ const addComment = async (req, res) => {
           resplies_aux.map(async (reply_i) => {
             var user_aux = await userHelper.findUserById(reply_i.user);
             return {
-              user: user_aux.username,
+              user_id: user_aux._id,
               reply: reply_i.reply,
               id: reply_i._id,
               reply_date: reply_i.reply_date,
@@ -91,7 +89,7 @@ const addComment = async (req, res) => {
         );
 
         return {
-          user: user_aux.username,
+          user_id: message.user,
           id: message._id,
           title: message.title,
           user_explanation: message.user_explanation,
@@ -220,14 +218,18 @@ const deleteCommentAdmin = async (req, res) => {
 };
 
 const listSubForum = async (req, res) => {
+  const starts = parseInt(req.query.starts) || 0;
+  const rows =
+    req.query.rows < 50 && req.query.rows > 0 ? parseInt(req.query.rows) : 50;
+
   try {
-    var data_aux = await forumHelper.getAllSubForum();
+    var data_aux = await forumHelper.getAllSubForumPaged(starts, rows);
 
     var data = await Promise.all(
       data_aux.map(async (message) => {
-        var user_aux = await userHelper.findUserById(message.user);
         return {
-          user: user_aux.username,
+          user_id: message.user,
+          category: message.category,
           title: message.title,
           id: message._id,
           user_explanation: message.user_explanation,
@@ -239,38 +241,41 @@ const listSubForum = async (req, res) => {
 
     console.log(data);
 
-    return res.status(201).json({ data });
+    return res.status(200).json({ data });
   } catch (error) {
     return res.status(500).send({ error: "Error trying to list forums" });
   }
 };
 
 const listSubForumByCategory = async (req, res) => {
-  const { category } = req.body;
+  const category = req.query.category;
+
+  const starts = parseInt(req.query.starts) || 0;
+  const rows =
+    req.query.rows < 50 && req.query.rows > 0 ? parseInt(req.query.rows) : 50;
 
   if (!category) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
   try {
-    var data_aux = await forumHelper.getByCategory(category);
+    var data_aux = await forumHelper.getByCategoryPaged(category, starts, rows);
 
     var data = await Promise.all(
       data_aux.map(async (message) => {
-        var user_aux = await userHelper.findUserById(message.user);
         return {
-          user: user_aux.username,
+          user_id: message.user,
+          category: message.category,
           title: message.title,
           id: message._id,
           user_explanation: message.user_explanation,
-          category: message.category,
           createdAt: message.createdAt,
           updatedAt: message.updatedAt,
         };
       })
     );
 
-    return res.status(201).json({ data });
+    return res.status(200).json({ data });
   } catch (error) {
     return res
       .status(409)
@@ -279,7 +284,7 @@ const listSubForumByCategory = async (req, res) => {
 };
 
 const getSubForum = async (req, res) => {
-  const { id_forum } = req.body;
+  const id_forum = req.query.id_forum;
 
   if (!id_forum) {
     return res.status(400).json({ error: "Unspecified some parameters" });
@@ -292,8 +297,6 @@ const getSubForum = async (req, res) => {
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
-        var user_aux = await userHelper.findUserById(message.user);
-
         var resplies_aux = message.replies.filter(function (a) {
           return a.reply_enabled !== false;
         });
@@ -302,7 +305,6 @@ const getSubForum = async (req, res) => {
           resplies_aux.map(async (reply_i) => {
             var user_aux = await userHelper.findUserById(reply_i.user);
             return {
-              user: user_aux.username,
               user_id: user_aux._id,
               reply: reply_i.reply,
               id: reply_i._id,
@@ -312,13 +314,14 @@ const getSubForum = async (req, res) => {
         );
 
         return {
-          user: user_aux.username,
-          id: message._id,
+          user_id: message.user,
+          category: message.category,
           title: message.title,
+          id: message._id,
           user_explanation: message.user_explanation,
-          replies: resplies_final,
           createdAt: message.createdAt,
           updatedAt: message.updatedAt,
+          replies: resplies_final,
         };
       })
     );
@@ -339,6 +342,58 @@ const numberOfForums = async (req, res) => {
   return res.status(201).json({ data });
 };
 
+const numberOfReplies = async (req, res) => {
+  var data = 0;
+
+  try {
+    var data_aux = await forumHelper.getAllSubForum();
+
+    await Promise.all(
+      data_aux.map(async (message) => {
+        var resplies_aux = message.replies.filter(function (a) {
+          return a.reply_enabled !== false;
+        });
+
+        var resplies_final = resplies_aux.map(() => {
+          data = data + 1;
+        });
+
+        return {
+          user_id: message.user,
+          category: message.category,
+          title: message.title,
+          id: message._id,
+          user_explanation: message.user_explanation,
+          createdAt: message.createdAt,
+          updatedAt: message.updatedAt,
+          replies: resplies_final,
+        };
+      })
+    );
+
+    return res.status(201).json({ data });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: "Error trying to get the number of replies" });
+  }
+};
+
+const bestCategory = async (req, res) => {
+  try {
+    var data_aux = await forumHelper.getBestCategory();
+
+    var best = data_aux[0]._id;
+
+    if (!best) {
+      best = data_aux[1]._id;
+    }
+    return res.status(200).json({ best });
+  } catch (error) {
+    return res.status(500).send({ error: "Error trying to list forums" });
+  }
+};
+
 module.exports = {
   newForum,
   addComment,
@@ -350,4 +405,6 @@ module.exports = {
   listSubForumByCategory,
   getSubForum,
   numberOfForums,
+  numberOfReplies,
+  bestCategory,
 };
