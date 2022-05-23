@@ -1,13 +1,6 @@
 const passport = require("passport");
 
-var GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
-
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-passport.deserializeUser(function (user, done) {
-  done(null, user);
-});
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 // Registrarse con Google
 passport.use(
