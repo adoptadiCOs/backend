@@ -395,7 +395,7 @@ const bestCategory = async (req, res) => {
 const getNumberOfMessages = async (req, res) => {
   const id_user = req.query.id_user;
 
-  console.log(id_user)
+  console.log(id_user);
 
   if (!id_user) {
     return res.status(400).json({ error: "Unspecified some parameters" });

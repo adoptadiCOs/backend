@@ -262,6 +262,6 @@ router.get("/numberofforumscategory", ForumController.numberOfForumsCategory);
  *              example:
  *                - data: 4
  */
- router.get("/numberofmessages", ForumController.getNumberOfMessages);
+router.get("/numberofmessages", ForumController.getNumberOfMessages);
 
 module.exports = router;
