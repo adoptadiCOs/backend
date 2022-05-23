@@ -46,7 +46,6 @@ const newForum = async (req, res) => {
 
     return res.status(201).json({ data });
   } catch (error) {
-    console.log(error);
     return res.status(409).send({ error: "Error creating the new forum" });
   }
 };

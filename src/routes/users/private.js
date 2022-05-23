@@ -10,7 +10,7 @@ const router = Router();
 /* Update biography */
 /**
  * @swagger
- * /users/biography:
+ * /users/bio:
  *  put:
  *    tags:
  *      - users
@@ -20,15 +20,16 @@ const router = Router();
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - in: body
- *        description: New user biography
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            bio:
- *              type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               bio:
+ *                 type: string
+ *                 example: "bio1"
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
@@ -58,19 +59,22 @@ router.put("/bio", UserController.updateBio);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - in: body
- *        description: New user password
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            password:
- *              type: string
- *            newPassword:
- *              type: string
- *            repeatedNewPassword:
- *              type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 example: "12345"
+ *               newPassword:
+ *                 type: string
+ *                 example: "12345"
+ *               repeatedNewPassword:
+ *                 type: string
+ *                 example: "12345"
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
@@ -95,15 +99,16 @@ router.put("/password", UserController.updatePassword);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - in: body
- *        description: New username
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            newUsername:
- *              type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newUsername:
+ *                 type: string
+ *                 example: "usernuevo_test_1"
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
@@ -174,7 +179,6 @@ router.put("/avatar", upload.single("avatar"), UserController.updateAvatar);
  *      - "application/json"
  *    produces:
  *      - application/json
- *    parameters:
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
@@ -228,7 +232,6 @@ router.delete("/:id", isAdmin, UserController.banUser);
  *    description: Solo disponible para administradores
  *    produces:
  *      - application/json
- *    parameters:
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
@@ -262,7 +265,6 @@ router.get("/", isAdmin, UserController.getUsers);
  *    description:
  *    produces:
  *      - application/json
- *    parameters:
  *    responses:
  *      200:
  *        description: Operación realizada correctamente

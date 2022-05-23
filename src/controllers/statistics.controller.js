@@ -9,7 +9,7 @@ const GetStatistics = async (req, res) => {
   const res2 = await findDangerous();
   const res3 = await findPetsNumber();
 
-  console.log(res3.data);
+  //console.log(res3.data);
 
   if (res1.err !== null || res2.err !== null) {
     return res
