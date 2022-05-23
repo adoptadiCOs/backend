@@ -10,7 +10,7 @@ const router = Router();
 /* Update biography */
 /**
  * @swagger
- * /users/biography:
+ * /users/bio:
  *  put:
  *    tags:
  *      - users
@@ -20,15 +20,16 @@ const router = Router();
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - in: body
- *        description: New user biography
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            bio:
- *              type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               bio:
+ *                 type: string
+ *                 example: "bio1"
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
