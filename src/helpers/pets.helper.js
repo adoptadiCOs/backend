@@ -19,17 +19,15 @@ const findPets = async (specie, breed, starts, rows) => {
   try {
     const date = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
 
-    console.log(date);
-
     const query = {};
     query["date"] = date;
 
     if (specie !== undefined) {
-      query["specie"] = specie;
+      query["specie"] = { $regex: specie };
     }
 
     if (breed !== undefined) {
-      query["breed"] = breed;
+      query["breed"] = { $regex: breed };
     }
 
     const res = await Pet.find(query, {}, { skip: starts, limit: rows }).select(

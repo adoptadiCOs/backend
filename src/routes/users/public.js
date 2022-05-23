@@ -100,7 +100,7 @@ router.post("/", UserController.signup);
  */
 router.post("/login", UserController.login);
 
-/* Logs user into the system */
+/* Logs user into the system with google*/
 /**
  * @swagger
  * /users/google:
@@ -120,7 +120,27 @@ router.get(
     scope: ["profile", "email"],
     session: false,
   }),
-  UserController.auth_google
+  UserController.auth_social
+);
+
+/* Logs user into the system with github*/
+/**
+ * @swagger
+ * /users/github:
+ *  get:
+ *    tags:
+ *      - users
+ *    summary: Access to the system with Github credentials.
+ *    description: Si el usuario no tiene una cuenta la crea
+ *    parameters:
+ *    responses:
+ *     :
+ *      description: Redirect to the application with the accessToken as query parameter
+ */
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+  UserController.auth_social
 );
 
 /* Get avatar image */

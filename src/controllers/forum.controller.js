@@ -3,15 +3,13 @@ const forumHelper = require("../helpers/forum.helper");
 const userHelper = require("../helpers/users.helpers");
 
 const newForum = async (req, res) => {
-  const { username, category, title, user_explanation } = req.body;
+  const { id, category, title, user_explanation } = req.body;
 
-  if (!username || !title || !user_explanation) {
+  if (!id || !title || !user_explanation) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user = await userHelper.findUserByName(username);
-
-  var prev = await forumHelper.getSubForumUserName(user, title);
+  var prev = await forumHelper.getSubForumUserName(id, title);
   var len = prev.length;
 
   if (len !== 0) {
@@ -22,12 +20,12 @@ const newForum = async (req, res) => {
 
   try {
     if (category === undefined) {
-      await forumHelper.createSubForumWithoutCat(user, title, user_explanation);
+      await forumHelper.createSubForumWithoutCat(id, title, user_explanation);
     } else {
-      await forumHelper.createSubForum(user, category, title, user_explanation);
+      await forumHelper.createSubForum(id, category, title, user_explanation);
     }
 
-    var data_aux = await forumHelper.getSubForumUserName(user, title);
+    var data_aux = await forumHelper.getSubForumUserName(id, title);
 
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
@@ -54,16 +52,14 @@ const newForum = async (req, res) => {
 };
 
 const addComment = async (req, res) => {
-  const { id_forum, username, comment } = req.body;
+  const { id_forum, id, comment } = req.body;
 
-  if (!id_forum || !username || !comment) {
+  if (!id_forum || !id || !comment) {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  const user = await userHelper.findUserByName(username);
-
   try {
-    var aux = await forumHelper.addReply(id_forum, user, comment);
+    var aux = await forumHelper.addReply(id_forum, id, comment);
     if (!aux) {
       return res.status(409).send({ error: "Error trying to add the reply" });
     }
