@@ -3,7 +3,6 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 
-
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
@@ -11,7 +10,6 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
   done(null, user);
 });
-
 
 // Autenticación con Google
 passport.use(

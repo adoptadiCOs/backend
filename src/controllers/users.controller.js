@@ -78,6 +78,13 @@ const login = async (req, res) => {
         .status(404)
         .json({ error: "No se ha podido encontrar tú cuenta." });
     }
+
+    // Si no tiene contraseña el usuario se ha registrado con redes sociales
+    if (!user.password) {
+      return res.status(400).json({
+        error: "No se ha podido acceder a tú cuenta. Prueba con Google/Github",
+      });
+    }
   } catch (error) {
     return res.status(500).json({ error: error });
   }
