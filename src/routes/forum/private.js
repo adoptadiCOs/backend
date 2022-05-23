@@ -17,24 +17,22 @@ const router = Router();
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - name: forum
- *        in: body
- *        description: Fields to update
- *        required: false
- *        schema:
- *          type: object
- *          properties:
- *            title:
- *              type: string
- *            category:
- *              type: string
- *            user_explanation:
- *              type: string
- *          example:
- *            title: "title1"
- *            user_explanation: "explanation1"
- *            category: "cats"
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "titulo1"
+ *               user_explanation:
+ *                 type: string
+ *                 example: "comment1"
+ *               category:
+ *                 type: string
+ *                 example: "gatos"
  *    responses:
  *      201:
  *        description: Info about the created forum
