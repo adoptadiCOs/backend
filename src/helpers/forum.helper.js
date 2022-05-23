@@ -102,7 +102,7 @@ const getAllSubForum = async () => {
 };
 
 const getAllSubForumCategory = async (category) => {
-  return await Forum.find({ enabled: true, category: category});
+  return await Forum.find({ enabled: true, category: category });
 };
 
 const getAllSubForumPaged = async (starts, rows) => {

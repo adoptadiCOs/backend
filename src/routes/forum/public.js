@@ -205,6 +205,6 @@ router.get("/numberofforums", ForumController.numberOfForums);
  *              example:
  *                - data: 4
  */
- router.get("/numberofforumscategory", ForumController.numberOfForumsCategory);
+router.get("/numberofforumscategory", ForumController.numberOfForumsCategory);
 
 module.exports = router;
