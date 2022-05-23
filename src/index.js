@@ -17,7 +17,6 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-
 // Middlewares
 app.use(passport.initialize());
 app.use(cors());

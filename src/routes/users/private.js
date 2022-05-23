@@ -7,30 +7,6 @@ const upload = require("../../middlewares/upload.middleware");
 
 const router = Router();
 
-/* Logs out the current user  */
-/**
- * @swagger
- * /users/logout:
- *  get:
- *    tags:
- *      - users
- *    summary: Logs out the current user
- *    description:
- *    consumes:
- *      - "application/json"
- *    produces:
- *    - application/json
- *    parameters:
- *    responses:
- *      200:
- *        description: Operación realizada correctamente
- *      400:
- *        description: Descripción del error en la respuesta
- *      500:
- *        description: Error en la petición
- */
-router.get("/logout", UserController.logout);
-
 /* Update biography */
 /**
  * @swagger
