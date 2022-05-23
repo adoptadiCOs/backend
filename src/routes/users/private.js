@@ -59,19 +59,22 @@ router.put("/bio", UserController.updateBio);
  *      - "application/json"
  *    produces:
  *    - application/json
- *    parameters:
- *      - in: body
- *        description: New user password
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            password:
- *              type: string
- *            newPassword:
- *              type: string
- *            repeatedNewPassword:
- *              type: string
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 example: "12345"
+ *               newPassword:
+ *                 type: string
+ *                 example: "12345"
+ *               repeatedNewPassword:
+ *                 type: string
+ *                 example: "12345"
  *    responses:
  *      200:
  *        description: Operación realizada correctamente
