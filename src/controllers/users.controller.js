@@ -118,12 +118,6 @@ const login = async (req, res) => {
   });
 };
 
-/* Logs out the current user  */
-const logout = async (_, res) => {
-  // ? Solo para posibles estadisticas
-  return res.status(200).json({ message: "Tú sesión ha sido finalizada" });
-};
-
 /* Authentication with social networks*/
 const auth_social = async (req, res) => {
   const email = req.user.emails[0].value;
@@ -416,7 +410,6 @@ const getOwnInfo = async (req, res) => {
 module.exports = {
   signup,
   login,
-  logout,
   auth_social,
   updateAvatar,
   getAvatar,

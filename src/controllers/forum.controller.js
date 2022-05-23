@@ -175,8 +175,6 @@ const deleteComment = async (req, res) => {
 
     var aux = await forumHelper.deleteReply(id_forum, id, id_comment);
 
-    console.log(aux);
-
     if (!aux) {
       return res
         .status(409)
@@ -195,13 +193,8 @@ const deleteCommentAdmin = async (req, res) => {
     return res.status(400).json({ error: "Unspecified some parameters" });
   }
 
-  console.log(id_forum);
-  console.log(id_comment);
-  console.log(id_user);
-
   try {
     var aux = await forumHelper.deleteReply(id_forum, id_user, id_comment);
-    console.log(aux);
     if (!aux) {
       return res
         .status(409)
@@ -234,8 +227,6 @@ const listSubForum = async (req, res) => {
         };
       })
     );
-
-    console.log(data);
 
     return res.status(200).json({ data });
   } catch (error) {
@@ -289,8 +280,6 @@ const getSubForum = async (req, res) => {
   try {
     var data_aux = await forumHelper.getSubForum(id_forum);
 
-    console.log(data_aux);
-
     var data_arr = await Promise.all(
       data_aux.map(async (message) => {
         var resplies_aux = message.replies.filter(function (a) {
@@ -332,6 +321,20 @@ const getSubForum = async (req, res) => {
 
 const numberOfForums = async (req, res) => {
   var data_aux = await forumHelper.getAllSubForum();
+
+  var data = data_aux.length;
+
+  return res.status(201).json({ data });
+};
+
+const numberOfForumsCategory = async (req, res) => {
+  const category = req.query.category;
+
+  if (!category) {
+    return res.status(400).json({ error: "Unspecified some parameters" });
+  }
+
+  var data_aux = await forumHelper.getAllSubForumCategory(category);
 
   var data = data_aux.length;
 
@@ -401,6 +404,7 @@ module.exports = {
   listSubForumByCategory,
   getSubForum,
   numberOfForums,
+  numberOfForumsCategory,
   numberOfReplies,
   bestCategory,
 };

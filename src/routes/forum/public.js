@@ -82,10 +82,17 @@ router.get("/list", ForumController.listSubForum);
  *              maximun: 50
  *              default: 0
  *          description: The numbers of items to return
- *        - in: category
+ *        - name: category
+ *          in: query
+ *          description: Category
+ *          required: true
  *          schema:
- *              type: string
- *              description: Category to search
+ *            type: object
+ *            properties:
+ *              category:
+ *                type: string
+ *            example:
+ *              category: "CANINOS"
  *    responses:
  *      201:
  *        description: A list of enabled forums with specified category
@@ -121,10 +128,17 @@ router.get("/category", ForumController.listSubForumByCategory);
  *    produces:
  *      - application/json
  *    parameters:
- *        - in: id_forum
- *          schema:
+ *      - name: id_forum
+ *        in: query
+ *        description: Category
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            id_fprum:
  *              type: string
- *              description: Category to search
+ *          example:
+ *            id_forum: "628906bd3b69d1b01dd1fec1"
  *    responses:
  *      201:
  *        description: Get all information of a forum
@@ -156,7 +170,7 @@ router.get("/", ForumController.getSubForum);
 
 /**
  * @swagger
- * /forum/admin/numberofforums:
+ * /forum/numberofforums:
  *  get:
  *    tags:
  *      - forum
@@ -176,6 +190,42 @@ router.get("/", ForumController.getSubForum);
  *              example:
  *                - data: 4
  */
-router.get("/admin/numberofforums", ForumController.numberOfForums);
+router.get("/numberofforums", ForumController.numberOfForums);
+
+/**
+ * @swagger
+ * /forum/numberofforumscategory:
+ *  get:
+ *    tags:
+ *      - forum
+ *    summary: Gets the number of forums
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - name: category
+ *        in: query
+ *        description: Category
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            category:
+ *              type: string
+ *          example:
+ *            category: "CANINOS"
+ *    responses:
+ *      201:
+ *        description: Returns the number of active forums
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - data: 4
+ */
+router.get("/numberofforumscategory", ForumController.numberOfForumsCategory);
 
 module.exports = router;
