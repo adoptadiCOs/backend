@@ -30,6 +30,8 @@ const findPets = async (specie, breed, starts, rows) => {
       query["breed"] = { $regex: breed };
     }
 
+    const count = await Pet.find(query).count();
+
     const res = await Pet.find(query, {}, { skip: starts, limit: rows }).select(
       {
         date: 0,
@@ -47,7 +49,10 @@ const findPets = async (specie, breed, starts, rows) => {
     );
 
     return {
-      data: res,
+      data: {
+        total: count,
+        pets: res,
+      },
       err: null,
     };
   } catch (err) {
