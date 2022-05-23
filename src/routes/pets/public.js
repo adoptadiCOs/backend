@@ -5,7 +5,7 @@ const pets = require("../../controllers/pets.controller");
 /* GET Pets list */
 /**
  * @swagger
- * /api/pets:
+ * /pets:
  *      get:
  *          parameters:
  *              - in: query
@@ -120,6 +120,47 @@ router.get("/species", pets.GetSpecies);
  */
 router.get("/breeds", pets.GetBreeds);
 
+/* GET Pet by id */
+/**
+ * @swagger
+ * /pet/public:
+ *      get:
+ *          parameters:
+ *              - in: query
+ *                name: id
+ *                schema:
+ *                    type: integer
+ *                description: Pet id
+ *          description: "Return information of pet $id"
+ *          responses:
+ *              200:
+ *                  description: Pet info
+ *                  properties:
+ *                  data:
+ *                      type: object
+ *                      properties:
+ *                          name:
+ *                              type: string
+ *                              description: Pet name
+ *                              example: Lina
+ *                          specie:
+ *                              type: string
+ *                              description: Pet specie
+ *                              example: Canina
+ *                          breed:
+ *                              type: string
+ *                              description: Pet breed
+ *                              example: AMERICAN STAFFORDSHIRE
+ *                          sex:
+ *                              type: string
+ *                              description: Pet sex
+ *                              example: Hembra
+ *                          photo:
+ *                              type: string
+ *                              description: url of a animal photo
+ *                  400:
+ *      description: something went wrong return error msg
+ */
 router.get("/pet/public", pets.GetPetPublic);
 
 module.exports = router;
