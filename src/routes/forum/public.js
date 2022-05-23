@@ -260,7 +260,7 @@ router.get("/numberofforumscategory", ForumController.numberOfForumsCategory);
  *            schema:
  *              type: object
  *              example:
- *                - data: 4
+ *                data: 4
  */
 router.get("/numberofmessages", ForumController.getNumberOfMessages);
 
