@@ -82,10 +82,17 @@ router.get("/list", ForumController.listSubForum);
  *              maximun: 50
  *              default: 0
  *          description: The numbers of items to return
- *        - in: category
+ *        - name: category
+ *          in: query
+ *          description: Category
+ *          required: true
  *          schema:
- *              type: string
- *              description: Category to search
+ *            type: object
+ *            properties:
+ *              category:
+ *                type: string
+ *            example:
+ *              category: "CANINOS"
  *    responses:
  *      201:
  *        description: A list of enabled forums with specified category
@@ -121,10 +128,17 @@ router.get("/category", ForumController.listSubForumByCategory);
  *    produces:
  *      - application/json
  *    parameters:
- *        - in: id_forum
- *          schema:
+ *      - name: id_forum
+ *        in: query
+ *        description: Category
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            id_fprum:
  *              type: string
- *              description: Category to search
+ *          example:
+ *            id_forum: "628906bd3b69d1b01dd1fec1"
  *    responses:
  *      201:
  *        description: Get all information of a forum
