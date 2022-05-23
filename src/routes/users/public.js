@@ -156,7 +156,7 @@ router.get(
  *    produces:
  *      - application/json
  *    parameters:
- *      - in: path
+ *      - in: query
  *        name: id
  *        description: Id del avatar del usuario
  *        required: true
