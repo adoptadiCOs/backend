@@ -124,6 +124,12 @@ const getBestCategory = async () => {
   ]);
 };
 
+const getNumberOfMessages = async (user_id) => {
+  var forums_owns = await Forum.find({ user: user_id, enabled: true });
+  var ret = forums_owns.length;
+  return ret;
+};
+
 const getSubForumUserName = async (user_id, title) => {
   return await Forum.find({ user: user_id, title: title, enabled: true });
 };
@@ -144,6 +150,7 @@ module.exports = {
   getByCategoryPaged,
   getBestCategory,
   getAllSubForumCategory,
+  getNumberOfMessages,
   getSubForumUserName,
   getSubForum,
 };

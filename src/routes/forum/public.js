@@ -135,7 +135,7 @@ router.get("/category", ForumController.listSubForumByCategory);
  *        schema:
  *          type: object
  *          properties:
- *            id_fprum:
+ *            id_forum:
  *              type: string
  *          example:
  *            id_forum: "628906bd3b69d1b01dd1fec1"
@@ -227,5 +227,41 @@ router.get("/numberofforums", ForumController.numberOfForums);
  *                - data: 4
  */
 router.get("/numberofforumscategory", ForumController.numberOfForumsCategory);
+
+/**
+ * @swagger
+ * /forum/numberofmessages:
+ *  get:
+ *    tags:
+ *      - forum
+ *    summary: Gets the number of forums
+ *    description:
+ *    consumes:
+ *      - "application/json"
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *      - name: id_user
+ *        in: query
+ *        description: id_user
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            id_user:
+ *              type: string
+ *          example:
+ *            id_user: "234fefg24g5rd3g3rg"
+ *    responses:
+ *      201:
+ *        description: Returns the number of active forums
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                - data: 4
+ */
+ router.get("/numberofmessages", ForumController.getNumberOfMessages);
 
 module.exports = router;

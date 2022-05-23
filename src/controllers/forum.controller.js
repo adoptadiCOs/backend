@@ -392,6 +392,24 @@ const bestCategory = async (req, res) => {
   }
 };
 
+const getNumberOfMessages = async (req, res) => {
+  const id_user = req.query.id_user;
+
+  console.log(id_user)
+
+  if (!id_user) {
+    return res.status(400).json({ error: "Unspecified some parameters" });
+  }
+
+  try {
+    var data = await forumHelper.getNumberOfMessages(id_user);
+
+    return res.status(201).json({ data });
+  } catch (error) {
+    return res.status(404).send({ error: "Error trying to get the subforum" });
+  }
+};
+
 module.exports = {
   newForum,
   addComment,
@@ -406,4 +424,5 @@ module.exports = {
   numberOfForumsCategory,
   numberOfReplies,
   bestCategory,
+  getNumberOfMessages,
 };
