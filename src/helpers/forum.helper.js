@@ -101,6 +101,10 @@ const getAllSubForum = async () => {
   return await Forum.find({ enabled: true });
 };
 
+const getAllSubForumCategory = async (category) => {
+  return await Forum.find({ enabled: true, category: category});
+};
+
 const getAllSubForumPaged = async (starts, rows) => {
   return await Forum.find({ enabled: true }, {}, { skip: starts, limit: rows });
 };
@@ -139,6 +143,7 @@ module.exports = {
   getAllSubForumPaged,
   getByCategoryPaged,
   getBestCategory,
+  getAllSubForumCategory,
   getSubForumUserName,
   getSubForum,
 };

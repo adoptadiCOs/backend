@@ -338,6 +338,20 @@ const numberOfForums = async (req, res) => {
   return res.status(201).json({ data });
 };
 
+const numberOfForumsCategory = async (req, res) => {
+  const category = req.query.category;
+
+  if (!category) {
+    return res.status(400).json({ error: "Unspecified some parameters" });
+  }
+
+  var data_aux = await forumHelper.getAllSubForumCategory(category);
+
+  var data = data_aux.length;
+
+  return res.status(201).json({ data });
+};
+
 const numberOfReplies = async (req, res) => {
   var data = 0;
 
@@ -401,6 +415,7 @@ module.exports = {
   listSubForumByCategory,
   getSubForum,
   numberOfForums,
+  numberOfForumsCategory,
   numberOfReplies,
   bestCategory,
 };
