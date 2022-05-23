@@ -191,10 +191,17 @@ router.get("/numberofforums", ForumController.numberOfForums);
  *    produces:
  *    - application/json
  *    parameters:
- *        - in: category
- *          schema:
+ *      - name: category
+ *        in: query
+ *        description: Category
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            category:
  *              type: string
- *              description: Category to search
+ *          example:
+ *            category: "CANINOS"
  *    responses:
  *      201:
  *        description: Returns the number of active forums
