@@ -106,7 +106,11 @@ const getAllSubForumCategory = async (category) => {
 };
 
 const getAllSubForumPaged = async (starts, rows) => {
-  return await Forum.find({ enabled: true }, {}, { skip: starts, limit: rows });
+  return await Forum.find(
+    { enabled: true },
+    {},
+    { skip: starts, limit: rows }
+  ).sort({ updatedAt: -1 });
 };
 
 const getByCategoryPaged = async (category_f, starts, rows) => {
@@ -114,7 +118,7 @@ const getByCategoryPaged = async (category_f, starts, rows) => {
     { category: category_f, enabled: true },
     {},
     { skip: starts, limit: rows }
-  );
+  ).sort({ updatedAt: -1 });
 };
 
 const getBestCategory = async () => {
