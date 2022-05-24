@@ -103,14 +103,14 @@ const fetchPets = async () => {
       meses[fecha.getMonth()] +
       " de " +
       fecha.getUTCFullYear();
-    const tweet = `Buen dia ${date} a todos los amantes de los animaliCOs!!! \n solo pasabamos para recordaros que seguimos teniendo ${pets.length} animales para poder adoptar! \n\n pasaros por nuestra pagina web para poder descubrirlos a todos 😇😇`;
+    const tweet = `¡Buen día ${date} a todos los amantes de los animaliCOs! \n\nOs recordaros que seguimos teniendo ${pets.length} animales en adopción que necesitan una familia. \n\nEchad un vistazo a nuestra página web para poder descubrirlos a todos 😇😇`;
 
     postTwit(tweet);
 
     const adopted = await findAdoptedAnimal();
 
     for (const animal of adopted.data) {
-      const tweet = `Hoy felicitamos a ${animal.name} un ${animal.specie} de raza ${animal.breed} por ser adoptado!! mucha suerte con tu nueva familia!!`;
+      const tweet = `Hoy felicitamos a ${animal.name}, de especie ${animal.specie} y raza ${animal.breed}, por su adopción. \n\nMucha suerte con tu nueva familia!!`;
       postTwit(tweet);
     }
   } catch (err) {
